@@ -5,7 +5,7 @@ import app from './app';
 dotenv.config();
 
 // Retrieve the port number
-const port: number | string = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 // Open server with port number
 app.listen(port, () => {
