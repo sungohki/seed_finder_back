@@ -24,8 +24,8 @@ export const userLogin = (req: Request, res: Response) => {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
     const loginUser = results[0];
+    console.log(`Info: [ ${loginUser} ] 로그인 시도`);
     if (!loginUser) return res.status(StatusCodes.NOT_FOUND); // status code 404
-    // console.log(`Info: [ ${loginUser} ] 로그인 시도`);
 
     // req에 담긴 pw와 대조
     const hashedPassword = crypto
@@ -38,7 +38,7 @@ export const userLogin = (req: Request, res: Response) => {
       const privateKey = process.env.PRIVATE_KEY;
       if (!privateKey) {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
       // jwt 토큰 발행
       const instanceToken = jwt.sign(
@@ -62,7 +62,7 @@ export const userLogin = (req: Request, res: Response) => {
         .json({ ...results[0], token: instanceToken });
     } else {
       console.log('Info: 로그인 실패');
-      return res.status(StatusCodes.UNAUTHORIZED);
+      return res.status(StatusCodes.UNAUTHORIZED).end();
     }
   });
 
