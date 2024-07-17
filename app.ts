@@ -8,7 +8,7 @@ import { businessRouter } from './routes/businessRoutes';
 
 // routing uri
 app.get('/', (req: Request, res: Response) => {
-  console.log('Main Page');
+  console.log('Main Page Access');
   return res.json({
     name: 'main page',
   });
