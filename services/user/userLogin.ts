@@ -24,23 +24,23 @@ export const userLogin = (req: Request, res: Response) => {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
     const loginUser = results[0];
-    console.log(loginUser);
+    if (!loginUser) return res.status(StatusCodes.NOT_FOUND); // status code 404
+    // console.log(`Info: [ ${loginUser} ] 로그인 시도`);
 
-    // TODO: Checking password
+    // req에 담긴 pw와 대조
     const hashedPassword = crypto
       .pbkdf2Sync(userPw, loginUser.salt, 10000, 64, 'sha512')
       .toString('base64');
-    console.log(hashedPassword);
 
-    if (loginUser && loginUser.userPw == hashedPassword) {
-      console.log('로그인 정보 일치');
-      // 0) Check if PRIVATE_KEY is defined
+    if (loginUser.userPw == hashedPassword) {
+      console.log('Info: 로그인 정보 일치, 로그인 성공');
+      // .env PRIVATE_KEY 확인
       const privateKey = process.env.PRIVATE_KEY;
       if (!privateKey) {
-        console.error('PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+        console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
       }
-      // 1) jwt 토큰 발행
+      // jwt 토큰 발행
       const instanceToken = jwt.sign(
         {
           id: loginUser.id,
@@ -52,8 +52,8 @@ export const userLogin = (req: Request, res: Response) => {
           issuer: 'sungohki',
         }
       );
-      console.log('토큰 발행');
-      // 2) 쿠키에 토큰 첨부
+      console.log('Info: 토큰 발행');
+      // 쿠키에 토큰 첨부
       res.cookie('token', instanceToken, {
         httpOnly: true,
       });
@@ -61,10 +61,10 @@ export const userLogin = (req: Request, res: Response) => {
         .status(StatusCodes.OK)
         .json({ ...results[0], token: instanceToken });
     } else {
+      console.log('Info: 로그인 실패');
       return res.status(StatusCodes.UNAUTHORIZED);
     }
   });
 
-  // res.write('로그인 요청');
-  // return res.status(StatusCodes.OK).end();
+  // return res.status(StatusCodes.OK);
 };
