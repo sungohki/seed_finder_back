@@ -30,6 +30,7 @@ export const userJoin = (req: Request, res: Response) => {
     해싱 알고리즘으로 sha512를 사용하고, 해싱된 결과를 base64 문자열로 변환
   */
 
+  // TODO) 계정 생성 이전에 중복된 id가 있는지 확인 후 생성 (비동기 처리 필요)
   const sql: string = `
     INSERT INTO 
       user 
