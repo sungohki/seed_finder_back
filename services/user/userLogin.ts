@@ -24,8 +24,10 @@ export const userLogin = (req: Request, res: Response) => {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
     const loginUser = results[0];
-    console.log(`Info: [ ${loginUser} ] 로그인 시도`);
-    if (!loginUser) return res.status(StatusCodes.NOT_FOUND); // status code 404
+    if (!loginUser) {
+      console.log(`Info: 로그인 실패 (Wrong userId)`);
+      return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
+    }
 
     // req에 담긴 pw와 대조
     const hashedPassword = crypto
@@ -33,7 +35,7 @@ export const userLogin = (req: Request, res: Response) => {
       .toString('base64');
 
     if (loginUser.userPw == hashedPassword) {
-      console.log('Info: 로그인 정보 일치, 로그인 성공');
+      console.log(`Info: [ ${loginUser} ] 로그인 정보 일치, 로그인 성공`);
       // .env PRIVATE_KEY 확인
       const privateKey = process.env.PRIVATE_KEY;
       if (!privateKey) {
@@ -61,10 +63,10 @@ export const userLogin = (req: Request, res: Response) => {
         .status(StatusCodes.OK)
         .json({ ...results[0], token: instanceToken });
     } else {
-      console.log('Info: 로그인 실패');
+      console.log('Info: 로그인 실패 (Wrong userPw)');
       return res.status(StatusCodes.UNAUTHORIZED).end();
     }
   });
 
-  // return res.status(StatusCodes.OK);
+  return res.status(StatusCodes.OK);
 };
