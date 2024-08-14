@@ -36,8 +36,6 @@ export const userLogin = (req: Request, res: Response) => {
       .toString('base64');
 
     if (loginUser.userPw == hashedPassword) {
-      console.log(`Info: [ ${loginUser} ] 로그인 정보 일치, 로그인 성공`);
-
       // .env ACCESS_PRIVATE_KEY, REFRESH_PRIVATE_KEY 확인
       const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
       const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
@@ -45,6 +43,7 @@ export const userLogin = (req: Request, res: Response) => {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
+      console.log(`Info: [` + loginUser + `] 로그인 정보 일치, 로그인 성공`);
 
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {
