@@ -26,8 +26,11 @@ export const userLogin = (req: Request, res: Response) => {
     }
     const loginUser = results[0];
     if (!loginUser) {
-      console.log(`Info: 로그인 실패 (Wrong userId)`);
-      return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
+      console.log(`Info: 로그인 실패 (Wrong userId)` + loginUser);
+      // return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: `Info: 로그인 실패 (Wrong userId)` + loginUser,
+      }); // status code 404
     }
 
     // req에 담긴 pw와 대조

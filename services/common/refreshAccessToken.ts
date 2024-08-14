@@ -13,7 +13,7 @@ export const refreshAccessToken = (req: Request, res: Response) => {
   const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
 
   if (!refreshToken || !refreshPrivateKey || !accessPrivateKey) {
-    console.log('Info: 토큰 재발급 불가');
+    console.log('Info: Private Key 부재. 토큰 재발급 불가');
     return res.status(StatusCodes.UNAUTHORIZED).end();
   }
 

@@ -21,7 +21,12 @@ export const verifyAccessToken = (
   try {
     // 1. 액세스 토큰 제출 여부 확인
     const receivedToken = req.headers['authorization'];
-    if (!receivedToken) return null; // 공란일 시 null
+    if (!receivedToken) {
+      res.status(StatusCodes.UNAUTHORIZED).json({
+        message: `Info: 액세스 토큰 부재. 재 로그인 필요.`,
+      });
+      return null; // 공란일 시 null
+    }
 
     // 2. 액세스 토큰 복호화
     const decodedToken = jwt.verify(
