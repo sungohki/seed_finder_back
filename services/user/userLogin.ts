@@ -43,7 +43,7 @@ export const userLogin = (req: Request, res: Response) => {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
-      console.log(`Info: [` + loginUser + `] 로그인 정보 일치, 로그인 성공`);
+      console.log(`Info: [${loginUser.userId}] 로그인 정보 일치, 로그인 성공`);
 
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {

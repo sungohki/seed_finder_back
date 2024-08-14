@@ -35,7 +35,7 @@ export const refreshAccessToken = (req: Request, res: Response) => {
           message: `잘못된 요청 (${(err as Error).name})`,
         });
       }
-      console.log('Info: 리프레시 토큰 검증 실패');
+      console.log('Info: 리프레시 토큰 검증 실패. 재 로그인 필요');
       // return res.status(StatusCodes.FORBIDDEN).end();
     }
 
@@ -54,7 +54,7 @@ export const refreshAccessToken = (req: Request, res: Response) => {
       accessTokenOption
     );
 
-    console.log('Info: 새로운 액세스 토큰 발행');
+    console.log('Info: 새 액세스 토큰 발행');
 
     // 쿠키에 새로운 액세스 토큰 첨부
     res.cookie('accessToken', newAccessToken, {
