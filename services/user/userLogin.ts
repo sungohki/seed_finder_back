@@ -10,6 +10,7 @@ dotenv.config();
 import { connection as conn } from '../../mariadb';
 import { IUserAccount } from './userJoin';
 import { RowDataPacket } from 'mysql2';
+import { generateToken, ILoginUser } from '../common';
 
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
@@ -36,32 +37,55 @@ export const userLogin = (req: Request, res: Response) => {
 
     if (loginUser.userPw == hashedPassword) {
       console.log(`Info: [ ${loginUser} ] 로그인 정보 일치, 로그인 성공`);
-      // .env PRIVATE_KEY 확인
-      const privateKey = process.env.PRIVATE_KEY;
-      if (!privateKey) {
+
+      // .env ACCESS_PRIVATE_KEY, REFRESH_PRIVATE_KEY 확인
+      const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
+      const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
+      if (!accessPrivateKey || !refreshPrivateKey) {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
-      // jwt 토큰 발행
-      const instanceToken = jwt.sign(
-        {
-          id: loginUser.id,
-          userId: loginUser.userId,
-        },
-        privateKey,
-        {
-          expiresIn: '30m',
-          issuer: 'sungohki',
-        }
+
+      // jwt 액세스 토큰 발행
+      const accessTokenInfo: ILoginUser = {
+        id: loginUser.id,
+        userId: loginUser.userId,
+      };
+      const accessTokenOption: jwt.SignOptions = {
+        expiresIn: '30m',
+        issuer: 'sungohki',
+      };
+      const instanceAccessToken = generateToken(
+        accessTokenInfo,
+        accessPrivateKey,
+        accessTokenOption
       );
       console.log('Info: 토큰 발행');
+
+      // jwt 리프레시 토큰 발행
+      const refreshTokenOption: jwt.SignOptions = {
+        expiresIn: '7d', // 리프레시 토큰은 더 긴 유효기간을 가짐
+        issuer: 'sungohki',
+      };
+      const instanceRefreshToken = generateToken(
+        accessTokenInfo,
+        refreshPrivateKey,
+        refreshTokenOption
+      );
+
       // 쿠키에 토큰 첨부
-      res.cookie('token', instanceToken, {
+      res.cookie('accessToken', instanceAccessToken, {
         httpOnly: true,
       });
-      return res
-        .status(StatusCodes.OK)
-        .json({ ...results[0], token: instanceToken });
+      res.cookie('refreshToken', instanceRefreshToken, {
+        httpOnly: true,
+      });
+
+      return res.status(StatusCodes.OK).json({
+        ...results[0],
+        accessToken: instanceAccessToken,
+        refreshToken: instanceRefreshToken,
+      });
     } else {
       console.log('Info: 로그인 실패 (Wrong userPw)');
       return res.status(StatusCodes.UNAUTHORIZED).end();
