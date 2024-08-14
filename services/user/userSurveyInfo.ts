@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { verifyAccessToken } from '../common';
 import { connection as conn } from '../../mariadb';
-import { QueryError } from 'mysql2';
 
 interface ISurveyInfo {}
 
