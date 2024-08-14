@@ -26,10 +26,12 @@ export const userLogin = (req: Request, res: Response) => {
     }
     const loginUser = results[0];
     if (!loginUser) {
-      console.log(`Info: 로그인 실패 (Wrong userId)` + loginUser);
+      console.log(
+        `Info: 로그인 실패 (Wrong userId) ` + userId + ', ' + loginUser
+      );
       // return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: `Info: 로그인 실패 (Wrong userId)` + loginUser,
+        message: `Info: 로그인 실패 (Wrong userId)` + userId + ', ' + loginUser,
       }); // status code 404
     }
 
