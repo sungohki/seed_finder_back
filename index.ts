@@ -35,7 +35,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./index.ts'], // API 경로
+  apis: ['routes/*.ts'], // API 경로
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
@@ -45,29 +45,3 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.listen(port, () => {
   console.log(`Server is open at http://${host}:${port}`);
 });
-
-/**
- * @swagger
- * /user/login:
- *   post:
- *     summary: User login
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *                 example: user123
- *               password:
- *                 type: string
- *                 example: password123
- *     responses:
- *       200:
- *         description: Login successful
- *       401:
- *         description: Unauthorized
- */
