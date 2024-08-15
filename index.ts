@@ -47,58 +47,27 @@ app.listen(port, () => {
 });
 
 /**
- *  @swagger
- *  paths:
- *   /user:
- *     /join:
- *       post:
- *         summary: Create new user data
- *         tags: [User]
- *         requestBody:
- *           required: true
- *           content:
- *             application/json:
- *         responses:
- *           "200":
- *             description: Create new user.
- *             content:
- *               application/json:
- *     /login:
- *       post:
- *         summary: Create new login token for user that tried login
- *         tags: [User]
- *         requestBody:
- *           required: true
- *           content:
- *             application/json:
- *         responses:
- *           "200":
- *             description: Create new login token.
- *             content:
- *               application/json:
- *     /info:
- *       post:
- *         summary: Create new information of user
- *         tags: [User]
- *         requestBody:
- *           required: true
- *           content:
- *             application/json:
- *         responses:
- *           "200":
- *             description: Create user info
- *             content:
- *               application/json:
- *       put:
- *         summary: Update the information of user
- *         tags: [User]
- *         requestBody:
- *           required: true
- *           content:
- *             application/json:
- *         responses:
- *           "200":
- *             description: Update user info
- *             content:
- *               application/json:
+ * @swagger
+ * /user/login:
+ *   post:
+ *     summary: User login
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: user123
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Unauthorized
  */
