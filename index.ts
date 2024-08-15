@@ -45,3 +45,25 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.listen(port, () => {
   console.log(`Server is open at http://${host}:${port}`);
 });
+
+/**
+ *  @swagger
+ *  paths:
+ *   /user/login:
+ *     post:
+ *       summary: Create a new user
+ *       tags: [User]
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       responses:
+ *         "200":
+ *           description: Create new user.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Book'
+ */
