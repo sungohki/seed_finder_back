@@ -10,7 +10,7 @@ dotenv.config();
 import { connection as conn } from '../../mariadb';
 import { IUserAccount } from './userJoin';
 import { RowDataPacket } from 'mysql2';
-import { generateToken, ILoginUser } from '../common';
+import { createRes, generateToken, ILoginUser } from '../common';
 
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 

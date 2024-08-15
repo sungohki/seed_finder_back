@@ -17,7 +17,14 @@ export interface IUserAccount {
 }
 
 export const userJoin = (req: Request, res: Response) => {
-  const { userName, userId, userPw, userContact } = req.body;
+  const { userName, userId, userPw, userContact } = req.body as IUserAccount;
+
+  // 유효성 검사
+  if (!userName.length || !userId.length || !userPw) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
+    });
+  }
 
   // Info: Hashing password
   const salt = crypto.randomBytes(64).toString('base64');
@@ -31,6 +38,7 @@ export const userJoin = (req: Request, res: Response) => {
   */
 
   // TODO) 계정 생성 이전에 중복된 id가 있는지 확인 후 생성 (비동기 처리 필요)
+
   const sql: string = `
     INSERT INTO 
       user 
@@ -45,6 +53,6 @@ export const userJoin = (req: Request, res: Response) => {
     salt,
   ];
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
-    createRes(res, err, results);
+    return createRes(res, err, results);
   });
 };
