@@ -37,15 +37,15 @@
  *           application/json:
  *             schema:
  *               type: object
- *                 properties:
- *                   affectedRows:
- *                     type: int
- *                     example: 1
- *                     description: Number of db's affected row
- *                   insertId:
- *                     type: int
- *                     example: 4
- *                     description: Id of new user
+ *               properties:
+ *                 affectedRows:
+ *                   type: int
+ *                   example: 1
+ *                   description: Number of db's affected row
+ *                 insertId:
+ *                   type: int
+ *                   example: 4
+ *                   description: Id of new user
  *       404:
  *         description: Not Found userId or userPw
  * /user/login:
@@ -72,19 +72,19 @@
  *           application/json:
  *             schema:
  *               type: object
- *                 properties:
- *                   id:
- *                     type: int
- *                     example: 2
- *                     description: Id of user
- *                   accessToken:
- *                     type: string
- *                     example: asdf.asdf.asdf
- *                     description: Access token of user
- *                   refreshToken:
- *                     type: string
- *                     example: asdf.asdf.qwer
- *                     description: Refresh token of user
+ *               properties:
+ *                 id:
+ *                   type: int
+ *                   example: 2
+ *                   description: Id of user
+ *                 accessToken:
+ *                   type: string
+ *                   example: asdf.asdf.asdf
+ *                   description: Access token of user
+ *                 refreshToken:
+ *                   type: string
+ *                   example: asdf.asdf.qwer
+ *                   description: Refresh token of user
  *       401:
  *         description: Unauthorized (Wrong id/pw or Not found user)
  *       500:
