@@ -7,10 +7,11 @@ import dotenv from 'dotenv';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import { refreshAccessToken } from './refreshAccessToken';
+import { ILoginUser } from './generateToken';
 
 dotenv.config();
 
-interface DecodedToken extends JwtPayload {
+interface DecodedToken extends JwtPayload, ILoginUser{
   // 토큰에 포함될 추가적인 정보가 있을 시 정의할 것
 }
 
