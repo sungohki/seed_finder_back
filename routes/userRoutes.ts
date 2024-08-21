@@ -5,6 +5,7 @@ import {
   userSurveyInfoHandler,
   userUpdateInfoHandler,
 } from '../controller/userController';
+import { userTestToken } from '../services/user';
 
 const router = express.Router();
 router.use(express.json());
@@ -17,5 +18,8 @@ router.post('/join', userJoinHandler);
 router.post('/info', userSurveyInfoHandler);
 // Update user info
 router.put('/info', userUpdateInfoHandler);
+
+// test
+router.get('/test', userTestToken);
 
 export const userRouter = router;
