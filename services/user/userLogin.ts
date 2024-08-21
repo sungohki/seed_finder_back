@@ -16,7 +16,7 @@ interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
 export const userLogin = (req: Request, res: Response) => {
   const { userEmail, userPw } = req.body;
-  const sql = `SELECT * FROM user WHERE userEmail = ?`;
+  const sql = `SELECT * FROM user WHERE user_email = ?`;
   const values = [userEmail];
 
   conn.query(sql, values, (err, results: UserQueryResult[]) => {
@@ -31,7 +31,8 @@ export const userLogin = (req: Request, res: Response) => {
       );
       // return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: `Info: 로그인 실패 (Wrong userId)` + userEmail + ', ' + loginUser,
+        message:
+          `Info: 로그인 실패 (Wrong userId)` + userEmail + ', ' + loginUser,
       }); // status code 404
     }
 

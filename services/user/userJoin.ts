@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import { createRes } from '../common';
 import { connection as conn } from '../../mariadb';
 import { ResultSetHeader } from 'mysql2';
+import { StatusCodes } from 'http-status-codes';
 
 export interface IUserAccount {
   userName: string;
@@ -19,11 +20,11 @@ export const userJoin = (req: Request, res: Response) => {
   const { userName, userEmail, userPw, userContact } = req.body as IUserAccount;
 
   // 유효성 검사
-  // if (!userName.length || !userEmail.length || !userPw) {
-  //   return res.status(StatusCodes.UNAUTHORIZED).json({
-  //     message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
-  //   });
-  // }
+  if (!userName || !userEmail || !userPw) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
+    });
+  }
 
   // Info: Hashing password
   const salt = crypto.randomBytes(64).toString('base64');
@@ -38,19 +39,13 @@ export const userJoin = (req: Request, res: Response) => {
 
   // TODO) 계정 생성 이전에 중복된 id가 있는지 확인 후 생성 (비동기 처리 필요)
 
-  const sql: string = `
+  const sql = `
     INSERT INTO 
       user 
-      (userEmail, userPw, userName, userContact, salt) 
+      (user_email, user_pw, user_name, user_contact, salt) 
     VALUES 
       (?, ?, ?, ?, ?)`;
-  const values: Array<any> = [
-    userEmail,
-    hashedPassword,
-    userName,
-    userContact,
-    salt,
-  ];
+  const values = [userEmail, hashedPassword, userName, userContact, salt];
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
     return createRes(res, err, results);
   });
