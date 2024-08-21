@@ -16,7 +16,7 @@ interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
 export const userLogin = (req: Request, res: Response) => {
   const { userEmail, userPw } = req.body;
-  const sql = `SELECT * FROM user WHERE user_email = ?`;
+  const sql = `SELECT * FROM User WHERE user_email = ?`;
   const values = [userEmail];
 
   conn.query(sql, values, (err, results: UserQueryResult[]) => {
