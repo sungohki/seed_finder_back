@@ -23,7 +23,7 @@
  *                 example: Kim
  *               userId:
  *                 type: string
- *                 example: exUser12
+ *                 example: ex01
  *               userPw:
  *                 type: string
  *                 example: aaaa1234
@@ -61,7 +61,7 @@
  *             properties:
  *               userId:
  *                 type: string
- *                 example: user123
+ *                 example: aaaa
  *               userPw:
  *                 type: string
  *                 example: aaaa1234

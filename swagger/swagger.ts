@@ -5,14 +5,14 @@ export const swaggerOptions = {
       title: 'Seed Finder API',
       version: '1.0.0',
       description:
-        'This is a simple CRUD API application made with Express and Typescript. Documented with Swagger API',
+        'This is a CRUD API application made with Express and Typescript. Documented with Swagger API',
       license: {
         name: 'MIT',
         url: 'https://spdx.org/licenses/MIT.html',
       },
       contact: {
         name: 'sungohki',
-        url: 'https://github.com/sungohki',
+        url: 'https://github.com/sungohki/seed_finder_back',
         email: 'sokim1201@naver.com',
       },
     },
