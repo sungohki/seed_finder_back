@@ -15,9 +15,9 @@ import { createRes, generateToken, ILoginUser } from '../common';
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
 export const userLogin = (req: Request, res: Response) => {
-  const { userId, userPw } = req.body;
-  const sql = `SELECT * FROM user WHERE userId = ?`;
-  const values = [userId];
+  const { userEmail, userPw } = req.body;
+  const sql = `SELECT * FROM user WHERE userEmail = ?`;
+  const values = [userEmail];
 
   conn.query(sql, values, (err, results: UserQueryResult[]) => {
     if (err) {
@@ -27,11 +27,11 @@ export const userLogin = (req: Request, res: Response) => {
     const loginUser = results[0];
     if (!loginUser) {
       console.log(
-        `Info: 로그인 실패 (Wrong userId) ` + userId + ', ' + loginUser
+        `Info: 로그인 실패 (Wrong userId) ` + userEmail + ', ' + loginUser
       );
       // return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: `Info: 로그인 실패 (Wrong userId)` + userId + ', ' + loginUser,
+        message: `Info: 로그인 실패 (Wrong userId)` + userEmail + ', ' + loginUser,
       }); // status code 404
     }
 
@@ -53,7 +53,7 @@ export const userLogin = (req: Request, res: Response) => {
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {
         id: loginUser.id,
-        userId: loginUser.userId,
+        userEmail: loginUser.userEmail,
       };
       const accessTokenOption: jwt.SignOptions = {
         expiresIn: '30m',

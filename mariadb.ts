@@ -3,9 +3,9 @@ import mariadb, { Connection } from 'mysql2';
 export const connection: Connection = mariadb.createConnection({
   host: 'localhost',
   // host: '127.0.0.1',
-  port: 3306,
+  port: 3308,
   user: 'root',
-  password: 'root',
+  password: '9604',
   database: 'seedfinder',
   dateStrings: true,
   waitForConnections: true,

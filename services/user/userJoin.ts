@@ -10,21 +10,21 @@ import { ResultSetHeader } from 'mysql2';
 
 export interface IUserAccount {
   userName: string;
-  userId: string;
+  userEmail: string;
   userPw: string;
   userContact: string;
   salt: string;
 }
 
 export const userJoin = (req: Request, res: Response) => {
-  const { userName, userId, userPw, userContact } = req.body as IUserAccount;
+  const { userName, userEmail, userPw, userContact } = req.body as IUserAccount;
 
   // 유효성 검사
-  if (!userName.length || !userId.length || !userPw) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
-    });
-  }
+  // if (!userName.length || !userEmail.length || !userPw) {
+  //   return res.status(StatusCodes.UNAUTHORIZED).json({
+  //     message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
+  //   });
+  // }
 
   // Info: Hashing password
   const salt = crypto.randomBytes(64).toString('base64');
@@ -42,13 +42,13 @@ export const userJoin = (req: Request, res: Response) => {
   const sql: string = `
     INSERT INTO 
       user 
-      (userName, userId, userPw, userContact, salt) 
+      (userEmail, userPw, userName, userContact, salt) 
     VALUES 
       (?, ?, ?, ?, ?)`;
   const values: Array<any> = [
-    userName,
-    userId,
+    userEmail,
     hashedPassword,
+    userName,
     userContact,
     salt,
   ];

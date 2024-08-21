@@ -36,13 +36,13 @@ export const refreshAccessToken = (req: Request, res: Response) => {
         });
       }
       console.log('Info: 리프레시 토큰 검증 실패. 재 로그인 필요');
-      // return res.status(StatusCodes.FORBIDDEN).end();
+      // return res.status(StatusCodes.FORBIDDEN).endSS();
     }
 
     // 유저 정보로 새로운 액세스 토큰 발급
     const accessTokenInfo: ILoginUser = {
       id: user.id,
-      userId: user.userId,
+      userEmail: user.userEmail,
     };
     const accessTokenOption: jwt.SignOptions = {
       expiresIn: '30m',
