@@ -9,15 +9,20 @@ import { ResultSetHeader } from 'mysql2';
 import { StatusCodes } from 'http-status-codes';
 
 export interface IUserAccount {
-  userName: string;
-  userEmail: string;
-  userPw: string;
+  user_name: string;
+  user_email: string;
+  user_pw: string;
   userContact: string;
   salt: string;
 }
 
 export const userJoin = (req: Request, res: Response) => {
-  const { userName, userEmail, userPw, userContact } = req.body as IUserAccount;
+  const {
+    user_name: userName,
+    user_email: userEmail,
+    user_pw: userPw,
+    userContact,
+  } = req.body as IUserAccount;
 
   // 유효성 검사
   if (!userName || !userEmail || !userPw) {

@@ -41,7 +41,7 @@ export const userLogin = (req: Request, res: Response) => {
       .pbkdf2Sync(userPw, loginUser.salt, 10000, 64, 'sha512')
       .toString('base64');
 
-    if (loginUser.userPw == hashedPassword) {
+    if (loginUser.user_pw == hashedPassword) {
       // .env ACCESS_PRIVATE_KEY, REFRESH_PRIVATE_KEY 확인
       const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
       const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
@@ -54,7 +54,7 @@ export const userLogin = (req: Request, res: Response) => {
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {
         id: loginUser.id,
-        userEmail: loginUser.userEmail,
+        userEmail: loginUser.user_email,
       };
       const accessTokenOption: jwt.SignOptions = {
         expiresIn: '30m',
