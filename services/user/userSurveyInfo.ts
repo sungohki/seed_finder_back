@@ -9,7 +9,7 @@ export interface ISurveyInfo {
   businessCategory: Array<string>;
   businessRegion: Array<string>;
   businessApply: Array<string>;
-  businessExperience: string;
+  businessExperience: number;
   businessTargetAge: number;
 }
 
@@ -88,8 +88,7 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
             (user_age, pre_business_status, business_duration)
           VALUE
             (?, ?, ?)`;
-  if (businessExperience === '예비창업자')
-    values = [businessTargetAge, true, null];
+  if (businessExperience === 0) values = [businessTargetAge, true, null];
   else values = [businessTargetAge, false, businessExperience];
   [results] = await conn.query(sql, values);
   console.log(`4. ` + results);
