@@ -18,15 +18,15 @@
  *           schema:
  *             type: object
  *             properties:
+ *               userEmail:
+ *                 type: string
+ *                 example: ex1@naver.com
  *               userName:
  *                 type: string
- *                 example: Kim
- *               userId:
- *                 type: string
- *                 example: ex01
+ *                 example: kim
  *               userPw:
  *                 type: string
- *                 example: aaaa1234
+ *                 example: aa1234
  *               userContact:
  *                 type: string
  *                 example: 010-1234-1234
@@ -61,10 +61,10 @@
  *             properties:
  *               userId:
  *                 type: string
- *                 example: aaaa
+ *                 example: ex1@naver.com
  *               userPw:
  *                 type: string
- *                 example: aaaa1234
+ *                 example: aa1234
  *     responses:
  *       200:
  *         description: Create new access&refresh token for user
@@ -99,9 +99,30 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               businessCategory:
+ *                 type: Array<string>
+ *                 example: ["글로벌", "사업화"]
+ *                 description: Data for User & Classification of Business
+ *               businessRegion:
+ *                 type: Array<string>
+ *                 example: ["강원", "대구"]
+ *                 description: Data for User & Support Region of Business
+ *               businessApply:
+ *                 type: Array<string>
+ *                 example: ["대학", "대학생"]
+ *                 description: Data for User & Application Target of Business
+ *               businessExperience:
+ *                 type: int
+ *                 example: 5
+ *                 description: Data for User's Experience of Business. If it is 0, user's pre-startup stance will be true. (default false)
+ *               businessTargetAge:
+ *                 type: int
+ *                 example: 25
+ *                 description: Data for User's age
  *     responses:
  *       200:
- *         description: Create user info
+ *         description: Create new business data of user & Update default user info data
  *       401:
  *         description: Unauthorized (Wrong access)
  *   put:
