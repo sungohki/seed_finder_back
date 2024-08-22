@@ -31,72 +31,66 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   let sql, values, results;
 
   // 1. 지원사업분류
-  for (let item in businessCategory) {
+  for (let item of businessCategory) {
     sql = `
       INSERT INTO
-        Business_Classification
-          (user_id, support_business_classification_id)
+        User_Business_Classification
+          (user_id, business_classification_id)
         VALUE
-          (?, (SELECT id FROM Support_Business_Classification WHERE name = ?))`;
+          (?, (SELECT id FROM Business_Classification WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`1. ` + results);
-    if (results) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: 'info: 체크포인트1',
-      });
-    }
+    console.log(`1. 지원 사업 분류 정보 저장 완료`);
+    console.log(results);
   }
+
   // 2. 신청대상
-  for (let item in businessApply) {
+  for (let item of businessApply) {
     sql = `
       INSERT INTO
-          Application_Target
+          User_Application_Target
           (user_id, application_target_id)
         VALUE
           (?, (SELECT id FROM Application_Target WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`2. ` + results);
-    if (results) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: 'info: 체크포인트2',
-      });
-    }
+    console.log(`2. 신청 대상 정보 저장 완료`);
+    console.log(results);
   }
+
   // 3. 지역
-  for (let item in businessRegion) {
+  for (let item of businessRegion) {
     sql = `
       INSERT INTO
-        Support_Region
+        User_Support_Region
           (user_id, support_region_id)
         VALUE
           (?, (SELECT id FROM Support_Region WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`3. ` + results);
-    if (results) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: 'info: 체크포인트3',
-      });
-    }
+    console.log(`3. 지역 정보 저장 완료`);
+    console.log(results);
   }
   // 4. 업력 & 예비창업자여부 & 연령
   sql = `
-        INSERT INTO
-          user
-            (user_age, pre_business_status, business_duration)
-          VALUE
-            (?, ?, ?)`;
-  if (businessExperience === 0) values = [businessTargetAge, true, null];
-  else values = [businessTargetAge, false, businessExperience];
+    UPDATE
+      User
+    SET
+      user_age = ?, pre_business_status = ?, business_duration = ?
+    WHERE
+      user_email = ?`;
+  if (businessExperience === 0)
+    values = [businessTargetAge, true, null, decodedUserInfo.user_email];
+  else
+    values = [
+      businessTargetAge,
+      false,
+      businessExperience,
+      decodedUserInfo.user_email,
+    ];
   [results] = await conn.query(sql, values);
-  console.log(`4. ` + results);
-  if (results) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 체크포인트4',
-    });
-  }
+  console.log(`4. 업력 & 예비창업자 여부 & 연령 정보 저장 완료`);
+  console.log(results);
 
   return res.status(StatusCodes.OK).json(results);
 };
