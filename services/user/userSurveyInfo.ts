@@ -78,16 +78,11 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     SET
       user_age = ?, pre_business_status = ?, business_duration = ?
     WHERE
-      user_email = ?`;
+      id = ?`;
   if (businessExperience === 0)
-    values = [businessTargetAge, true, null, decodedUserInfo.user_email];
+    values = [businessTargetAge, true, null, decodedUserInfo.id];
   else
-    values = [
-      businessTargetAge,
-      false,
-      businessExperience,
-      decodedUserInfo.user_email,
-    ];
+    values = [businessTargetAge, false, businessExperience, decodedUserInfo.id];
   [results] = await conn.query(sql, values);
   console.log(`4. 업력 & 예비창업자 여부 & 연령 정보 저장 완료`);
   console.log(results);
