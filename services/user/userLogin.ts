@@ -90,6 +90,7 @@ export const userLogin = (req: Request, res: Response) => {
         ...results[0],
         accessToken: instanceAccessToken,
         refreshToken: instanceRefreshToken,
+        memberRole: 'customer',
       });
     } else {
       console.log('Info: 로그인 실패 (Wrong userPw)');
