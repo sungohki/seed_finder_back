@@ -20,11 +20,11 @@ export const userJoin = (req: Request, res: Response) => {
   const { userName, userEmail, userPw, userContact } = req.body as IUserAccount;
 
   // 유효성 검사
-  if (!userName || !userEmail || !userPw) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
-    });
-  }
+  // if (!userName || !userEmail || !userPw) {
+  //   return res.status(StatusCodes.UNAUTHORIZED).json({
+  //     message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
+  //   });
+  // }
 
   // Info: Hashing password
   const salt = crypto.randomBytes(64).toString('base64');
