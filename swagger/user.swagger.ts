@@ -59,7 +59,7 @@
  *           schema:
  *             type: object
  *             properties:
- *               userId:
+ *               userEmail:
  *                 type: string
  *                 example: ex1@naver.com
  *               userPw:
