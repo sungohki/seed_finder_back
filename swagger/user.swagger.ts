@@ -90,6 +90,10 @@
  *                   type: string
  *                   example: asdf.asdf.qwer
  *                   description: Refresh token of user
+ *                 memberRole:
+ *                   type: string
+ *                   example: MANAGER || CUSTOMER
+ *                   description: Refresh token of user
  *       401:
  *         description: Unauthorized (Wrong id/pw or Not found user)
  *       500:
