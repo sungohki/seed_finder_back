@@ -32,13 +32,13 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
 
   // 1. 지원사업분류
   sql = `
-    SELECT EXISTS(
-      SELECT 1 FROM User WHERE userEmail = ?
-    ) AS EmailExists;
+      SELECT * FROM User_Business_Classification WHERE user_id = ?
   `;
-  values = [decodedUserInfo.userEmail];
-  results = await conn.query(sql, values);
-  console.log(results);
+  values = [decodedUserInfo.id];
+  [results] = await conn.query(sql, values);
+  console.log(Object.values(results));
+  if (Object.values(results).length)
+	  return res.status(200).json({message: "info: 이미 저장되었습니다."});
 
   if (0) {
     // 전처리: 동일 데이터가 이미 존재하는 경우
