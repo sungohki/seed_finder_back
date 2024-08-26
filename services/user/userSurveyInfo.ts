@@ -31,69 +31,51 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   let sql, values, results;
 
   // 1. 지원사업분류
-  // 전처리 구문
-  sql = `
-      SELECT * FROM User_Business_Classification WHERE user_id = ?
-  `;
+  // 전처리
+  sql = `DELETE FROM User_Business_Classification WHERE user_id = ?`;
   values = [decodedUserInfo.id];
   [results] = await conn.query(sql, values);
+  console.log(results);
 
-  if (Object.values(results).length) {
-    console.log(Object.values(results));
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ message: 'info: 정보가 이미 존재합니다.' }); // 400
-  } else {
-    for (let item of businessCategory) {
-      sql = `
+  for (let item of businessCategory) {
+    sql = `
       INSERT INTO
         User_Business_Classification
           (user_id, business_classification_id)
         VALUE
           (?, (SELECT id FROM Business_Classification WHERE name = ?))`;
-      values = [decodedUserInfo.id, item];
-      [results] = await conn.query(sql, values);
-      console.log(`1. 지원 사업 분류 정보 저장 완료`);
-      console.log(results);
-    }
+    values = [decodedUserInfo.id, item];
+    [results] = await conn.query(sql, values);
+    console.log(`1. 지원 사업 분류 정보 저장 완료`);
+    console.log(results);
   }
 
   // 2. 신청대상
-  if (0) {
-    // 전처리: 동일 데이터가 이미 존재하는 경우
-    console.log('info: 동일 데이터가 존재합니다. (신청대상 데이터)');
-  } else {
-    for (let item of businessApply) {
-      sql = `
+  for (let item of businessApply) {
+    sql = `
       INSERT INTO
           User_Application_Target
           (user_id, application_target_id)
         VALUE
           (?, (SELECT id FROM Application_Target WHERE name = ?))`;
-      values = [decodedUserInfo.id, item];
-      [results] = await conn.query(sql, values);
-      console.log(`2. 신청 대상 정보 저장 완료`);
-      console.log(results);
-    }
+    values = [decodedUserInfo.id, item];
+    [results] = await conn.query(sql, values);
+    console.log(`2. 신청 대상 정보 저장 완료`);
+    console.log(results);
   }
 
   // 3. 지역
-  if (0) {
-    // 전처리: 동일 데이터가 이미 존재하는 경우
-    console.log('info: 동일 데이터가 존재합니다. (지역 데이터)');
-  } else {
-    for (let item of businessRegion) {
-      sql = `
+  for (let item of businessRegion) {
+    sql = `
       INSERT INTO
       User_Support_Region
       (user_id, support_region_id)
       VALUE
       (?, (SELECT id FROM Support_Region WHERE name = ?))`;
-      values = [decodedUserInfo.id, item];
-      [results] = await conn.query(sql, values);
-      console.log(`3. 지역 정보 저장 완료`);
-      console.log(results);
-    }
+    values = [decodedUserInfo.id, item];
+    [results] = await conn.query(sql, values);
+    console.log(`3. 지역 정보 저장 완료`);
+    console.log(results);
   }
 
   // 4. 업력 & 예비창업자여부 & 연령
