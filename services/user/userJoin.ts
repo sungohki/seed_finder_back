@@ -46,7 +46,7 @@ export const userJoin = (req: Request, res: Response) => {
   const sql = `
     INSERT INTO 
       User 
-      (user_email, user_pw, user_name, user_contact, salt, user_manage) 
+      (user_email, user_pw, user_name, user_contact, salt, user_management) 
     VALUES 
       (?, ?, ?, ?, ?)`;
   let values;
