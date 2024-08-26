@@ -31,6 +31,15 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   let sql, values, results;
 
   // 1. 지원사업분류
+  sql = `
+    SELECT EXISTS(
+      SELECT 1 FROM User WHERE userEmail = ?
+    ) AS EmailExists;
+  `;
+  values = [decodedUserInfo.userEmail];
+  results = await conn.query(sql, values);
+  console.log(results);
+
   if (0) {
     // 전처리: 동일 데이터가 이미 존재하는 경우
     console.log('info: 동일 데이터가 존재합니다. (지원사업분류 데이터)');
@@ -71,7 +80,7 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   // 3. 지역
   if (0) {
     // 전처리: 동일 데이터가 이미 존재하는 경우
-    console.log('info: 동일 데이터가 존재합니다. (신청대상 데이터)');
+    console.log('info: 동일 데이터가 존재합니다. (지역 데이터)');
   } else {
     for (let item of businessRegion) {
       sql = `
@@ -86,6 +95,7 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
       console.log(results);
     }
   }
+
   // 4. 업력 & 예비창업자여부 & 연령
   sql = `
     UPDATE
