@@ -30,6 +30,9 @@
  *               userContact:
  *                 type: string
  *                 example: 010-1234-1234
+ *               userCode:
+ *                 type: string
+ *                 example: greenjoa
  *     responses:
  *       201:
  *         description: Create new user success
