@@ -74,7 +74,7 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
 
   // 3. 지역
   // 전처리
-  sql = `DELETE FROM User_Application_Target WHERE user_id = ?`;
+  sql = `DELETE FROM User_Support_Region WHERE user_id = ?`;
   values = [decodedUserInfo.id];
   [results] = await conn.query(sql, values);
   console.log(results);
