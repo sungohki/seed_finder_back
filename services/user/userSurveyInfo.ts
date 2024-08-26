@@ -46,11 +46,18 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
           (?, (SELECT id FROM Business_Classification WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`1. 지원 사업 분류 정보 저장 완료`);
-    console.log(results);
+    console.log(
+      `1. 지원 사업 분류 정보 저장 완료 (${decodedUserInfo.id} : ${item})`
+    );
   }
 
   // 2. 신청대상
+  // 전처리
+  sql = `DELETE FROM User_Application_Target WHERE user_id = ?`;
+  values = [decodedUserInfo.id];
+  [results] = await conn.query(sql, values);
+  console.log(results);
+
   for (let item of businessApply) {
     sql = `
       INSERT INTO
@@ -60,22 +67,28 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
           (?, (SELECT id FROM Application_Target WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`2. 신청 대상 정보 저장 완료`);
-    console.log(results);
+    console.log(
+      `2. 신청 대상 정보 저장 완료 (${decodedUserInfo.id} : ${item})`
+    );
   }
 
   // 3. 지역
+  // 전처리
+  sql = `DELETE FROM User_Application_Target WHERE user_id = ?`;
+  values = [decodedUserInfo.id];
+  [results] = await conn.query(sql, values);
+  console.log(results);
+
   for (let item of businessRegion) {
     sql = `
       INSERT INTO
-      User_Support_Region
-      (user_id, support_region_id)
+        User_Support_Region
+        (user_id, support_region_id)
       VALUE
       (?, (SELECT id FROM Support_Region WHERE name = ?))`;
     values = [decodedUserInfo.id, item];
     [results] = await conn.query(sql, values);
-    console.log(`3. 지역 정보 저장 완료`);
-    console.log(results);
+    console.log(`3. 지역 정보 저장 완료 (${decodedUserInfo.id} : ${item})`);
   }
 
   // 4. 업력 & 예비창업자여부 & 연령
