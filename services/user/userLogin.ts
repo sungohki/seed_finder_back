@@ -10,7 +10,7 @@ dotenv.config();
 import { connection as conn } from '../../mariadb';
 import { IUserAccount } from './userJoin';
 import { RowDataPacket } from 'mysql2';
-import { createRes, generateToken, ILoginUser } from '../common';
+import { generateToken, ILoginUser } from '../common';
 
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
@@ -49,7 +49,7 @@ export const userLogin = (req: Request, res: Response) => {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
-      console.log(`Info: [${loginUser.userId}] 로그인 정보 일치, 로그인 성공`);
+      console.log(`Info: [${loginUser.user_id}] 로그인 정보 일치, 로그인 성공`);
 
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {
@@ -90,7 +90,7 @@ export const userLogin = (req: Request, res: Response) => {
         ...results[0],
         accessToken: instanceAccessToken,
         refreshToken: instanceRefreshToken,
-        memberRole: 'customer',
+        memberRole: 'CUSTOMER',
       });
     } else {
       console.log('Info: 로그인 실패 (Wrong userPw)');

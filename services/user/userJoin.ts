@@ -1,6 +1,8 @@
 // import node module
 import { Request, Response } from 'express';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // import local module
 import { createRes } from '../common';
@@ -14,17 +16,19 @@ export interface IUserAccount {
   userPw: string;
   userContact: string;
   salt: string;
+  userCode: string | null;
 }
 
 export const userJoin = (req: Request, res: Response) => {
-  const { userName, userEmail, userPw, userContact } = req.body as IUserAccount;
+  const { userName, userEmail, userPw, userContact, userCode } =
+    req.body as IUserAccount;
 
   // 유효성 검사
-  // if (!userName || !userEmail || !userPw) {
-  //   return res.status(StatusCodes.UNAUTHORIZED).json({
-  //     message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
-  //   });
-  // }
+  if (!userName || !userEmail || !userPw) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: 'info: 필수 입력 정보 (이름, id, pw) 미달',
+    });
+  }
 
   // Info: Hashing password
   const salt = crypto.randomBytes(64).toString('base64');
@@ -42,10 +46,13 @@ export const userJoin = (req: Request, res: Response) => {
   const sql = `
     INSERT INTO 
       User 
-      (user_email, user_pw, user_name, user_contact, salt) 
+      (user_email, user_pw, user_name, user_contact, salt, user_manage) 
     VALUES 
       (?, ?, ?, ?, ?)`;
-  const values = [userEmail, hashedPassword, userName, userContact, salt];
+  let values;
+  if (userCode == process.env.MANAGER_CODE)
+    values = [userEmail, hashedPassword, userName, userContact, salt, true];
+  else values = [userEmail, hashedPassword, userName, userContact, salt, false];
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
     return createRes(res, err, results);
   });
