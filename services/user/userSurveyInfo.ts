@@ -31,18 +31,18 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   let sql, values, results;
 
   // 1. 지원사업분류
+  // 전처리 구문
   sql = `
       SELECT * FROM User_Business_Classification WHERE user_id = ?
   `;
   values = [decodedUserInfo.id];
   [results] = await conn.query(sql, values);
-  console.log(Object.values(results));
-  if (Object.values(results).length)
-	  return res.status(200).json({message: "info: 이미 저장되었습니다."});
 
-  if (0) {
-    // 전처리: 동일 데이터가 이미 존재하는 경우
-    console.log('info: 동일 데이터가 존재합니다. (지원사업분류 데이터)');
+  if (Object.values(results).length) {
+    console.log(Object.values(results));
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: 'info: 정보가 이미 존재합니다.' }); // 400
   } else {
     for (let item of businessCategory) {
       sql = `
