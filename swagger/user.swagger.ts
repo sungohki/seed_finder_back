@@ -46,6 +46,8 @@
  *                   type: int
  *                   example: 4
  *                   description: Id of new user
+ *       400:
+ *         description: Same account already exists or wrong user code
  *       404:
  *         description: Not Found userId or userPw
  * /user/login:

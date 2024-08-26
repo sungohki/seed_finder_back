@@ -52,7 +52,13 @@ export const userJoin = (req: Request, res: Response) => {
   let values;
   if (userCode == process.env.MANAGER_CODE)
     values = [userEmail, hashedPassword, userName, userContact, salt, true];
-  else values = [userEmail, hashedPassword, userName, userContact, salt, false];
+  else if (userCode == null)
+    values = [userEmail, hashedPassword, userName, userContact, salt, false];
+  else
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: 'info: 틀린 매니저 코드',
+    });
+
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
     return createRes(res, err, results);
   });
