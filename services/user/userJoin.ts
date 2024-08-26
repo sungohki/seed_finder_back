@@ -48,7 +48,7 @@ export const userJoin = (req: Request, res: Response) => {
       User 
       (user_email, user_pw, user_name, user_contact, salt, user_management) 
     VALUES 
-      (?, ?, ?, ?, ?)`;
+      (?, ?, ?, ?, ?, ?)`;
   let values;
   if (userCode == process.env.MANAGER_CODE)
     values = [userEmail, hashedPassword, userName, userContact, salt, true];
