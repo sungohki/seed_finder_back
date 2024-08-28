@@ -95,7 +95,7 @@ export const getUserInfo = async (
   userInfo.businessTargetAge = remainInfo[0].user_age;
   if (remainInfo[0].pre_business_status) userInfo.businessExperience = 0;
   else userInfo.businessExperience = remainInfo[0].business_duration;
-
   console.log(userInfo);
+
   return userInfo;
 };

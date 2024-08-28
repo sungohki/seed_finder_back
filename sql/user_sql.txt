@@ -23,6 +23,7 @@ CREATE TABLE User (
     
     pre_business_status BOOLEAN DEFAULT FALSE,	-- 예비창업자 여부 default false
     business_duration INT,                   -- 사업업력 ID  1개
+    user_management BOOLEAN                     -- 관리자/일반사용자 여부
 
     FOREIGN KEY (user_sexuality_id) REFERENCES Sexuality(id)
 );

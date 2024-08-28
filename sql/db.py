@@ -17,9 +17,11 @@ params = {
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="9604",
+    port=3306,
+    password="root",
+    # port=3308,
+    # password="9604",
     database="seedfinder",
-    port=3308,
     charset='utf8mb4',
     collation='utf8mb4_general_ci'
 )
