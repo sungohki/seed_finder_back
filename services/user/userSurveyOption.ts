@@ -43,7 +43,7 @@ export const userSurveyOption = async (req: Request, res: Response) => {
     }>;
 
     return res.status(StatusCodes.OK).json({
-      resValue,
+      ...resValue,
     });
   } catch (e) {
     console.log(e);
