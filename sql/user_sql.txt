@@ -1,0 +1,55 @@
+-- 성별 테이블
+CREATE TABLE Sexuality (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    sex VARCHAR(20) NOT NULL
+);
+
+-- 성별 데이터 삽입
+INSERT INTO Sexuality (sex) VALUES
+('남'),
+('여');
+
+-- 사용자 테이블
+CREATE TABLE User (
+    id INT PRIMARY KEY AUTO_INCREMENT,            -- 사용자 고유 ID
+    user_email VARCHAR(20) NOT NULL UNIQUE,        -- 사용자 이메일
+    user_pw VARCHAR(200) NOT NULL,                -- 사용자 비밀번호
+    user_name VARCHAR(20) NOT NULL,    -- 사용자 이름
+    user_contact VARCHAR(20),                    -- 사용자 전화번호
+    user_age INT,                                -- 사용자 나이
+    salt VARCHAR(200),                            -- 사용자 비밀번호 암호화키
+
+    user_sexuality_id INT,                    -- 사용자 성별 1남 2여
+    
+    pre_business_status BOOLEAN DEFAULT FALSE,	-- 예비창업자 여부 default false
+    business_duration INT,                   -- 사업업력 ID  1개
+
+    FOREIGN KEY (user_sexuality_id) REFERENCES Sexuality(id)
+);
+
+-- 사용자-사업 분류 관계 테이블
+CREATE TABLE User_Business_Classification (
+    user_id INT,
+    business_classification_id INT,
+    PRIMARY KEY (user_id, business_classification_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (business_classification_id) REFERENCES Business_Classification(id)
+);
+
+-- 사용자-지원 지역 관계 테이블
+CREATE TABLE User_Support_Region (
+    user_id INT,
+    support_region_id INT,
+    PRIMARY KEY (user_id, support_region_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (support_region_id) REFERENCES Support_Region(id)
+);
+
+-- 사용자-신청 대상 관계 테이블
+CREATE TABLE User_Application_Target (
+    user_id INT,
+    application_target_id INT,
+    PRIMARY KEY (user_id, application_target_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (application_target_id) REFERENCES Application_Target(id)
+);

@@ -1,0 +1,138 @@
+-- 지원사업분류 테이블
+CREATE TABLE Business_Classification (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL UNIQUE
+);
+
+-- 지원지역 테이블QD
+CREATE TABLE Support_Region (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL UNIQUE
+);
+
+-- 신청대상 테이블
+CREATE TABLE Application_Target (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL UNIQUE
+);
+
+-- 사업업력 테이블
+CREATE TABLE Business_Duration (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    period VARCHAR(20) NOT NULL UNIQUE
+);
+
+
+
+-- 사업대상연령 테이블
+CREATE TABLE Target_Age(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    age_min Integer,
+    age_max Integer
+);
+
+
+-- 공고 테이블
+CREATE TABLE Announcement (
+    id INT PRIMARY KEY AUTO_INCREMENT,            -- 공고 id번호
+    integrated_status BOOLEAN NOT NULL,           -- 통합 공고 여부 (intg_pbanc_yn)
+    integrated_project_name VARCHAR(300),          -- 통합 공고 사업명 (intg_pbanc_biz_nm)
+    project_name VARCHAR(300),                     -- 사업공고명 (biz_pbanc_nm)
+    content VARCHAR(1000),                          -- 공고 내용 (pbanc_ctnt)
+    business_classification_id INT,                -- 지원사업분류 id (supt_biz_clsfc)
+    start_date DATE,                               -- 공고접수시작일시 (pbanc_rcpt_bgng_dt)
+    end_date DATE,                                 -- 공고접수종료일시 (pbanc_rcpt_end_dt)
+    application_method_visit VARCHAR(300),         -- 신청방법 방문접수설명 (aply_mthd_vst_rcpt_istc)
+    application_method_mail VARCHAR(300),          -- 신청방법 우편접수설명 (aply_mthd_pssr_rcpt_istc)
+    application_method_fax VARCHAR(300),           -- 신청방법 팩스접수설명 (aply_mthd_fax_rcpt_istc)
+    application_method_online VARCHAR(300),        -- 신청방법 온라인접수설명 (aply_mthd_onli_rcpt_istc)
+    application_method_others VARCHAR(300),        -- 신청방법 기타설명 (aply_mthd_etc_istc)
+    application_criteria VARCHAR(1000),             -- 신청대상내용 (aply_trgt_ctnt)
+    application_exclusion_criteria VARCHAR(1000),   -- 신청대상제외내용 (aply_excl_trgt_ctnt)
+    support_region_id INT,                         -- 지원지역 id (supt_regin)
+    company_name VARCHAR(300),                     -- 공고기업명 (pbanc_ntrp_nm)
+    supervising_organization VARCHAR(300),         -- 주관기관 (sprv_inst)
+    department_in_charge VARCHAR(300),             -- 사업담당자부서명 (biz_prch_dprt_nm)
+    project_guidance_url VARCHAR(300),             -- 사업안내 URL (biz_gdnc_url)
+    contact_number VARCHAR(300),                   -- 담당자연락처번호 (prch_cnpl_no)
+    detailed_page_url VARCHAR(300),                -- 상세 페이지 URL (detl_pg_url)
+    preferences VARCHAR(300),                      -- 우대사항 (prfn_matr)
+    recruitment_status BOOLEAN NOT NULL,           -- 모집진행여부 (rcrt_prgs_yn)
+    pre_business_status BOOLEAN NOT NULL,          -- 예비창업자 여부
+    Business_Duration_id INT,                      -- 사업업력 id (biz_enyy)
+    target_age_id INT,                             -- 사업연령 id (biz_trgt_age),
+
+    -- 외래 키 설정
+    FOREIGN KEY (Business_Duration_id) REFERENCES Business_Duration(id),
+    FOREIGN KEY (target_age_id) REFERENCES Target_Age(id),
+    FOREIGN KEY (business_classification_id) REFERENCES Business_Classification(id),
+    FOREIGN KEY (support_region_id) REFERENCES Support_Region(id),
+
+    UNIQUE (integrated_project_name, project_name) -- 유니크 제약조건 설정
+);
+
+
+
+-- 공고-신청대상 관계 테이블(aply_trgt)
+CREATE TABLE Announcement_Application_Target (
+    announcement_id INT,
+    application_target_id INT,
+    PRIMARY KEY (announcement_id, application_target_id),
+    FOREIGN KEY (announcement_id) REFERENCES Announcement(id),
+    FOREIGN KEY (application_target_id) REFERENCES Application_Target(id)
+);
+
+
+
+-- 지원사업분류 데이터 삽입
+INSERT INTO Business_Classification (name) VALUES
+('글로벌'),
+('기술개발(R&amp;D)'),
+('멘토링ㆍ컨설팅ㆍ교육'),
+('사업화'),
+('시설ㆍ공간ㆍ보육'),
+('융자'),
+('정책자금'),
+('창업교육'),
+('판로ㆍ해외진출'),
+('인력'),
+('행사ㆍ네트워크');
+
+-- 지원지역 데이터 삽입
+INSERT INTO Support_Region (name) VALUES
+('강원'),
+('경기'),
+('경남'),
+('경북'),
+('광주'),
+('대구'),
+('대전'),
+('부산'),
+('서울'),
+('세종'),
+('울산'),
+('인천'),
+('전국'),
+('전남'),
+('전북'),
+('충남'),
+('충북');
+
+-- 신청대상 데이터 삽입
+INSERT INTO Application_Target (name) VALUES
+('1인 창조기업'),
+('대학'),
+('연구기관'),
+('일반기업'),
+('대학생'),
+('일반인'),
+('청소년');
+
+-- 사업업력 데이터 삽입
+INSERT INTO Business_Duration (period) VALUES
+('1년미만'),
+('2년미만'),
+('3년미만'),
+('5년미만'),
+('7년미만'),
+('10년미만');
