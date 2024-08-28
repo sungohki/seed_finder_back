@@ -3,6 +3,7 @@ import {
   userLoginHandler,
   userJoinHandler,
   userSurveyInfoHandler,
+  userSurveyOptionHandler,
 } from '../controller/userController';
 import { userTestToken } from '../services/user';
 
@@ -16,7 +17,7 @@ router.post('/join', userJoinHandler);
 // Create user info
 router.post('/info', userSurveyInfoHandler);
 // Read servey options
-router.get('/info/option', userSurveyOptionHandler);
+router.get('/option', userSurveyOptionHandler);
 
 // test
 router.get('/test', userTestToken);
