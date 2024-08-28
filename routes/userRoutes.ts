@@ -3,7 +3,6 @@ import {
   userLoginHandler,
   userJoinHandler,
   userSurveyInfoHandler,
-  userUpdateInfoHandler,
 } from '../controller/userController';
 import { userTestToken } from '../services/user';
 
@@ -16,8 +15,6 @@ router.post('/login', userLoginHandler);
 router.post('/join', userJoinHandler);
 // Create user info
 router.post('/info', userSurveyInfoHandler);
-// Update user info
-router.put('/info', userUpdateInfoHandler);
 
 // test
 router.get('/test', userTestToken);
