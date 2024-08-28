@@ -7,8 +7,8 @@ import { DecodedToken, verifyAccessToken } from '.';
 
 interface IUserInfo {
   businessCategory: Array<number>;
-  businessRegion: Array<number>;
   businessApply: Array<number>;
+  businessRegion: Array<number>;
   businessExperience: number;
   businessTargetAge: number;
 }
@@ -57,7 +57,7 @@ export const getUserInfo = async (
   for (let item of results as Array<{ application_target_id: number }>) {
     temp.push(item.application_target_id);
   }
-  userInfo.businessCategory = temp;
+  userInfo.businessApply = temp;
 
   // 3. 지역
   sql = `
@@ -71,10 +71,10 @@ export const getUserInfo = async (
   [results] = await conn.query(sql, values);
   console.log(results);
   temp = [];
-  for (let item of Object.values(results)) {
+  for (let item of results as Array<{ support_region_id: number }>) {
     temp.push(item.support_region_id);
   }
-  userInfo.businessCategory = temp;
+  userInfo.businessRegion = temp;
 
   // 4. 업력 & 예비창업자여부 & 연령
   sql = `
@@ -87,8 +87,15 @@ export const getUserInfo = async (
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
-  // userInfo.businessTargetAge = results;
-  // userInfo.businessExperience = results;
+  const remainInfo = results as Array<{
+    user_age: number;
+    pre_business_status: number;
+    business_duration: number;
+  }>;
+  userInfo.businessTargetAge = remainInfo[0].user_age;
+  if (remainInfo[0].pre_business_status) userInfo.businessExperience = 0;
+  else userInfo.businessExperience = remainInfo[0].business_duration;
+
   console.log(userInfo);
   return userInfo;
 };
