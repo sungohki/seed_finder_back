@@ -28,7 +28,9 @@ export const getUserInfo = async (
   values = [userAccount.id];
   [results] = await conn.query(sql, values);
   console.log(results);
-  userInfo.businessCategory = Object.values(results);
+  for (let item of Object.values(results)) {
+    userInfo.businessCategory.push(item.business_classification_id);
+  }
 
   // 2. 신청대상
   sql = `
@@ -41,8 +43,9 @@ export const getUserInfo = async (
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
-  userInfo.businessApply = Object.values(results);
-
+  for (let item of Object.values(results)) {
+    userInfo.businessCategory.push(item.application_target_id);
+  }
   // 3. 지역
   sql = `
     SELECT
@@ -54,7 +57,9 @@ export const getUserInfo = async (
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
-  userInfo.businessRegion = Object.values(results);
+  for (let item of Object.values(results)) {
+    userInfo.businessCategory.push(item.support_region_id);
+  }
 
   // 4. 업력 & 예비창업자여부 & 연령
   sql = `
@@ -63,12 +68,13 @@ export const getUserInfo = async (
     FROM
       User
     WHERE
-      user_id = ?
+      id = ?
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
   // userInfo.businessTargetAge = results;
   // userInfo.businessExperience = results;
 
+  console.log(userInfo);
   return userInfo;
 };

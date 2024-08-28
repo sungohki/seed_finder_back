@@ -15,7 +15,7 @@ export const businessGetPartial = async (req: Request, res: Response) => {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       message: 'info: 토큰 인식 불가',
     });
-  const userInfo = getUserInfo(decodedUserAccount);
+  const userInfo = await getUserInfo(decodedUserAccount);
   // const conn = await mariadb.createConnection(connInfo);
   // let resValue = {} as IAnnouncement;
   // let query: string, values: Array<string | number> | null;
