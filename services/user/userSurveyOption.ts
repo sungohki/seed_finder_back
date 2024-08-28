@@ -43,8 +43,7 @@ export const userSurveyOption = async (req: Request, res: Response) => {
     }>;
 
     return res.status(StatusCodes.OK).json({
-      request: '설문 옵션 불러오기',
-      response: resValue,
+      resValue,
     });
   } catch (e) {
     console.log(e);
