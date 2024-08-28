@@ -11,7 +11,7 @@ import { ILoginUser } from './generateToken';
 
 dotenv.config();
 
-interface DecodedToken extends JwtPayload, ILoginUser{
+export interface DecodedToken extends JwtPayload, ILoginUser {
   // 토큰에 포함될 추가적인 정보가 있을 시 정의할 것
 }
 
