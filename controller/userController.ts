@@ -10,7 +10,9 @@ export const userJoinHandler = (req: Request, res: Response) => {
 export const userSurveyInfoHandler = (req: Request, res: Response) => {
   return userService.userSurveyInfo(req, res);
 };
-
+export const userSurveyOptionHandler = (req: Request, res: Response) => {
+  return userService.userSurveyOption(req, res);
+};
 export const userTestTokenHandler = (req: Request, res: Response) => {
   return userService.userTestToken(req, res);
 };

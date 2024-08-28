@@ -114,5 +114,8 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
   console.log(`4. 업력 & 예비창업자 여부 & 연령 정보 저장 완료`);
   console.log(results);
 
-  return res.status(StatusCodes.OK).json(results);
+  return res.status(StatusCodes.OK).json({
+    request: '설문 정보 저장',
+    response: '성공',
+  });
 };
