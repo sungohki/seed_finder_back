@@ -21,6 +21,7 @@ export const getUserInfo = async (
   let userInfo = {} as IUserInfo;
   let sql: string,
     values: Array<string | number> | null,
+    temp: Array<number>,
     results: mariadb.QueryResult | null;
 
   // 1. 지원사업분류 정보 저장
@@ -35,9 +36,11 @@ export const getUserInfo = async (
   values = [userAccount.id];
   [results] = await conn.query(sql, values);
   console.log(results);
+  temp = [];
   for (let item of results as Array<{ business_classification_id: number }>) {
-    userInfo.businessCategory.push(item.business_classification_id);
+    temp.push(item.business_classification_id);
   }
+  userInfo.businessCategory = temp;
 
   // 2. 신청대상
   sql = `
@@ -50,9 +53,12 @@ export const getUserInfo = async (
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
+  temp = [];
   for (let item of results as Array<{ application_target_id: number }>) {
-    userInfo.businessCategory.push(item.application_target_id);
+    temp.push(item.application_target_id);
   }
+  userInfo.businessCategory = temp;
+
   // 3. 지역
   sql = `
     SELECT
@@ -64,9 +70,11 @@ export const getUserInfo = async (
   `;
   [results] = await conn.query(sql, values);
   console.log(results);
+  temp = [];
   for (let item of Object.values(results)) {
-    userInfo.businessCategory.push(item.support_region_id);
+    temp.push(item.support_region_id);
   }
+  userInfo.businessCategory = temp;
 
   // 4. 업력 & 예비창업자여부 & 연령
   sql = `
