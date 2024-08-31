@@ -10,11 +10,8 @@ export const businessGetAll = (req: Request, res: Response) => {
   const temp = req.query as { page: string; limit: string };
   let resValue;
   let values;
-  
-  console.log(temp);
-  console.log(temp.limit);
-  console.log(temp.page);
 
+  console.log(temp);
   if (temp.limit) {
     sql += ` LIMIT ? OFFSET ?`;
     values = [parseInt(temp.limit, 10), parseInt(temp.page, 10) | 0];
@@ -27,8 +24,11 @@ export const businessGetAll = (req: Request, res: Response) => {
     }
     resValue = results;
     return res.status(StatusCodes.OK).json({
-      request: '전체 사업 조회',
-      response: resValue,
+      ...resValue,
     });
+  });
+  return res.status(StatusCodes.NO_CONTENT).json({
+    request: '전체 사업 조회',
+    response: '데이터베이스 결과 수신 오류',
   });
 };
