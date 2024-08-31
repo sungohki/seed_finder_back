@@ -6,7 +6,6 @@ import { StatusCodes } from 'http-status-codes';
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
 import { ISurveyInfo, IUserAccount } from '../user';
-import { IAnnouncement } from './businessGetAll';
 import { getUserInfo, verifyAccessToken } from '../common';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
@@ -17,7 +16,7 @@ export const businessGetPartial = async (req: Request, res: Response) => {
     });
   const userInfo = await getUserInfo(decodedUserAccount);
   // const conn = await mariadb.createConnection(connInfo);
-  // let resValue = {} as IAnnouncement;
+  // let resValue;
   // let query: string, values: Array<string | number> | null;
 
   return res.status(StatusCodes.OK).json({
