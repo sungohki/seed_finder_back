@@ -33,16 +33,24 @@ export interface IAnnouncement {
 }
 
 export const businessGetAll = (req: Request, res: Response) => {
-  const query = `SELECT * FROM Announcement`;
-  let resValue;
+  const sql = `SELECT * FROM Announcement`;
+  const temp = req.query as { page: string; limit: string };
+  let resValue: Array<IAnnouncement> = [];
+  let sqlOption: string;
+  let values;
 
-  conn.query(query, (err, results) => {
+  if (temp.limit && temp.page) {
+    sqlOption = `LIMIT ? OFFSET ?`;
+    values = [temp.limit, temp.page];
+  }
+
+  conn.query(sql, values, (err, results) => {
     if (err) {
       console.log(err);
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
     console.log(results);
-    resValue = results;
+    resValue = results as Array<IAnnouncement>;
   });
 
   return res.status(StatusCodes.OK).json({
