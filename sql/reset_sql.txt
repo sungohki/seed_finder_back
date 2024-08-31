@@ -66,7 +66,7 @@ CREATE TABLE Announcement (
     preferences VARCHAR(300),                      -- 우대사항 (prfn_matr)
     recruitment_status BOOLEAN NOT NULL,           -- 모집진행여부 (rcrt_prgs_yn)
     pre_business_status BOOLEAN NOT NULL,          -- 예비창업자 여부
-    Business_Duration_id INT,                      -- 사업업력 id (biz_enyy)
+    business_duration_id INT,                      -- 사업업력 id (biz_enyy)
     target_age_id INT,                             -- 사업연령 id (biz_trgt_age),
 
     -- 외래 키 설정
@@ -164,7 +164,7 @@ CREATE TABLE User (
     user_contact VARCHAR(20),                    -- 사용자 전화번호
     user_age INT,                                -- 사용자 나이
     salt VARCHAR(200),                            -- 사용자 비밀번호 암호화키
-    user_management BOOLEAN				-- 사용자  
+    user_management BOOLEAN,				-- 사용자  
 
     user_sexuality_id INT,                    -- 사용자 성별 1남 2여
     

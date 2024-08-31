@@ -59,7 +59,7 @@ CREATE TABLE Announcement (
     preferences VARCHAR(300),                      -- 우대사항 (prfn_matr)
     recruitment_status BOOLEAN NOT NULL,           -- 모집진행여부 (rcrt_prgs_yn)
     pre_business_status BOOLEAN NOT NULL,          -- 예비창업자 여부
-    Business_Duration_id INT,                      -- 사업업력 id (biz_enyy)
+    business_duration_id INT,                      -- 사업업력 id (biz_enyy)
     target_age_id INT,                             -- 사업연령 id (biz_trgt_age),
 
     -- 외래 키 설정
