@@ -10,6 +10,7 @@ interface ISurveyOption {
   business_classification: Array<{ id: number; name: string }>;
   application_target: Array<{ id: number; name: string }>;
   support_region: Array<{ id: number; name: string }>;
+  target_age: Array<{ id: number; age_min: number; age_max: number }>;
 }
 
 export const userSurveyOption = async (req: Request, res: Response) => {
@@ -29,18 +30,18 @@ export const userSurveyOption = async (req: Request, res: Response) => {
     // 2. 신청대상
     sql = `SELECT * FROM Application_Target`;
     [results] = await conn.query(sql);
-    resValue.application_target = results as Array<{
-      id: number;
-      name: string;
-    }>;
+    resValue.application_target =
+      results as ISurveyOption['application_target'];
 
     // 3. 지역
     sql = `SELECT * FROM Support_Region`;
     [results] = await conn.query(sql);
-    resValue.support_region = results as Array<{
-      id: number;
-      name: string;
-    }>;
+    resValue.support_region = results as ISurveyOption['support_region'];
+
+    // 4. 나이
+    sql = `select * from Target_Age`;
+    [results] = await conn.query(sql);
+    resValue.target_age = results as ISurveyOption['target_age'];
 
     return res.status(StatusCodes.OK).json({
       ...resValue,
