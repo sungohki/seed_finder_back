@@ -10,17 +10,18 @@ import { getUserInfo, verifyAccessToken } from '../common';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
   const decodedUserAccount = verifyAccessToken(req, res);
-  if (decodedUserAccount === null)
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 토큰 인식 불가',
-    });
+  if (decodedUserAccount === null) return;
+
+  // 1. 사용자 설문 정보 호출
   const userInfo = await getUserInfo(decodedUserAccount);
+
+  // 2. DB 연결
   // const conn = await mariadb.createConnection(connInfo);
+  // let sql: string, values: Array<string | number> | null;
   // let resValue;
-  // let query: string, values: Array<string | number> | null;
 
   return res.status(StatusCodes.OK).json({
-    userInfo,
+    ...userInfo,
   });
 
   // return res.status(StatusCodes.OK).json({
