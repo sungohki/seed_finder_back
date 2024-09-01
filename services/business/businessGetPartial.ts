@@ -9,11 +9,13 @@ import { ISurveyInfo, IUserAccount } from '../user';
 import { getUserInfo, verifyAccessToken } from '../common';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
+  // 로그인 상태 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
 
   // 1. 사용자 설문 정보 호출
   const userInfo = await getUserInfo(decodedUserAccount);
+  console.log(userInfo);
 
   // 2. DB 연결
   // const conn = await mariadb.createConnection(connInfo);

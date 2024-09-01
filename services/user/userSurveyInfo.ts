@@ -17,11 +17,10 @@ export interface ISurveyInfo {
 
 // 회원 정보 설문
 export const userSurveyInfo = async (req: Request, res: Response) => {
+  // 로그인 상태 확인
   const decodedUserAccount = verifyAccessToken(req, res);
-  if (decodedUserAccount === null)
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 토큰 인식 불가',
-    });
+  if (decodedUserAccount === null) return;
+
   const conn = await mariadb.createConnection(connInfo);
   const {
     businessCategory,
