@@ -15,7 +15,7 @@ export const businessGetPartial = async (req: Request, res: Response) => {
 
   // 1. 사용자 설문 정보 호출
   const userInfo = await getUserInfo(decodedUserAccount);
-  console.log(userInfo);
+  // console.log(userInfo);
 
   // 2. DB 연결
   const conn = await mariadb.createConnection(connInfo);
@@ -24,22 +24,26 @@ export const businessGetPartial = async (req: Request, res: Response) => {
   let sql: string;
   let values;
   let results;
+  let resultsValues;
 
   sql = `
-    select 
+    SELECT 
       announcement_id
-    from 
+    FROM 
       Announcement_Application_Target
-		where 
-      application_target_id in [?]`;
+    WHERE 
+      application_target_id in (?)`;
   values = [ex];
-  console.log(values);
-  [results] = await conn.query(sql);
-  console.log(results);
+  [results] = await conn.query(sql, values);
+  let temp:Array<number> = [];
+  for (let item in Object.values(results)) {
+	  temp = [...temp, Number(item)];
+  }
+  console.log(temp);
 
   return res.status(StatusCodes.OK).json({
     // ...userInfo,
-    ...results,
+    ...temp,
   });
 
   // return res.status(StatusCodes.OK).json({
