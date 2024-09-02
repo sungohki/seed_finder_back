@@ -50,15 +50,13 @@ export const userSurveyOption = async (req: Request, res: Response) => {
     resValue.target_age = results as ISurveyOption['target_age'];
 
     return res.status(StatusCodes.OK).json({
-      question: {
-        business_classification: questionPhrase(
-          ESurveyOption.business_classification
-        ),
-        application_target: questionPhrase(ESurveyOption.application_target),
-        support_region: questionPhrase(ESurveyOption.support_region),
-        target_age: questionPhrase(ESurveyOption.target_age),
-        business_duration: questionPhrase(ESurveyOption.business_duration),
-      },
+      question: [
+        questionPhrase(ESurveyOption.business_classification),
+        questionPhrase(ESurveyOption.application_target),
+        questionPhrase(ESurveyOption.support_region),
+        questionPhrase(ESurveyOption.target_age),
+        questionPhrase(ESurveyOption.business_duration),
+      ],
       ...resValue,
     });
   } catch (e) {
