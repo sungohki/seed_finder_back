@@ -20,30 +20,58 @@ export const businessGetPartial = async (req: Request, res: Response) => {
   // 2. DB 연결
   const conn = await mariadb.createConnection(connInfo);
 
-  const { ex } = req.body as { ex: Array<number> };
+  const testReq = req.body as {
+    application_targets: Array<number>;
+  };
   let sql: string;
-  let values;
+  let values = [];
   let results;
   let resultsValues;
 
-  sql = `
-    SELECT 
-      announcement_id
-    FROM 
-      Announcement_Application_Target
-    WHERE 
-      application_target_id in (?)`;
-  values = [ex];
-  [results] = await conn.query(sql, values);
-  let temp:Array<number> = [];
-  for (let item in Object.values(results)) {
-	  temp = [...temp, Number(item)];
+  sql = `SELECT * FROM Announcement A`;
+  // 신청대상 여부 판별
+  if (userInfo.businessApply.length)
+    sql += ` JOIN Announcement_Application_Target AAT ON A.announcement_id = AAT.announcement_id`;
+  // 나이 여부 판별
+  if (userInfo.businessTargetAge)
+    sql += ` JOIN Target_Age TA ON A.target_age_id = TA.id`;
+
+  // where을 어떻게 추가할까?!
+  sql += ` WHERE`;
+  if (userInfo.businessCategory) {
+    sql += ` A.business_classification_id = ?`;
+    values.push(userInfo.businessApply);
   }
-  console.log(temp);
+  if (userInfo.businessApply.length) {
+    sql += ` AND AAT.application_target_id IN (?)`;
+    values.push(userInfo.businessRegion);
+  }
+  if (userInfo.businessRegion.length) {
+    sql += ` AND A.support_region_id IN (?)`;
+    values.push(userInfo.businessRegion);
+  }
+  if (userInfo.businessTargetAge) {
+    sql += ` AND TA.age_min <= ? AND TA.age_max > ?`;
+    values.push(userInfo.businessTargetAge, userInfo.businessTargetAge);
+  }
+  if (userInfo.businessExperience) {
+    // 예비 창업자 X
+    sql += ` AND A.pre_business_status = ?`;
+    values.push(true);
+  } else {
+    // 예비 창업자 O
+    sql += ` AND A.business_duration_id = ?`;
+    values.push(userInfo.businessExperience);
+  }
+
+  sql += ` ORDER BY A.id ASC`;
+
+  [results] = await conn.query(sql, values);
+  let appliaction_target_items: Array<number> = [];
 
   return res.status(StatusCodes.OK).json({
     // ...userInfo,
-    ...temp,
+    ...appliaction_target_items,
   });
 
   // return res.status(StatusCodes.OK).json({
