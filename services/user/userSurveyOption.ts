@@ -13,21 +13,27 @@ interface ISurveyOption {
   target_age: Array<{ id: number; age_min: number; age_max: number }>;
 }
 
+export enum ESurveyOption {
+  business_classification = '지원 사업 분류',
+  application_target = '신청 대상',
+  support_region = '지역',
+  target_age = '나이',
+  business_duration = '사업 업력',
+}
+
 export const userSurveyOption = async (req: Request, res: Response) => {
   const conn = await mariadb.createConnection(connInfo);
   let resValue = {} as ISurveyOption;
   let sql: string, results: mariadb.QueryResult;
 
   try {
-    // 1. 지원사업분류
+    // 1. 지원 사업 분류
     sql = `SELECT * FROM Business_Classification`;
     [results] = await conn.query(sql);
-    resValue.business_classification = results as Array<{
-      id: number;
-      name: string;
-    }>;
+    resValue.business_classification =
+      results as ISurveyOption['business_classification'];
 
-    // 2. 신청대상
+    // 2. 신청 대상
     sql = `SELECT * FROM Application_Target`;
     [results] = await conn.query(sql);
     resValue.application_target =
@@ -44,6 +50,15 @@ export const userSurveyOption = async (req: Request, res: Response) => {
     resValue.target_age = results as ISurveyOption['target_age'];
 
     return res.status(StatusCodes.OK).json({
+      question: {
+        business_classification: questionPhrase(
+          ESurveyOption.business_classification
+        ),
+        application_target: questionPhrase(ESurveyOption.application_target),
+        support_region: questionPhrase(ESurveyOption.support_region),
+        target_age: questionPhrase(ESurveyOption.target_age),
+        business_duration: questionPhrase(ESurveyOption.business_duration),
+      },
       ...resValue,
     });
   } catch (e) {
@@ -52,4 +67,8 @@ export const userSurveyOption = async (req: Request, res: Response) => {
       message: e,
     });
   }
+};
+
+const questionPhrase = (surveyOption: string) => {
+  return `${surveyOption} 항목을 선택해주세요.`;
 };
