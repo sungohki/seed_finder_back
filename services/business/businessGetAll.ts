@@ -21,7 +21,7 @@ export const businessGetAll = (req: Request, res: Response) => {
       Announcement`;
   // 아이디 통합공고사업명 지원사업분류 공고접수일시(시작 종료)
   const temp = req.query as { page: string; limit: string };
-  let resValue: Array<IBusinessPreview>;
+  let resValue: Object<string:Array<IBusinessPreview>>;
   let values: number[] | undefined;
 
   console.log(temp);
@@ -30,18 +30,21 @@ export const businessGetAll = (req: Request, res: Response) => {
     values = [parseInt(temp.limit, 10), parseInt(temp.page, 10) | 0];
   }
 
-  conn.query(sql, values, (err, results) => {
-    if (err) {
-      console.log(err);
-      return res.status(StatusCodes.BAD_REQUEST).end();
-    }
-    resValue = Object.values(results) as Array<IBusinessPreview>;
-    return res.status(StatusCodes.OK).json({
-      ...resValue,
-    });
+  try {
+	  conn.query(sql, values, (err, results) => {
+	    if (err) {
+	      console.log(err);
+	      return res.status(StatusCodes.BAD_REQUEST).end();
+	    }
+	    resValue = Object.values(results) as Array<IBusinessPreview>;
+	    return res.status(StatusCodes.OK).json({
+	      ...resValue,
+	    });
   });
-  return res.status(StatusCodes.NO_CONTENT).json({
-    request: '전체 사업 조회',
-    response: '데이터베이스 결과 수신 오류',
-  });
+  } catch (e) {
+	  return res.status(StatusCodes.NO_CONTENT).json({
+	    request: '전체 사업 조회',
+	    response: '데이터베이스 결과 수신 오류',
+	  });
+  }
 };
