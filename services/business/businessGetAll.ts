@@ -20,17 +20,14 @@ const businessToCalender = (businessData: Array<IBusinessPreview>) => {
   };
   for (let item of businessData) {
     const startDates = businessCalenderMap.get(item.start_date);
-    if (startDates === undefined) {
+    if (startDates === undefined)
       businessCalenderMap.set(item.start_date, [item]);
-    } else {
-      businessCalenderMap.set(item.start_date, [...startDates, item]);
-    }
+    else businessCalenderMap.set(item.start_date, [...startDates, item]);
   }
   businessCalenderMap.forEach((value, key) => {
     businessCalenderJson[key] = value;
   });
-  console.log(businessCalenderJson);
-
+  // console.log(businessCalenderJson);
   return businessCalenderJson;
 };
 
