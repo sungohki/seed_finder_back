@@ -14,16 +14,24 @@ interface IBusinessPreview {
 }
 
 const businessToCalender = (businessData: Array<IBusinessPreview>) => {
-  let businessCalender = new Map<string, Array<IBusinessPreview>>();
+  let businessCalenderMap = new Map<string, Array<IBusinessPreview>>();
+  const businessCalenderJson = {} as {
+    [date: string]: Array<IBusinessPreview>;
+  };
   for (let item of businessData) {
-    const startDates = businessCalender.get(item.start_date);
+    const startDates = businessCalenderMap.get(item.start_date);
     if (startDates === undefined) {
-      businessCalender.set(item.start_date, [item]);
+      businessCalenderMap.set(item.start_date, [item]);
     } else {
-      businessCalender.set(item.start_date, [...startDates, item]);
+      businessCalenderMap.set(item.start_date, [...startDates, item]);
     }
   }
-  return { ...businessCalender };
+  businessCalenderMap.forEach((value, key) => {
+    businessCalenderJson[key] = value;
+  });
+  console.log(businessCalenderJson);
+
+  return { ...businessCalenderMap };
 };
 
 export const businessGetAll = (req: Request, res: Response) => {
