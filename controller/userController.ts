@@ -18,5 +18,5 @@ export const userTestTokenHandler = (req: Request, res: Response) => {
 };
 
 export const userSurveyCheckHandler = (req: Request, res: Response) => {
-  return userService.userSurveyOption(req, res);
+  return userService.userSurveyCheck(req, res);
 };
