@@ -3,3 +3,4 @@ export * from './userLogin';
 export * from './userSurveyInfo';
 export * from './userSurveyOption';
 export * from './userTestToken';
+export * from './userSurveyCheck';
