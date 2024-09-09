@@ -4,36 +4,32 @@ import { StatusCodes } from 'http-status-codes';
 
 // import local module
 import mariadb from 'mysql2/promise';
-import { connInfo } from '../../mariadb';
+import { connection as conn } from '../../mariadb';
 import { ISurveyInfo } from '../user';
 import { verifyAccessToken } from '../common';
 
 export const businessGetDetail = async (req: Request, res: Response) => {
-  const decodedUserInfo = verifyAccessToken(req, res);
-  if (decodedUserInfo === null)
-    return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: 'info: 토큰 인식 불가',
-    });
-  const conn = await mariadb.createConnection(connInfo);
-  let userInfo = {} as ISurveyInfo;
-  let sql, values, results;
+  const { businessId } = req.params;
+  let sql, resValue;
+  const values = [businessId];
 
-  // 1. 지원사업분류 정보 저장
   sql = `
-    SELECT
-      business_classification_id
-    FROM
-      User_Business_Classification
-    WHERE
-      user_id = ?
+    SELECT * FROM Announcment WHERE id = ?
   `;
-  values = [decodedUserInfo.id];
-  [results] = await conn.query(sql, values);
-  console.log(results);
-  userInfo.businessCategory = await Object.values(results);
 
-  return res.status(StatusCodes.OK).json({
-    request: '추천사업조회',
-    response: results,
+  conn.query(sql, values, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(StatusCodes.BAD_REQUEST).end();
+    }
+    resValue = Object(results);
+    return res.status(StatusCodes.OK).json({
+      ...resValue,
+    });
+  });
+
+  return res.status(StatusCodes.NO_CONTENT).json({
+    request: '사업 상세 조회',
+    response: '데이터베이스 결과 수신 오류',
   });
 };

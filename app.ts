@@ -1,7 +1,4 @@
 import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 

@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 // import local module
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
-import { ISurveyInfo, IUserAccount } from '../user';
 import { getUserInfo, verifyAccessToken } from '../common';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
@@ -38,6 +37,7 @@ export const businessGetPartial = async (req: Request, res: Response) => {
 
   // where을 어떻게 추가할까?!
   sql += ` WHERE`;
+
   if (userInfo.businessCategory) {
     sql += ` A.business_classification_id = ?`;
     values.push(userInfo.businessApply);
