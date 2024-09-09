@@ -13,6 +13,19 @@ interface IBusinessPreview {
   end_date: string;
 }
 
+const businessToCalender = (businessData: Array<IBusinessPreview>) => {
+  let businessCalender = new Map<string, Array<IBusinessPreview>>();
+  for (let item of businessData) {
+    const startDates = businessCalender.get(item.start_date);
+    if (startDates === undefined) {
+      businessCalender.set(item.start_date, [item]);
+    } else {
+      businessCalender.set(item.start_date, [...startDates, item]);
+    }
+  }
+  return { ...businessCalender };
+};
+
 export const businessGetAll = (req: Request, res: Response) => {
   let sql = `
     SELECT
@@ -21,7 +34,7 @@ export const businessGetAll = (req: Request, res: Response) => {
       Announcement`;
   // 아이디 통합공고사업명 지원사업분류 공고접수일시(시작 종료)
   const temp = req.query as { page: string; limit: string };
-  let resValue: Object<string:Array<IBusinessPreview>>;
+  let resValue;
   let values: number[] | undefined;
 
   console.log(temp);
@@ -31,20 +44,20 @@ export const businessGetAll = (req: Request, res: Response) => {
   }
 
   try {
-	  conn.query(sql, values, (err, results) => {
-	    if (err) {
-	      console.log(err);
-	      return res.status(StatusCodes.BAD_REQUEST).end();
-	    }
-	    resValue = Object.values(results) as Array<IBusinessPreview>;
-	    return res.status(StatusCodes.OK).json({
-	      ...resValue,
-	    });
-  });
+    conn.query(sql, values, (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(StatusCodes.BAD_REQUEST).end();
+      }
+      resValue = Object.values(results) as Array<IBusinessPreview>;
+      return res.status(StatusCodes.OK).json({
+        ...businessToCalender(resValue),
+      });
+    });
   } catch (e) {
-	  return res.status(StatusCodes.NO_CONTENT).json({
-	    request: '전체 사업 조회',
-	    response: '데이터베이스 결과 수신 오류',
-	  });
+    return res.status(StatusCodes.NO_CONTENT).json({
+      request: '전체 사업 조회',
+      response: '데이터베이스 결과 수신 오류',
+    });
   }
 };
