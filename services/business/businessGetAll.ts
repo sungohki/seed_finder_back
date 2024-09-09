@@ -31,7 +31,7 @@ const businessToCalender = (businessData: Array<IBusinessPreview>) => {
   });
   console.log(businessCalenderJson);
 
-  return { ...businessCalenderMap };
+  return businessCalenderJson;
 };
 
 export const businessGetAll = (req: Request, res: Response) => {
