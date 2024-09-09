@@ -54,3 +54,12 @@ CREATE TABLE User_Application_Target (
     FOREIGN KEY (user_id) REFERENCES User(id),
     FOREIGN KEY (application_target_id) REFERENCES Application_Target(id)
 );
+
+-- 사용자-위시리스트 관계 테이블
+CREATE TABLE User_Favorite_Business (
+    user_id INT,
+    announcement_id INT,
+    PRIMARY KEY (user_id, announcement_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (announcement_id) REFERENCES Announcement(id)
+);
