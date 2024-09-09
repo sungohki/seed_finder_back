@@ -59,11 +59,10 @@ CREATE TABLE Announcement (
     preferences VARCHAR(300),                      -- 우대사항 (prfn_matr)
     recruitment_status BOOLEAN NOT NULL,           -- 모집진행여부 (rcrt_prgs_yn)
     pre_business_status BOOLEAN NOT NULL,          -- 예비창업자 여부
-    business_duration_id INT,                      -- 사업업력 id (biz_enyy)
+    business_duration INT,                         -- 사업업력 id (biz_enyy)
     target_age_id INT,                             -- 사업연령 id (biz_trgt_age),
 
     -- 외래 키 설정
-    FOREIGN KEY (Business_Duration_id) REFERENCES Business_Duration(id),
     FOREIGN KEY (target_age_id) REFERENCES Target_Age(id),
     FOREIGN KEY (business_classification_id) REFERENCES Business_Classification(id),
     FOREIGN KEY (support_region_id) REFERENCES Support_Region(id),
@@ -127,12 +126,3 @@ INSERT INTO Application_Target (name) VALUES
 ('대학생'),
 ('일반인'),
 ('청소년');
-
--- 사업업력 데이터 삽입
-INSERT INTO Business_Duration (period) VALUES
-('1년미만'),
-('2년미만'),
-('3년미만'),
-('5년미만'),
-('7년미만'),
-('10년미만');
