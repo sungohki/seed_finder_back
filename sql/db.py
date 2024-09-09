@@ -40,7 +40,6 @@ def log_error(message):
     """ 에러 메시지를 로그 파일에 기록하고 콘솔에 출력 """
     print(message)
 
-
 def insert_if_not_exists(table_name, column_name, value):
     """ 주어진 값이 테이블에 없으면 삽입하고, ID를 반환 """
     cursor.execute(f"SELECT id FROM {table_name} WHERE {column_name} = %s", (value,))
@@ -52,7 +51,6 @@ def insert_if_not_exists(table_name, column_name, value):
         return cursor.lastrowid
     else:
         return record[0]
-
 
 def create_tables():
     try:
@@ -77,12 +75,7 @@ def create_tables():
             );
         ''')
 
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Business_Duration (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                period VARCHAR(20) NOT NULL
-            );
-        ''')
+
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Target_Age(
@@ -119,9 +112,8 @@ def create_tables():
                 preferences VARCHAR(300),
                 recruitment_status BOOLEAN NOT NULL,
                 pre_business_status BOOLEAN NOT NULL,
-                Business_Duration_id INT,
+                business_duration INT,
                 target_age_id INT,
-                FOREIGN KEY (Business_Duration_id) REFERENCES Business_Duration(id),
                 FOREIGN KEY (target_age_id) REFERENCES Target_Age(id),
                 FOREIGN KEY (business_classification_id) REFERENCES Business_Classification(id),
                 FOREIGN KEY (support_region_id) REFERENCES Support_Region(id),
@@ -139,7 +131,7 @@ def create_tables():
             );
         ''')
 
-        # # 필수 데이터 삽입
+        # 필수 데이터 삽입
         cursor.execute('''
             INSERT IGNORE INTO Business_Classification (name) VALUES
             ('글로벌'), ('기술개발(R&amp;D)'), ('멘토링ㆍ컨설팅ㆍ교육'), ('사업화'), ('시설ㆍ공간ㆍ보육'),
@@ -157,10 +149,6 @@ def create_tables():
             ('1인 창조기업'), ('대학'), ('연구기관'), ('일반기업'), ('대학생'), ('일반인'), ('청소년');
         ''')
 
-        cursor.execute('''
-            INSERT IGNORE INTO Business_Duration (period) VALUES
-            ('1년미만'), ('2년미만'), ('3년미만'), ('5년미만'), ('7년미만'), ('10년미만');
-        ''')
 
         conn.commit()
     except mysql.connector.Error as e:
@@ -182,8 +170,6 @@ try:
         log_error("No data found in API response.")
         raise ValueError("No data found in API response.")
 
-    announcements = []
-    
     for item in data['data']:
         try:
             # 지원사업분류 ID 가져오기 또는 삽입
@@ -191,7 +177,6 @@ try:
             
             # 지원지역 ID 가져오기 또는 삽입
             support_region_id = insert_if_not_exists('Support_Region', 'name', item.get('supt_regin'))
-            
             
             # 지원대상 ID 가져오기
             apply_target = item.get('aply_trgt', '').split(',')
@@ -212,12 +197,8 @@ try:
             numbers = re.findall(r'\d+', business_duration or "")
             numbers = [int(num) for num in numbers]
             max_number = max(numbers) if numbers else None
-            business_duration_period = f"{max_number}년미만" if max_number else None
-            
-            cursor.execute("SELECT id FROM Business_Duration WHERE period = %s", (business_duration_period,))
-            business_duration_id = cursor.fetchone()
-            business_duration_id = business_duration_id[0] if business_duration_id else None
-
+            business_duration_period=max_number
+     
             # 나이 범위 추출
             age_ranges = item.get('biz_trgt_age', '').split(',')
             min_age = None
@@ -225,156 +206,122 @@ try:
 
             if len(age_ranges) > 2:
                 # 쉼표가 두 개 이상인 경우: 전 연령으로 처리
-                min_age = 0
-                max_age = 100
+                min_age = None
+                max_age = None
             elif len(age_ranges) == 2:
-                # 쉼표가 하나인 경우: min, max 범위를 추출
-                for age_range in age_ranges:
-                    age_range = age_range.strip()
-                    if '미만' in age_range:
-                        max_age = int(re.findall(r'\d+', age_range)[0])
-                    elif '이상 ~' in age_range and '이하' in age_range:
-                        start, end = age_range.split('~')
-                        min_age = int(re.findall(r'\d+', start)[0])
-                        max_age = int(re.findall(r'\d+', end)[0])
-                    elif '이상' in age_range:
-                        min_age = int(re.findall(r'\d+', age_range)[0])
+                if '미만' in age_ranges:
+                    max_age = 39
+                else:
+                    min_age = 20
             elif len(age_ranges) == 1:
                 # 쉼표가 없는 경우: 단일 범위로 처리
                 age_range = age_ranges[0].strip()
-                if '미만' in age_range:
-                    max_age = int(re.findall(r'\d+', age_range)[0])
-                    min_age = None
+                if  '이하' in age_range: 
+                    max_age = 39
+                    min_age = 20
+                elif '미만' in age_range:
+                    max_age = 20
                 elif '이상' in age_range:
-                    min_age = int(re.findall(r'\d+', age_range)[0])
-                    max_age = None
+                    min_age = 40
 
             # 나이 범위 ID 가져오기 또는 생성
             if min_age is not None and max_age is not None:
+                # 최소 및 최대 나이 모두 제공된 경우
                 cursor.execute("SELECT id FROM Target_Age WHERE age_min = %s AND age_max = %s", (min_age, max_age))
             elif min_age is not None:
+                # 최소 나이만 제공된 경우
                 cursor.execute("SELECT id FROM Target_Age WHERE age_min = %s AND age_max IS NULL", (min_age,))
             elif max_age is not None:
+                # 최대 나이만 제공된 경우
                 cursor.execute("SELECT id FROM Target_Age WHERE age_min IS NULL AND age_max = %s", (max_age,))
             else:
-                target_age_id = None
-            
+                # 최소 및 최대 나이 모두 제공되지 않은 경우
+                cursor.execute("SELECT id FROM Target_Age WHERE age_min IS NULL AND age_max IS NULL")
+
+            # 이미 존재하는지 확인
             target_age_id = cursor.fetchone()
-            
-            if not target_age_id:
-                # Target_Age 테이블에 나이 범위 삽입 후 ID 가져오기
+
+            if target_age_id:
+                # 존재하면 기존 ID 사용
+                target_age_id = target_age_id[0]
+            else:
+                # 존재하지 않으면 새로운 레코드 삽입
                 cursor.execute("INSERT INTO Target_Age (age_min, age_max) VALUES (%s, %s)", (min_age, max_age))
                 target_age_id = cursor.lastrowid
-            else:
-                target_age_id = target_age_id[0]
+
+            
+
+
+
 
             # 공고 데이터 준비
-            announcements.append((
-                item.get('intg_pbanc_yn') == 'Y',  # boolean
-                item.get('intg_pbanc_biz_nm'),
-                item.get('biz_pbanc_nm'),
-                item.get('pbanc_ctnt'),
-                business_classification_id,  # integer
-                convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
-                convert_to_date(item.get('pbanc_rcpt_end_dt')),
-                item.get('aply_mthd_vst_rcpt_istc'),
-                item.get('aply_mthd_pssr_rcpt_istc'),
-                item.get('aply_mthd_fax_rcpt_istc'),
-                item.get('aply_mthd_onli_rcpt_istc'),
-                item.get('aply_mthd_etc_istc'),
-                item.get('aply_trgt_ctnt'),
-                item.get('aply_excl_trgt_ctnt'),
-                support_region_id,  # integer
-                item.get('pbanc_ntrp_nm'),
-                item.get('sprv_inst'),
-                item.get('biz_prch_dprt_nm'),
-                item.get('biz_gdnc_url'),
-                item.get('prch_cnpl_no'),
-                item.get('detl_pg_url'),
-                item.get('prfn_matr'),
-                item.get('rcrt_prgs_yn') == 'Y',  # boolean
-                pre_business_status,  # boolean
-                business_duration_id,  # integer
-                target_age_id  # integer
-            ))
-
-        except Exception as e:
-            log_error(f"Error processing item: {e}")
-            continue
-
-    # 공고 데이터 삽입
-    for announcement in announcements:
-        try:
-            # 기존 데이터 확인
             cursor.execute('''
-                SELECT id, start_date FROM Announcement 
+                SELECT id FROM Announcement 
                 WHERE integrated_project_name = %s AND project_name = %s
-            ''', (announcement[1], announcement[2]))
+            ''', (item.get('intg_pbanc_biz_nm'), item.get('biz_pbanc_nm')))
             
             existing_record = cursor.fetchone()
 
             if existing_record:
-                existing_id, existing_start_date = existing_record
+                existing_id = existing_record[0]
 
                 # 날짜 비교하여 기존 데이터를 업데이트할지 결정
-                if announcement[5] and existing_start_date:
-                    if announcement[5] > existing_start_date:  # 새로운 데이터의 start_date가 더 최신인 경우
-                        cursor.execute('''
-                            UPDATE Announcement SET
-                                integrated_status = %s,
-                                content = %s,
-                                business_classification_id = %s,
-                                start_date = %s,
-                                end_date = %s,
-                                application_method_visit = %s,
-                                application_method_mail = %s,
-                                application_method_fax = %s,
-                                application_method_online = %s,
-                                application_method_others = %s,
-                                application_criteria = %s,
-                                application_exclusion_criteria = %s,
-                                support_region_id = %s,
-                                company_name = %s,
-                                supervising_organization = %s,
-                                department_in_charge = %s,
-                                project_guidance_url = %s,
-                                contact_number = %s,
-                                detailed_page_url = %s,
-                                preferences = %s,
-                                recruitment_status = %s,
-                                pre_business_status = %s,
-                                Business_Duration_id = %s,
-                                target_age_id = %s
-                            WHERE id = %s
-                        ''', (
-                            announcement[0],  # integrated_status
-                            announcement[3],  # content
-                            announcement[4],  # business_classification_id
-                            announcement[5],  # start_date
-                            announcement[6],  # end_date
-                            announcement[7],  # application_method_visit
-                            announcement[8],  # application_method_mail
-                            announcement[9],  # application_method_fax
-                            announcement[10], # application_method_online
-                            announcement[11], # application_method_others
-                            announcement[12], # application_criteria
-                            announcement[13], # application_exclusion_criteria
-                            announcement[14], # support_region_id
-                            announcement[15], # company_name
-                            announcement[16], # supervising_organization
-                            announcement[17], # department_in_charge
-                            announcement[18], # project_guidance_url
-                            announcement[19], # contact_number
-                            announcement[20], # detailed_page_url
-                            announcement[21], # preferences
-                            announcement[22], # recruitment_status
-                            announcement[23], # pre_business_status
-                            announcement[24], # Business_Duration_id
-                            announcement[25], # target_age_id
-                            existing_id  # 업데이트 대상 레코드의 ID
-                        ))
-                else:
-                    print(f"Skipping update: Existing record is newer or the same for {announcement[1]} - {announcement[2]}")
+                cursor.execute('''
+                    UPDATE Announcement SET
+                        integrated_status = %s,
+                        content = %s,
+                        business_classification_id = %s,
+                        start_date = %s,
+                        end_date = %s,
+                        application_method_visit = %s,
+                        application_method_mail = %s,
+                        application_method_fax = %s,
+                        application_method_online = %s,
+                        application_method_others = %s,
+                        application_criteria = %s,
+                        application_exclusion_criteria = %s,
+                        support_region_id = %s,
+                        company_name = %s,
+                        supervising_organization = %s,
+                        department_in_charge = %s,
+                        project_guidance_url = %s,
+                        contact_number = %s,
+                        detailed_page_url = %s,
+                        preferences = %s,
+                        recruitment_status = %s,
+                        pre_business_status = %s,
+                        business_duration = %s,
+                        target_age_id = %s
+                    WHERE id = %s
+                ''', (
+                    item.get('intg_pbanc_yn') == 'Y',  # boolean
+                    item.get('pbanc_ctnt'),
+                    business_classification_id,
+                    convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
+                    convert_to_date(item.get('pbanc_rcpt_end_dt')),
+                    item.get('aply_mthd_vst_rcpt_istc'),
+                    item.get('aply_mthd_pssr_rcpt_istc'),
+                    item.get('aply_mthd_fax_rcpt_istc'),
+                    item.get('aply_mthd_onli_rcpt_istc'),
+                    item.get('aply_mthd_etc_istc'),
+                    item.get('aply_trgt_ctnt'),
+                    item.get('aply_excl_trgt_ctnt'),
+                    support_region_id,
+                    item.get('pbanc_ntrp_nm'),
+                    item.get('sprv_inst'),
+                    item.get('biz_prch_dprt_nm'),
+                    item.get('biz_gdnc_url'),
+                    item.get('prch_cnpl_no'),
+                    item.get('detl_pg_url'),
+                    item.get('prfn_matr'),
+                    item.get('rcrt_prgs_yn') == 'Y',
+                    pre_business_status,
+                    business_duration_period,
+                    target_age_id,
+                    existing_id
+                ))
+                
+                
             else:
                 # 데이터가 존재하지 않는 경우, 새로운 데이터 삽입
                 cursor.execute('''
@@ -403,10 +350,37 @@ try:
                         preferences,
                         recruitment_status,
                         pre_business_status,
-                        Business_Duration_id,
+                        business_duration,
                         target_age_id
                     ) VALUES (%s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ''', announcement)
+                ''', (
+                    item.get('intg_pbanc_yn') == 'Y',  # boolean
+                    item.get('intg_pbanc_biz_nm'),
+                    item.get('biz_pbanc_nm'),
+                    item.get('pbanc_ctnt'),
+                    business_classification_id,
+                    convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
+                    convert_to_date(item.get('pbanc_rcpt_end_dt')),
+                    item.get('aply_mthd_vst_rcpt_istc'),
+                    item.get('aply_mthd_pssr_rcpt_istc'),
+                    item.get('aply_mthd_fax_rcpt_istc'),
+                    item.get('aply_mthd_onli_rcpt_istc'),
+                    item.get('aply_mthd_etc_istc'),
+                    item.get('aply_trgt_ctnt'),
+                    item.get('aply_excl_trgt_ctnt'),
+                    support_region_id,
+                    item.get('pbanc_ntrp_nm'),
+                    item.get('sprv_inst'),
+                    item.get('biz_prch_dprt_nm'),
+                    item.get('biz_gdnc_url'),
+                    item.get('prch_cnpl_no'),
+                    item.get('detl_pg_url'),
+                    item.get('prfn_matr'),
+                    item.get('rcrt_prgs_yn') == 'Y',
+                    pre_business_status,
+                    business_duration_period,
+                    target_age_id
+                ))
                 announcement_id = cursor.lastrowid
 
                 # 신청대상(Application_Target) 데이터 삽입
@@ -423,7 +397,7 @@ try:
                         continue
 
         except Exception as e:
-            log_error(f"Error inserting/updating announcement: {e}")
+            log_error(f"Error processing item: {e}")
             continue
 
     conn.commit()
