@@ -42,7 +42,35 @@ export const businessGetDetail = async (req: Request, res: Response) => {
   const values = [businessId];
 
   try {
-    sql = `SELECT * FROM Announcement WHERE id = ?`;
+    // sql = `SELECT * FROM Announcement WHERE id = ?`;
+    sql = `
+      SELECT 
+        A.*, 
+        BC.name AS business_classification_name,    -- 지원사업분류 테이블의 name
+        SR.name AS support_region_name,             -- 지원지역 테이블의 name
+        BD.period AS business_duration_period,      -- 사업업력 테이블의 period
+        TA.age_min,                                 -- 사업대상연령 테이블의 최소 나이
+        TA.age_max,                                 -- 사업대상연령 테이블의 최대 나이
+        GROUP_CONCAT(AT.name) AS application_target_names -- 신청대상 테이블의 여러 name 값
+      FROM 
+        Announcement A
+      -- 각 테이블과 조인
+      JOIN 
+        Business_Classification BC ON A.business_classification_id = BC.id
+      JOIN 
+        Support_Region SR ON A.support_region_id = SR.id
+      JOIN 
+        Business_Duration BD ON A.business_duration = BD.id
+      JOIN 
+        Target_Age TA ON A.target_age_id = TA.id
+      JOIN 
+        Announcement_Application_Target AAT ON A.id = AAT.announcement_id -- 관계 테이블 조인
+      JOIN 
+        Application_Target AT ON AAT.application_target_id = AT.id         -- 신청대상 테이블 조인
+      GROUP BY 
+        A.id;   -- 공고별로 그룹화
+      WHERE A.id = ?
+    `;
 
     conn.query(sql, values, (err, results) => {
       if (err) {
