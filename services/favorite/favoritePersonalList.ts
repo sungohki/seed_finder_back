@@ -52,9 +52,9 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
         A.id in (?)
     `;
     [results] = await conn.query(sql, [values]);
-    return res.status(StatusCodes.OK).json({
-      ...(Object.values(results) as Array<IBusinessPreview>),
-    });
+    return res.status(StatusCodes.OK).json(
+      Object.values(results) as Array<IBusinessPreview>,
+    );
   } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       req: '위시리스트 조회',
