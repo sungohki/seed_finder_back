@@ -32,11 +32,25 @@ const businessToCalender = (businessData: Array<IBusinessPreview>) => {
 };
 
 export const businessGetAll = (req: Request, res: Response) => {
+  // let sql = `
+  //   SELECT
+  //     id, integrated_project_name, business_classification_id, start_date, end_date
+  //   FROM
+  //     Announcement`;
   let sql = `
     SELECT
-      id, integrated_project_name, business_classification_id, start_date, end_date
+      A.id, 
+      A.integrated_project_name, 
+      -- A.business_classification_id, 
+      BC.name AS business_classification_name,
+      A.start_date, 
+      A.end_date
     FROM
-      Announcement`;
+      Announcement A
+    JOIN
+      Business_Classification BC
+      ON A.business_classification_id = BC.id;
+  `;
   // 아이디 통합공고사업명 지원사업분류 공고접수일시(시작 종료)
   const temp = req.query as { page: string; limit: string };
   let resValue;
