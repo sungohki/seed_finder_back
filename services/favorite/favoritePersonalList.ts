@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
 import { verifyAccessToken } from '../common';
-import { businessToCalender, IBusinessPreview } from '../business';
+import { IBusinessPreview } from '../business';
 
 export const favoritePersonalList = async (req: Request, res: Response) => {
   // TODO) 로그인 토큰 확인
@@ -51,9 +51,9 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
       where
         A.id in (?)
     `;
-    [results] = await conn.query(sql, values);
+    [results] = await conn.query(sql, [values]);
     return res.status(StatusCodes.OK).json({
-      ...businessToCalender(Object.values(results) as Array<IBusinessPreview>),
+      ...(Object.values(results) as Array<IBusinessPreview>),
     });
   } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).json({
