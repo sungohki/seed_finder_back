@@ -16,8 +16,8 @@ export function createRes(
   if (results.affectedRows) {
     return res.status(StatusCodes.CREATED).json(results);
   } else {
-    return res.status(StatusCodes.NO_CONTENT).json({
-      message: 'info: 회원 가입 실패',
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: '데이터 추가 실패',
     });
   }
 }

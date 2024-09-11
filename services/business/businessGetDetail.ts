@@ -46,13 +46,10 @@ interface IBusinessDetail extends IBusiness {
 }
 
 export const businessGetDetail = async (req: Request, res: Response) => {
-  const { businessId } = req.params;
-  let sql: string;
-  let resValue: IBusinessDetail;
-  const values = [businessId];
-
   try {
-    sql = `
+    const { businessId } = req.params;
+    const values = [businessId];
+    const sql = `
       SELECT 
         A.*, 
         BC.name AS business_classification_name,    -- 지원사업분류 테이블의 name
@@ -80,6 +77,7 @@ export const businessGetDetail = async (req: Request, res: Response) => {
     `;
 
     conn.query(sql, values, (err, results) => {
+      let resValue: IBusinessDetail;
       if (err) {
         console.log(err);
         return res.status(StatusCodes.BAD_REQUEST).end();
