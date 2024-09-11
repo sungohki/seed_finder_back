@@ -17,8 +17,6 @@ export function createRes(
     console.log(results);
     return res.status(StatusCodes.CREATED).json(results);
   } else {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      message: '데이터 추가 실패',
-    });
+    return res.status(StatusCodes.BAD_REQUEST).json(results);
   }
 }

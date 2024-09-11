@@ -12,14 +12,16 @@ export const likePersonalList = (req: Request, res: Response) => {
   if (decodedUserAccount === null) return;
   const sql = `
     SELECT
-      business_id
+      announcement_id
+    FROM
+      User_Favorite_Business
     WHERE
       user_id = ?
   `;
   const values: Array<number> = [decodedUserAccount.id];
 
   try {
-    let resValue: Array<number>;
+    let resValue: Array<number> = [];
     conn.query(sql, values, (err, results) => {
       if (err) {
         console.log(err);
@@ -28,7 +30,8 @@ export const likePersonalList = (req: Request, res: Response) => {
           res: err,
         });
       }
-      resValue = Object.values(results) as Array<number>;
+      for (let item of Object.values(results))
+        resValue.push(item.announcement_id);
       console.log(resValue);
       return res.status(StatusCodes.OK).json({ wish_list: resValue });
     });
