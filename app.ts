@@ -5,7 +5,7 @@ const app = express();
 // import routes
 import { userRouter } from './routes/userRoutes';
 import { businessRouter } from './routes/businessRoutes';
-import { likeRouter } from './routes/likeRoutes';
+import { favoriteRouter } from './routes/favoriteRoutes';
 
 // routing uri
 app.get('/', (req: Request, res: Response) => {
@@ -16,6 +16,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 app.use('/user', userRouter);
 app.use('/business', businessRouter);
-app.use('/like', likeRouter);
+app.use('/favorite', favoriteRouter);
 
 export default app;
