@@ -8,7 +8,8 @@ import { connection as conn } from '../../mariadb';
 export interface IBusinessPreview {
   id: number;
   integrated_project_name: string;
-  business_classification_id: number;
+  // business_classification_id: number;
+  business_classification_name: string;
   start_date: string;
   end_date: string;
 }
@@ -36,7 +37,6 @@ export const businessGetAll = (req: Request, res: Response) => {
     SELECT
       A.id, 
       A.integrated_project_name, 
-      -- A.business_classification_id, 
       BC.name AS business_classification_name,
       A.start_date, 
       A.end_date

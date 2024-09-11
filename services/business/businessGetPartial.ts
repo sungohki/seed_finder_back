@@ -23,8 +23,11 @@ export const businessGetPartial = async (req: Request, res: Response) => {
   let values: any[] = [];
 
   sql = `
-    SELECT DISTINCT A.id, A.integrated_project_name, A.business_classification_id, A.start_date, A.end_date
+    SELECT DISTINCT A.id, A.integrated_project_name, BC.name AS business_classification_name, A.start_date, A.end_date
       FROM Announcement A
+    JOIN
+      Business_Classification BC
+      ON A.business_classification_id = BC.id;
   `;
   // 신청대상 여부 판별
   if (userInfo.businessApply.length) {
@@ -78,7 +81,8 @@ export const businessGetPartial = async (req: Request, res: Response) => {
     const businessPreviews: IBusinessPreview[] = (rows as any[]).map((row) => ({
       id: row.id,
       integrated_project_name: row.integrated_project_name,
-      business_classification_id: row.business_classification_id,
+      // business_classification_id: row.business_classification_id,
+      business_classification_name: row.business_classification_name,
       start_date: row.start_date,
       end_date: row.end_date,
     }));
