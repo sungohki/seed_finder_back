@@ -22,8 +22,10 @@ export const businessGetPartial = async (req: Request, res: Response) => {
   let sql: string;
   let values: any[] = [];
 
-  sql = `SELECT DISTINCT A.id, A.integrated_project_name, A.business_classification_id, A.start_date, A.end_date
-         FROM Announcement A`;
+  sql = `
+    SELECT DISTINCT A.id, A.integrated_project_name, A.business_classification_id, A.start_date, A.end_date
+      FROM Announcement A
+  `;
   // 신청대상 여부 판별
   if (userInfo.businessApply.length) {
     sql += ` JOIN Announcement_Application_Target AAT ON A.id = AAT.announcement_id`;
