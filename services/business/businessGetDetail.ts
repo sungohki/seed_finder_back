@@ -42,6 +42,7 @@ interface IBusinessDetail extends IBusiness {
   age_max: number | null;
   application_target_names: string | null;
   total_business_duration: string | null;
+  total_age: string | null;
 }
 
 export const businessGetDetail = async (req: Request, res: Response) => {
@@ -84,13 +85,26 @@ export const businessGetDetail = async (req: Request, res: Response) => {
         return res.status(StatusCodes.BAD_REQUEST).end();
       }
       resValue = Object.values(results)[0] as IBusinessDetail;
-      // console.log(resValue);
-      if (resValue.pre_business_status)
-        resValue.total_business_duration = '예비 창업자';
-      if (resValue.total_business_duration)
-        resValue.total_business_duration += ` 또는 `;
-      resValue.total_business_duration += `${resValue.business_duration} 년 미만`;
 
+      // 사업 업력 출력
+      if (resValue.pre_business_status) {
+        resValue.total_business_duration = '예비 창업자';
+        if (resValue.business_duration)
+          resValue.total_business_duration += ` 또는 ${resValue.business_duration}년 미만`;
+      } else if (resValue.business_duration)
+        resValue.total_business_duration = `${resValue.business_duration}년 미만`;
+      else resValue.total_business_duration = `업력 무관`;
+
+      // 타겟 연령 출력
+      if (resValue.age_min) {
+        resValue.total_age = `만 ${resValue.age_min}세 이상`;
+        if (resValue.age_max)
+          resValue.total_age += ` 만 ${resValue.age_max}세 이하`;
+      } else if (resValue.age_max) {
+        resValue.total_age = `만 ${resValue.age_max}세 이하`;
+      } else {
+        resValue.total_age = `나이 무관`;
+      }
       return res.status(StatusCodes.OK).json({
         ...resValue,
       });
