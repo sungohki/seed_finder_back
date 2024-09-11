@@ -40,7 +40,6 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
       SELECT
         A.id, 
         A.integrated_project_name, 
-        -- A.business_classification_id, 
         BC.name AS business_classification_name,
         A.start_date, 
         A.end_date
@@ -48,7 +47,7 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
         Announcement A
       JOIN
         Business_Classification BC
-        ON A.business_classification_id = BC.id;
+        ON A.business_classification_id = BC.id
       where
         A.id in (?)
     `;
