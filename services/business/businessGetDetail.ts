@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 // import local module
 import { connection as conn } from '../../mariadb';
 
-interface IBusinessDetail {
+interface IBusiness {
   id: number; // 공고 id번호
   integrated_status: boolean; // 통합 공고 여부 (intg_pbanc_yn)
   integrated_project_name: string | null; // 통합 공고 사업명 (intg_pbanc_biz_nm)
@@ -31,8 +31,17 @@ interface IBusinessDetail {
   preferences: string | null; // 우대사항 (prfn_matr)
   recruitment_status: boolean; // 모집진행여부 (rcrt_prgs_yn)
   pre_business_status: boolean; // 예비창업자 여부
-  business_duration_id: number; // 사업업력 id (biz_enyy)
+  business_duration: number | string | null; // 사업업력 id (biz_enyy)
   target_age_id: number; // 사업연령 id (biz_trgt_age),
+}
+
+interface IBusinessDetail extends IBusiness {
+  business_classification_name: string | null;
+  support_region_name: string | null;
+  age_min: number | null;
+  age_max: number | null;
+  application_target_names: string | null;
+  total_business_duration: string | null;
 }
 
 export const businessGetDetail = async (req: Request, res: Response) => {
@@ -42,7 +51,6 @@ export const businessGetDetail = async (req: Request, res: Response) => {
   const values = [businessId];
 
   try {
-    // sql = `SELECT * FROM Announcement WHERE id = ?`;
     sql = `
       SELECT 
         A.*, 
@@ -77,6 +85,12 @@ export const businessGetDetail = async (req: Request, res: Response) => {
       }
       resValue = Object.values(results)[0] as IBusinessDetail;
       // console.log(resValue);
+      if (resValue.pre_business_status)
+        resValue.total_business_duration = '예비 창업자';
+      if (resValue.total_business_duration)
+        resValue.total_business_duration += ` 또는 `;
+      resValue.total_business_duration += `${resValue.business_duration} 년 미만`;
+
       return res.status(StatusCodes.OK).json({
         ...resValue,
       });
