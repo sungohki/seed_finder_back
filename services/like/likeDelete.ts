@@ -11,14 +11,14 @@ export const likeDelete = (req: Request, res: Response) => {
   // TODO) 로그인 토큰 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
-  const { business_id } = req.params;
+  const { businessId } = req.params;
   const sql = `
     DELETE FROM 
         User_Favorite_Business 
     WHERE
         user_id = ? AND announcement_id = ?
   `;
-  const values: Array<number> = [decodedUserAccount.id, parseInt(business_id)];
+  const values: Array<number> = [decodedUserAccount.id, parseInt(businessId)];
 
   try {
     conn.query<ResultSetHeader>(sql, values, (err, results) => {

@@ -12,7 +12,7 @@ export const likeAdd = (req: Request, res: Response) => {
   // TODO) 로그인 토큰 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
-  const { business_id } = req.params;
+  const { businessId } = req.params;
   const sql = `
     INSERT INTO
       User_Favorite_Business
@@ -20,7 +20,10 @@ export const likeAdd = (req: Request, res: Response) => {
       VALUES
         (?, ?)
   `;
-  const values: Array<number> = [decodedUserAccount.id, parseInt(business_id)];
+  const values: Array<number> = [
+    decodedUserAccount.id,
+    parseInt(businessId, 10),
+  ];
 
   try {
     conn.query<ResultSetHeader>(sql, values, (err, results) => {
