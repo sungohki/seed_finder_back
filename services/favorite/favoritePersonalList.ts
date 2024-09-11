@@ -34,6 +34,8 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
     }>)
       values.push(item.announcement_id);
     console.log(values);
+    if (!values.length)
+      return res.status(StatusCodes.OK).json([]);
 
     // 2. id 목록에 해당하는 사업 데이터들 가져오기
     sql = `
