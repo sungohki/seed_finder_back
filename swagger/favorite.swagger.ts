@@ -10,7 +10,8 @@
  * /favorite/add/{businessId}:
  *   post:
  *     summary: Create user-business reltation data
- *     tags: [Favorite]
+ *     tags:
+ *       - Favorite
  *     parameters:
  *       - name: businessId
  *         in: path
@@ -18,6 +19,11 @@
  *         schema:
  *           type: string
  *         description: ID of the business to add to favorites
+ *       - name: Authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *         description: 우측 상단 좌물쇠 버튼을 눌러 값을 넣은 후 테스트 해주세요! 아래에는 값을 넣지 말고 테스트 해주세요!!
  *     requestBody:
  *       description: No body content is required.
  *       content: {}
@@ -89,4 +95,3 @@
  *         description: Bad Request to db connection
  *
  */
-
