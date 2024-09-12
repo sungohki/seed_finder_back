@@ -10,6 +10,8 @@
  * /favorite/add/{businessId}:
  *   post:
  *     summary: Create user-business reltation data
+ *     security:
+ *       - Authorization : []
  *     tags:
  *       - Favorite
  *     parameters:
@@ -41,8 +43,6 @@
  *                   description: Number of db's affected row
  *       400:
  *         description: Bad Request
- *     security:
- *       - Authoriaztion : []  # JWT 토큰 적용 (이 요청에만 적용)
  */
 
 /**
