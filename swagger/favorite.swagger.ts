@@ -10,6 +10,16 @@
  * /favorite/add/{businessId}:
  *   create:
  *     summary: Create user-business reltation data
+ *     security:
+ *       - Authorization: []
+ *     tags:
+ *       - Board
+ *     parameters:
+ *       - in: header
+ *       name: Authorization
+ *       schema:
+ *         type: string
+ *       description: 우측 상단 좌물쇠 버튼을 눌러 값을 넣은 후 테스트 해주세요! 아래에는 값을 넣지 말고 테스트 해주세요!!
  *     tags: [Favorite]
  *     requestBody:
  *       required: false

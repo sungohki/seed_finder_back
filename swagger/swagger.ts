@@ -16,6 +16,22 @@ export const swaggerOptions = {
         email: 'sokim1201@naver.com',
       },
     },
+    components: {
+      securitySchemes: {
+        Authorization: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'Authorization',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        Authorization: [], // 전역적으로 토큰이 필요한 경우
+      },
+    ],
     // servers: [
     //   {
     //     url: 'http://localhost:3000',
