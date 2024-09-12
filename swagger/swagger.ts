@@ -10,20 +10,14 @@ export const swaggerOptions = {
         name: 'MIT',
         url: 'https://spdx.org/licenses/MIT.html',
       },
-      contact: {
-        name: 'sungohki',
-        url: 'https://github.com/sungohki/seed_finder_back',
-        email: 'sokim1201@naver.com',
-      },
-    },
     components: {
       securitySchemes: {
         Authorization: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+          type: "apiKey",
+          in: "header",
+          name: "Authorization",
+          scheme: "bearer",
+          bearerFormat: "JWT"
         },
       },
     },
@@ -32,11 +26,12 @@ export const swaggerOptions = {
         Authorization: [], // 전역적으로 토큰이 필요한 경우
       },
     ],
-    // servers: [
-    //   {
-    //     url: 'http://localhost:3000',
-    //   },
-    // ],
+      contact: {
+        name: 'sungohki',
+        url: 'https://github.com/sungohki/seed_finder_back',
+        email: 'sokim1201@naver.com',
+      },
+    },
   },
   apis: ['./swagger/*.swagger.ts'], // API 경로
 };
