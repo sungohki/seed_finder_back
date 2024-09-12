@@ -27,7 +27,7 @@ export const businessGetPartial = async (req: Request, res: Response) => {
       FROM Announcement A
     JOIN
       Business_Classification BC
-      ON A.business_classification_id = BC.id;
+      ON A.business_classification_id = BC.id
   `;
   // 신청대상 여부 판별
   if (userInfo.businessApply.length) {
