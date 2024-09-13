@@ -41,6 +41,7 @@
  *                   description: Number of db's affected row
  *       204:
  *         description: Fail to create entity
+ *         content:
  *           application/json:
  *             schema:
  *               type: object
@@ -51,6 +52,7 @@
  *                   description: Number of db's affected row
  *       400:
  *         description: Bad Request
+ *         content:
  *           application/json:
  *             schema:
  *               type: object
@@ -59,10 +61,6 @@
  *                   type: unknown
  *                   example: e
  *                   description: Information for error status
- */
-
-/**
- * @swagger
  * /favorite/delete/{businessId}:
  *   delete:
  *     summary: Delete the data of Favorite table
@@ -97,6 +95,7 @@
  *                   description: Number of db's affected row
  *       204:
  *         description: Fail to delete entity
+ *         content:
  *           application/json:
  *             schema:
  *               type: object
@@ -107,6 +106,7 @@
  *                   description: Number of db's affected row
  *       400:
  *         description: Bad Request
+ *         content:
  *           application/json:
  *             schema:
  *               type: object
@@ -115,17 +115,9 @@
  *                   type: unknown
  *                   example: e
  *                   description: Information for error status
- */
-
-/**
- * @swagger
  * /favorite/list:
  *   get:
  *     summary: Read personal favorite businesses
- *     security:
- *       - Authorization : []
- *     tags:
- *       - Favorite
  *     parameters:
  *       - name: Authorization
  *         in: header
