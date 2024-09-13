@@ -57,7 +57,7 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
       .status(StatusCodes.OK)
       .json(Object.values(results) as Array<IBusinessPreview>);
   } catch (e) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: e,
     });
   }

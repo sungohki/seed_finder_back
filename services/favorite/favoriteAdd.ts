@@ -30,7 +30,7 @@ export const favoriteAdd = (req: Request, res: Response) => {
       return createRes(res, err, results);
     });
   } catch (e) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: e,
     });
   }

@@ -25,7 +25,7 @@ export const favoriteDelete = (req: Request, res: Response) => {
       createRes(res, err, results);
     });
   } catch (e) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: e,
     });
   }

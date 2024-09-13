@@ -40,7 +40,7 @@
  *                   example: 1
  *                   description: Number of db's affected row
  *       204:
- *         description: Fail to create entity
+ *         description: Fail to create entity. (Data already created)
  *         content:
  *           application/json:
  *             schema:
@@ -48,10 +48,10 @@
  *               properties:
  *                 affectedRows:
  *                   type: int
- *                   example: 1
+ *                   example: 0
  *                   description: Number of db's affected row
- *       400:
- *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
  *         content:
  *           application/json:
  *             schema:
@@ -94,7 +94,7 @@
  *                   example: 1
  *                   description: Number of db's affected row
  *       204:
- *         description: Fail to delete entity
+ *         description: Fail to delete entity. (Data already removed)
  *         content:
  *           application/json:
  *             schema:
@@ -104,8 +104,8 @@
  *                   type: int
  *                   example: 0
  *                   description: Number of db's affected row
- *       400:
- *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
  *         content:
  *           application/json:
  *             schema:
@@ -136,10 +136,16 @@
  *             schema:
  *               type: array
  *               items:
- *                 affectedRows:
- *                   type: int
- *                   example: 1
- *                   description: Number of db's affected row
- *       400:
- *         description: Bad Request to db connection
+ *                 $ref: '#/components/schemas/BusinessPreview'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: unknown
+ *                   example: e
+ *                   description: Information for error status
  */
