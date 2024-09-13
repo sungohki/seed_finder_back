@@ -58,6 +58,29 @@
  *       500:
  *         description: Internal Server Error.
  *
- * /business/:businessid:
- *
+ * /business/{businessId}:
+ *   get:
+ *     summary: Read the detail of the business
+ *     tags:
+ *       - Business
+ *     parameters:
+ *       - name: businessId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the business to add to favorites
+ *       - name: Authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
+ *     requestBody:
+ *       description: No body content is required.
+ *       content: {}
+ *     responses:
+ *       200:
+ *         description: Success to get detail of the business data
+ *       500:
+ *         description: Internal Server Error.
  */
