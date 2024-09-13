@@ -20,12 +20,12 @@
  *         content:
  *           application/json:
  *             schema:
- *               type:
+ *               type: object
  *               properties:
- *                 affectedRows:
- *                   type: int
- *                   example: 1
- *                   description: Number of db's affected row
+ *                 "datetime":
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/BusinessPreview'
  *       500:
  *         description: Internal Server Error.
  *
@@ -45,6 +45,16 @@
  *       content: {}
  *     responses:
  *       200:
+ *         description: Success to get all business data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 "datetime":
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/BusinessPreview'
  *       500:
  *         description: Internal Server Error.
  *
