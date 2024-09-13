@@ -15,8 +15,12 @@ export function createRes(
   }
   if (results.affectedRows) {
     console.log(results);
-    return res.status(StatusCodes.CREATED).json(results);
+    return res.status(StatusCodes.CREATED).json({
+      affectedRows: results.affectedRows,
+    });
   } else {
-    return res.status(StatusCodes.BAD_REQUEST).json(results);
+    return res.status(StatusCodes.NO_CONTENT).json({
+      affectedRows: results.affectedRows,
+    });
   }
 }

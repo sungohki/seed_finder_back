@@ -25,9 +25,8 @@ export const favoriteDelete = (req: Request, res: Response) => {
       createRes(res, err, results);
     });
   } catch (e) {
-    return res.status(StatusCodes.OK).json({
-      req: '위시리스트 항목 삭제',
-      res: e,
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: e,
     });
   }
 };

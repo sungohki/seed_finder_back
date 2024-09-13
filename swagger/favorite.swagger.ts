@@ -10,8 +10,8 @@
  * /favorite/add/{businessId}:
  *   post:
  *     summary: Create user-business reltation data
- *     security:
- *       - Authorization : []
+//  *     security:
+//  *       - Authorization : []
  *     tags:
  *       - Favorite
  *     parameters:
@@ -25,13 +25,13 @@
  *         in: header
  *         schema:
  *           type: string
- *         description: 우측 상단 좌물쇠 버튼을 눌러 값을 넣은 후 테스트 해주세요! 아래에는 값을 넣지 말고 테스트 해주세요!!
+ *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
  *     requestBody:
  *       description: No body content is required.
  *       content: {}
  *     responses:
  *       200:
- *         description: Success to create user-business data
+ *         description: Success to create 'Favorite' entity
  *         content:
  *           application/json:
  *             schema:
@@ -41,8 +41,26 @@
  *                   type: int
  *                   example: 1
  *                   description: Number of db's affected row
+ *       204:
+ *         description: Fail to create entity 'Favorite' (Data already exists)
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 affectedRows:
+ *                   type: int
+ *                   example: 1
+ *                   description: Number of db's affected row
  *       400:
- *         description: Bad Request
+ *         description: Bad Request (There is a grammatical error or a server error)
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: unknown
+ *                   example: e
+ *                   description: Information for error status
  */
 
 /**
@@ -51,12 +69,26 @@
  * /favorite/delete/{businessId}:
  *   delete:
  *     summary: Create user-business reltation data
- *     tags: [Favorite]
+ *     tags:
+ *       - Favorite
+ *     parameters:
+ *       - name: businessId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the business to add to favorites
+ *       - name: Authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
  *     requestBody:
- *       required: false
+ *       description: No body content is required.
+ *       content: {}
  *     responses:
  *       200:
- *         description: Success to delete user-business data
+ *         description: Success to delete 'Favorite' entity
  *         content:
  *           application/json:
  *             schema:
@@ -66,9 +98,26 @@
  *                   type: int
  *                   example: 1
  *                   description: Number of db's affected row
+ *       204:
+ *         description: Fail to delete entity 'Favorite' (Data already erased)
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 affectedRows:
+ *                   type: int
+ *                   example: 0
+ *                   description: Number of db's affected row
  *       400:
- *         description: Bad Request to db connection
- *
+ *         description: Bad Request (There is a grammatical error or a server error)
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: unknown
+ *                   example: e
+ *                   description: Information for error status
  */
 
 /**
@@ -76,17 +125,28 @@
  * /favorite/list:
  *   get:
  *     summary: Read a user's personal user-business reltation data
+ *     security:
+ *       - Authorization : []
+ *     tags:
+ *       - Favorite
+ *     parameters:
+ *       - name: Authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
  *     tags: [Favorite]
  *     requestBody:
- *       required: false
+ *       description: No body content is required.
+ *       content: {}
  *     responses:
  *       200:
- *         description: Success to read personal user-business data
+ *         description: Success to read personal 'Favorite' table entities
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
+ *               type: array
+ *               items:
  *                 affectedRows:
  *                   type: int
  *                   example: 1

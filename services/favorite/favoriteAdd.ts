@@ -31,8 +31,7 @@ export const favoriteAdd = (req: Request, res: Response) => {
     });
   } catch (e) {
     return res.status(StatusCodes.BAD_REQUEST).json({
-      req: '위시리스트 항목 추가',
-      res: e,
+      error: e,
     });
   }
 };

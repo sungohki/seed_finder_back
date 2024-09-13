@@ -56,10 +56,9 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
     return res
       .status(StatusCodes.OK)
       .json(Object.values(results) as Array<IBusinessPreview>);
-  } catch (err) {
+  } catch (e) {
     return res.status(StatusCodes.BAD_REQUEST).json({
-      req: '위시리스트 조회',
-      res: err,
+      error: e,
     });
   }
 };
