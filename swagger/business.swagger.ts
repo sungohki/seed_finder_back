@@ -81,6 +81,10 @@
  *     responses:
  *       200:
  *         description: Success to get detail of the business data
+ *         content:
+ *           appliaction/json:
+ *             schema:
+ *               $ref: '#/components/schemas/BusinessDetail'
  *       500:
  *         description: Internal Server Error.
  */
