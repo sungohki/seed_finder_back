@@ -1,6 +1,6 @@
 {
   "watch": ["."],
   "ext": "ts",
-  "ignore": [],
-  "exec": "ts-node-dev ./index.ts"
+  "ignore": ["node_modules"],
+  "exec": "ts-node ./index.ts"
 }
