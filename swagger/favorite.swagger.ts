@@ -2,16 +2,14 @@
  *  @swagger
  *  tags:
  *    name: Favorite
- *    description: API to manage User's personal Favorite Business Datas.
+ *    description: API to manage Users personal Favorite Business Datas.
  */
 
 /**
  * @swagger
  * /favorite/add/{businessId}:
  *   post:
- *     summary: Create user-business reltation data
-//  *     security:
-//  *       - Authorization : []
+ *     summary: Create the data of Favorite table
  *     tags:
  *       - Favorite
  *     parameters:
@@ -31,7 +29,7 @@
  *       content: {}
  *     responses:
  *       200:
- *         description: Success to create 'Favorite' entity
+ *         description: Success to create entity
  *         content:
  *           application/json:
  *             schema:
@@ -42,7 +40,7 @@
  *                   example: 1
  *                   description: Number of db's affected row
  *       204:
- *         description: Fail to create entity 'Favorite' (Data already exists)
+ *         description: Fail to create entity
  *           application/json:
  *             schema:
  *               type: object
@@ -52,7 +50,7 @@
  *                   example: 1
  *                   description: Number of db's affected row
  *       400:
- *         description: Bad Request (There is a grammatical error or a server error)
+ *         description: Bad Request
  *           application/json:
  *             schema:
  *               type: object
@@ -65,10 +63,9 @@
 
 /**
  * @swagger
- *
  * /favorite/delete/{businessId}:
  *   delete:
- *     summary: Create user-business reltation data
+ *     summary: Delete the data of Favorite table
  *     tags:
  *       - Favorite
  *     parameters:
@@ -88,7 +85,7 @@
  *       content: {}
  *     responses:
  *       200:
- *         description: Success to delete 'Favorite' entity
+ *         description: Success to delete entity
  *         content:
  *           application/json:
  *             schema:
@@ -99,7 +96,7 @@
  *                   example: 1
  *                   description: Number of db's affected row
  *       204:
- *         description: Fail to delete entity 'Favorite' (Data already erased)
+ *         description: Fail to delete entity
  *           application/json:
  *             schema:
  *               type: object
@@ -109,7 +106,7 @@
  *                   example: 0
  *                   description: Number of db's affected row
  *       400:
- *         description: Bad Request (There is a grammatical error or a server error)
+ *         description: Bad Request
  *           application/json:
  *             schema:
  *               type: object
@@ -124,7 +121,7 @@
  * @swagger
  * /favorite/list:
  *   get:
- *     summary: Read a user's personal user-business reltation data
+ *     summary: Read personal favorite businesses
  *     security:
  *       - Authorization : []
  *     tags:
@@ -141,7 +138,7 @@
  *       content: {}
  *     responses:
  *       200:
- *         description: Success to read personal 'Favorite' table entities
+ *         description: Success to read personal Favorite table entities
  *         content:
  *           application/json:
  *             schema:
@@ -153,5 +150,4 @@
  *                   description: Number of db's affected row
  *       400:
  *         description: Bad Request to db connection
- *
  */
