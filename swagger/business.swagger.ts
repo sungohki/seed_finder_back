@@ -10,7 +10,8 @@
  * /business/all:
  *   get:
  *     summary: Read all of business data
- *     tags: [Business]
+ *     tags:
+ *       - Business
  *     requestBody:
  *       required: false
  *     responses:
@@ -19,41 +20,33 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
+ *               type:
  *               properties:
  *                 affectedRows:
  *                   type: int
  *                   example: 1
  *                   description: Number of db's affected row
- *       204:
- *         description: No results
- *       400:
- *         description: Bad Request to db connection
- *
- * /business/all?page=n&limit=n:
- *   get:
- *     summary: Read all of business data
- *     tags: [Business]
- *     requestBody:
- *       required: false
- *     responses:
- *       200:
- *         description: Success to get all business data
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 affectedRows:
- *                   type: int
- *                   example: 1
- *                   description: Number of db's affected row
- *       204:
- *         description: No results
- *       400:
- *         description: Bad Request to db connection
+ *       500:
+ *         description: Internal Server Error.
  *
  * /business/partial:
+ *   get:
+ *     summary: Read business data to recommend for user
+ *     tags:
+ *       - Business
+ *     parameters:
+ *       - name: Authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
+ *     requestBody:
+ *       description: No body content is required.
+ *       content: {}
+ *     responses:
+ *       200:
+ *       500:
+ *         description: Internal Server Error.
  *
  * /business/:businessid:
  *
