@@ -3,6 +3,7 @@ import mysql.connector
 import json
 import re
 from datetime import datetime
+import html  
 
 # API URL 및 파라미터
 url = "http://apis.data.go.kr/B552735/kisedKstartupService/getAnnouncementInformation"
@@ -17,10 +18,10 @@ params = {
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    port=3306,
-    password="root",
-    # port=3308,
-    # password="9604",
+    # port=3306,
+    # password="root",
+    port=3308,
+    password="9604",
     database="seedfinder",
     charset='utf8mb4',
     collation='utf8mb4_general_ci'
@@ -293,33 +294,35 @@ try:
                         business_duration = %s,
                         target_age_id = %s
                     WHERE id = %s
-                ''', (
+                ''', 
+                (
                     item.get('intg_pbanc_yn') == 'Y',  # boolean
-                    item.get('pbanc_ctnt'),
+                    html.unescape(item.get('pbanc_ctnt') or ''),
                     business_classification_id,
                     convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
                     convert_to_date(item.get('pbanc_rcpt_end_dt')),
-                    item.get('aply_mthd_vst_rcpt_istc'),
-                    item.get('aply_mthd_pssr_rcpt_istc'),
-                    item.get('aply_mthd_fax_rcpt_istc'),
-                    item.get('aply_mthd_onli_rcpt_istc'),
-                    item.get('aply_mthd_etc_istc'),
-                    item.get('aply_trgt_ctnt'),
-                    item.get('aply_excl_trgt_ctnt'),
+                    html.unescape(item.get('aply_mthd_vst_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_pssr_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_fax_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_onli_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_etc_istc') or ''),
+                    html.unescape(item.get('aply_trgt_ctnt') or ''),
+                    html.unescape(item.get('aply_excl_trgt_ctnt') or ''),
                     support_region_id,
-                    item.get('pbanc_ntrp_nm'),
-                    item.get('sprv_inst'),
-                    item.get('biz_prch_dprt_nm'),
-                    item.get('biz_gdnc_url'),
-                    item.get('prch_cnpl_no'),
-                    item.get('detl_pg_url'),
-                    item.get('prfn_matr'),
+                    html.unescape(item.get('pbanc_ntrp_nm') or ''),
+                    html.unescape(item.get('sprv_inst') or ''),
+                    html.unescape(item.get('biz_prch_dprt_nm') or ''),
+                    html.unescape(item.get('biz_gdnc_url') or ''),
+                    html.unescape(item.get('prch_cnpl_no') or ''),
+                    html.unescape(item.get('detl_pg_url') or ''),
+                    html.unescape(item.get('prfn_matr') or ''),
                     item.get('rcrt_prgs_yn') == 'Y',
                     pre_business_status,
                     business_duration_period,
                     target_age_id,
                     existing_id
-                ))
+                )
+                )
                 
                 
             else:
@@ -353,34 +356,36 @@ try:
                         business_duration,
                         target_age_id
                     ) VALUES (%s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ''', (
+                ''',
+                (
                     item.get('intg_pbanc_yn') == 'Y',  # boolean
-                    item.get('intg_pbanc_biz_nm'),
-                    item.get('biz_pbanc_nm'),
-                    item.get('pbanc_ctnt'),
+                    html.unescape(item.get('intg_pbanc_biz_nm') or ''),
+                    html.unescape(item.get('biz_pbanc_nm') or ''),
+                    html.unescape(item.get('pbanc_ctnt') or ''),
                     business_classification_id,
                     convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
                     convert_to_date(item.get('pbanc_rcpt_end_dt')),
-                    item.get('aply_mthd_vst_rcpt_istc'),
-                    item.get('aply_mthd_pssr_rcpt_istc'),
-                    item.get('aply_mthd_fax_rcpt_istc'),
-                    item.get('aply_mthd_onli_rcpt_istc'),
-                    item.get('aply_mthd_etc_istc'),
-                    item.get('aply_trgt_ctnt'),
-                    item.get('aply_excl_trgt_ctnt'),
+                    html.unescape(item.get('aply_mthd_vst_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_pssr_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_fax_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_onli_rcpt_istc') or ''),
+                    html.unescape(item.get('aply_mthd_etc_istc') or ''),
+                    html.unescape(item.get('aply_trgt_ctnt') or ''),
+                    html.unescape(item.get('aply_excl_trgt_ctnt') or ''),
                     support_region_id,
-                    item.get('pbanc_ntrp_nm'),
-                    item.get('sprv_inst'),
-                    item.get('biz_prch_dprt_nm'),
-                    item.get('biz_gdnc_url'),
-                    item.get('prch_cnpl_no'),
-                    item.get('detl_pg_url'),
-                    item.get('prfn_matr'),
+                    html.unescape(item.get('pbanc_ntrp_nm') or ''),
+                    html.unescape(item.get('sprv_inst') or ''),
+                    html.unescape(item.get('biz_prch_dprt_nm') or ''),
+                    html.unescape(item.get('biz_gdnc_url') or ''),
+                    html.unescape(item.get('prch_cnpl_no') or ''),
+                    html.unescape(item.get('detl_pg_url') or ''),
+                    html.unescape(item.get('prfn_matr') or ''),
                     item.get('rcrt_prgs_yn') == 'Y',
                     pre_business_status,
                     business_duration_period,
                     target_age_id
-                ))
+                )
+                )
                 announcement_id = cursor.lastrowid
 
                 # 신청대상(Application_Target) 데이터 삽입
@@ -406,5 +411,6 @@ except Exception as e:
     log_error(f"General error: {e}")
 
 finally:
+    print('추가완료')
     cursor.close()
     conn.close()
