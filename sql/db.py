@@ -257,72 +257,75 @@ try:
 
             # 공고 데이터 준비
             cursor.execute('''
-                SELECT id FROM Announcement 
+                SELECT id, start_date FROM Announcement 
                 WHERE integrated_project_name = %s AND project_name = %s
-            ''', (item.get('intg_pbanc_biz_nm'), item.get('biz_pbanc_nm')))
-            
+            ''', (html.unescape(item.get('intg_pbanc_biz_nm') or ''), html.unescape(item.get('biz_pbanc_nm') or '')))
+
             existing_record = cursor.fetchone()
+            new_start_date = convert_to_date(item.get('pbanc_rcpt_bgng_dt'))
 
             if existing_record:
                 existing_id = existing_record[0]
-
-                # 날짜 비교하여 기존 데이터를 업데이트할지 결정
-                cursor.execute('''
-                    UPDATE Announcement SET
-                        integrated_status = %s,
-                        content = %s,
-                        business_classification_id = %s,
-                        start_date = %s,
-                        end_date = %s,
-                        application_method_visit = %s,
-                        application_method_mail = %s,
-                        application_method_fax = %s,
-                        application_method_online = %s,
-                        application_method_others = %s,
-                        application_criteria = %s,
-                        application_exclusion_criteria = %s,
-                        support_region_id = %s,
-                        company_name = %s,
-                        supervising_organization = %s,
-                        department_in_charge = %s,
-                        project_guidance_url = %s,
-                        contact_number = %s,
-                        detailed_page_url = %s,
-                        preferences = %s,
-                        recruitment_status = %s,
-                        pre_business_status = %s,
-                        business_duration = %s,
-                        target_age_id = %s
-                    WHERE id = %s
-                ''', 
-                (
-                    item.get('intg_pbanc_yn') == 'Y',  # boolean
-                    html.unescape(item.get('pbanc_ctnt') or ''),
-                    business_classification_id,
-                    convert_to_date(item.get('pbanc_rcpt_bgng_dt')),
-                    convert_to_date(item.get('pbanc_rcpt_end_dt')),
-                    html.unescape(item.get('aply_mthd_vst_rcpt_istc') or ''),
-                    html.unescape(item.get('aply_mthd_pssr_rcpt_istc') or ''),
-                    html.unescape(item.get('aply_mthd_fax_rcpt_istc') or ''),
-                    html.unescape(item.get('aply_mthd_onli_rcpt_istc') or ''),
-                    html.unescape(item.get('aply_mthd_etc_istc') or ''),
-                    html.unescape(item.get('aply_trgt_ctnt') or ''),
-                    html.unescape(item.get('aply_excl_trgt_ctnt') or ''),
-                    support_region_id,
-                    html.unescape(item.get('pbanc_ntrp_nm') or ''),
-                    html.unescape(item.get('sprv_inst') or ''),
-                    html.unescape(item.get('biz_prch_dprt_nm') or ''),
-                    html.unescape(item.get('biz_gdnc_url') or ''),
-                    html.unescape(item.get('prch_cnpl_no') or ''),
-                    html.unescape(item.get('detl_pg_url') or ''),
-                    html.unescape(item.get('prfn_matr') or ''),
-                    item.get('rcrt_prgs_yn') == 'Y',
-                    pre_business_status,
-                    business_duration_period,
-                    target_age_id,
-                    existing_id
-                )
-                )
+                existing_start_date = existing_record[1]
+                
+                # 새로 들어온 start_date와 기존 start_date 비교
+                if new_start_date and (existing_start_date is None or new_start_date > existing_start_date):
+                    # 새 start_date가 더 최신이면 업데이트
+                    cursor.execute('''
+                        UPDATE Announcement SET
+                            integrated_status = %s,
+                            content = %s,
+                            business_classification_id = %s,
+                            start_date = %s,
+                            end_date = %s,
+                            application_method_visit = %s,
+                            application_method_mail = %s,
+                            application_method_fax = %s,
+                            application_method_online = %s,
+                            application_method_others = %s,
+                            application_criteria = %s,
+                            application_exclusion_criteria = %s,
+                            support_region_id = %s,
+                            company_name = %s,
+                            supervising_organization = %s,
+                            department_in_charge = %s,
+                            project_guidance_url = %s,
+                            contact_number = %s,
+                            detailed_page_url = %s,
+                            preferences = %s,
+                            recruitment_status = %s,
+                            pre_business_status = %s,
+                            business_duration = %s,
+                            target_age_id = %s
+                        WHERE id = %s
+                    ''', 
+                    (
+                        item.get('intg_pbanc_yn') == 'Y',  # boolean
+                        html.unescape(item.get('pbanc_ctnt') or ''),
+                        business_classification_id,
+                        new_start_date,  # 새로 받은 start_date
+                        convert_to_date(item.get('pbanc_rcpt_end_dt')),
+                        html.unescape(item.get('aply_mthd_vst_rcpt_istc') or ''),
+                        html.unescape(item.get('aply_mthd_pssr_rcpt_istc') or ''),
+                        html.unescape(item.get('aply_mthd_fax_rcpt_istc') or ''),
+                        html.unescape(item.get('aply_mthd_onli_rcpt_istc') or ''),
+                        html.unescape(item.get('aply_mthd_etc_istc') or ''),
+                        html.unescape(item.get('aply_trgt_ctnt') or ''),
+                        html.unescape(item.get('aply_excl_trgt_ctnt') or ''),
+                        support_region_id,
+                        html.unescape(item.get('pbanc_ntrp_nm') or ''),
+                        html.unescape(item.get('sprv_inst') or ''),
+                        html.unescape(item.get('biz_prch_dprt_nm') or ''),
+                        html.unescape(item.get('biz_gdnc_url') or ''),
+                        html.unescape(item.get('prch_cnpl_no') or ''),
+                        html.unescape(item.get('detl_pg_url') or ''),
+                        html.unescape(item.get('prfn_matr') or ''),
+                        item.get('rcrt_prgs_yn') == 'Y',
+                        pre_business_status,
+                        business_duration_period,
+                        target_age_id,
+                        existing_id
+                    ))
                 
                 
             else:
