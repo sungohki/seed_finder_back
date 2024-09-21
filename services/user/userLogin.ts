@@ -15,7 +15,7 @@ import { generateToken, ILoginUser } from '../common';
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
 export const userLogin = (req: Request, res: Response) => {
-  const { userEmail, userPw } = req.body;
+  const { userEmail, userPw } = req.body as IUserAccount;
   const sql = `SELECT * FROM User WHERE user_email = ?`;
   const values = [userEmail];
 
@@ -49,7 +49,9 @@ export const userLogin = (req: Request, res: Response) => {
         console.error('Info: PRIVATE_KEY가 환경변수로 지정되어있지 않음.');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
       }
-      console.log(`Info: [${loginUser.user_email}] 로그인 정보 일치, 로그인 성공`);
+      console.log(
+        `Info: [${loginUser.user_email}] 로그인 정보 일치, 로그인 성공`
+      );
 
       // jwt 액세스 토큰 발행
       const accessTokenInfo: ILoginUser = {
@@ -86,12 +88,9 @@ export const userLogin = (req: Request, res: Response) => {
         httpOnly: true,
       });
 
-
       let memberRole;
-      if (loginUser.user_management === 1)
-	      memberRole = 'MANAGER';
-      else
-	      memberRole = 'CUSTOMER';
+      if (loginUser.user_management === 1) memberRole = 'MANAGER';
+      else memberRole = 'CUSTOMER';
 
       return res.status(StatusCodes.OK).json({
         ...results[0],

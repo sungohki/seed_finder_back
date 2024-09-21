@@ -81,7 +81,6 @@ export const businessGetPartial = async (req: Request, res: Response) => {
     const businessPreviews: IBusinessPreview[] = (rows as any[]).map((row) => ({
       id: row.id,
       integrated_project_name: row.integrated_project_name,
-      // business_classification_id: row.business_classification_id,
       business_classification_name: row.business_classification_name,
       start_date: row.start_date,
       end_date: row.end_date,
