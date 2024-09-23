@@ -111,15 +111,15 @@
  *             properties:
  *               businessCategory:
  *                 type: Array<string>
- *                 example: ["글로벌", "사업화"]
+ *                 example: ["글로벌", "사업화", "인력", "정책자금"]
  *                 description: Data for User & Classification of Business
  *               businessRegion:
  *                 type: Array<string>
- *                 example: ["강원", "대구"]
+ *                 example: ["전국", "서울", "강원", "경기", "부산"]
  *                 description: Data for User & Support Region of Business
  *               businessApply:
  *                 type: Array<string>
- *                 example: ["대학", "대학생"]
+ *                 example: ["대학", "대학생", "1인 창조기업", "일반인"]
  *                 description: Data for User & Application Target of Business
  *               businessExperience:
  *                 type: int
@@ -127,7 +127,7 @@
  *                 description: Data for User's Experience of Business. If it is 0, user's pre-startup stance will be true. (default false)
  *               businessTargetAge:
  *                 type: int
- *                 example: 25
+ *                 example: 20
  *                 description: Data for User's age
  *     responses:
  *       200:
