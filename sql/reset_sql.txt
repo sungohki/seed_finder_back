@@ -88,7 +88,7 @@ CREATE TABLE Announcement_Application_Target (
 -- 지원사업분류 데이터 삽입
 INSERT INTO Business_Classification (name) VALUES
 ('글로벌'),
-('기술개발(R&amp;D)'),
+('기술개발(R&D)'),
 ('멘토링ㆍ컨설팅ㆍ교육'),
 ('사업화'),
 ('시설ㆍ공간ㆍ보육'),
@@ -187,4 +187,13 @@ CREATE TABLE User_Application_Target (
     PRIMARY KEY (user_id, application_target_id),
     FOREIGN KEY (user_id) REFERENCES User(id),
     FOREIGN KEY (application_target_id) REFERENCES Application_Target(id)
+);
+
+-- 사용자-위시리스트 관계 테이블
+CREATE TABLE User_Favorite_Business (
+    user_id INT,
+    announcement_id INT,
+    PRIMARY KEY (user_id, announcement_id),
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (announcement_id) REFERENCES Announcement(id)
 );

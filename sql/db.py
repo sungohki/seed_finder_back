@@ -135,7 +135,7 @@ def create_tables():
         # 필수 데이터 삽입
         cursor.execute('''
             INSERT IGNORE INTO Business_Classification (name) VALUES
-            ('글로벌'), ('기술개발(R&amp;D)'), ('멘토링ㆍ컨설팅ㆍ교육'), ('사업화'), ('시설ㆍ공간ㆍ보육'),
+            ('글로벌'), ('기술개발(R&D)'), ('멘토링ㆍ컨설팅ㆍ교육'), ('사업화'), ('시설ㆍ공간ㆍ보육'),
             ('융자'), ('정책자금'), ('창업교육'), ('판로ㆍ해외진출'), ('인력'), ('행사ㆍ네트워크');
         ''')
 
@@ -174,7 +174,7 @@ try:
     for item in data['data']:
         try:
             # 지원사업분류 ID 가져오기 또는 삽입
-            business_classification_id = insert_if_not_exists('Business_Classification', 'name', item.get('supt_biz_clsfc'))
+            business_classification_id = insert_if_not_exists('Business_Classification', 'name', html.unescape(item.get('supt_biz_clsfc')))
             
             # 지원지역 ID 가져오기 또는 삽입
             support_region_id = insert_if_not_exists('Support_Region', 'name', item.get('supt_regin'))
