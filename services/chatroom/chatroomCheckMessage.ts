@@ -6,40 +6,35 @@ import { StatusCodes } from 'http-status-codes';
 import { connection as conn } from '../../mariadb';
 import { queryErrorChecker, verifyAccessToken } from '../common';
 
-interface IChatLog {
-  id: number;
-  senderRole: string;
-  // senderRole: 'CUSTOMER' | 'MANAGER';
-  content: string | null;
-  createdAt: string;
-  chatroomId: number;
-}
-
-export const chatroomGetOne = (req: Request, res: Response) => {
+export const chatroomCheckMessage = (req: Request, res: Response) => {
   // 로그인 상태 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
   // chatroomId 가져오기
   const { chatroomId } = req.params;
   const sql = `
-    SELECT
-      id,
-      senderRole,
-      content,
-      createAt
-    FROM
+    UPDATE
       ChatLog
-    WHERE
+    SET
+      last_checked_log_id = 
+        (SELECT  id 
+        FROM ChatLog 
+        WHERE user_id = ? AND chatroom_id = ? 
+        ORDER BY created_at DESC)
+    WHERE 
       user_id = ? AND chatroom_id = ?
   `;
-  const values = [decodedUserAccount.id, chatroomId];
-  let resValue: IChatLog[];
+  const values = [
+    decodedUserAccount.id,
+    chatroomId,
+    decodedUserAccount.id,
+    chatroomId,
+  ];
 
   try {
     conn.query(sql, values, (err, results) => {
       queryErrorChecker(err, res);
-      resValue = Object.values(results) as Array<IChatLog>;
-      return res.status(StatusCodes.OK).json(resValue);
+      return res.status(StatusCodes.OK).json(results);
     });
   } catch (e) {
     return res.status(StatusCodes.BAD_REQUEST).json({

@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 // import local module
 import { connection as conn } from '../../mariadb';
-import { verifyAccessToken } from '../common';
+import { convertKeysToCamelCase, verifyAccessToken } from '../common';
 
 export interface IChatroom {
   chatroomId: number;
@@ -23,10 +23,10 @@ export const chatroomGetAll = (req: Request, res: Response) => {
   if (decodedUserAccount === null) return;
   const sql = `
     SELECT 
-      CR.id AS chatroom_id,
-      CR.name AS chatroom_name,  -- 채팅방 테이블의 다른 정보도 추가할 수 있습니다.
-      C.content AS latest_content,
-      C.createdAt AS latest_createdAt
+      CR.id AS chatroomId,
+      CR.numbering_id AS numberingId,
+      C.content AS lastMessage,
+      C.createdAt AS lasstMessageCreatedAt
     FROM 
       ChatRoom CR
     JOIN 
@@ -56,6 +56,7 @@ export const chatroomGetAll = (req: Request, res: Response) => {
         });
       }
       resValue = Object.values(results) as Array<IChatroomPreview>;
+      for (let item of resValue) convertKeysToCamelCase(item);
       return res.status(StatusCodes.OK).json(resValue);
     });
   } catch (e) {
