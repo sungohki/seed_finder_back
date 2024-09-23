@@ -29,7 +29,7 @@
  *       500:
  *         description: Internal Server Error.
  *
- * /business/partial:
+ * /business/by-survey:
  *   get:
  *     summary: Read business data to recommend for user
  *     tags:
