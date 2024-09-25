@@ -25,24 +25,27 @@ export const chatroomGetAll = (req: Request, res: Response) => {
     SELECT 
       CR.id AS chatroomId,
       CR.numbering_id AS numberingId,
-      C.content AS lastMessage,
-      C.createdAt AS lasstMessageCreatedAt
+      CL.content AS lastMessage,
+      CL.createdAt AS lastMessageCreatedAt,
+      COUNT(CL3.id) AS unreadMessageCount
     FROM 
       ChatRoom CR
     JOIN 
-      User_ChatRoom UC
-      ON CR.id = UC.chatroom_id
-    JOIN 
-      Chat C
-      ON CR.id = C.chatroom_id
+      User_ChatRoom UC ON CR.id = UC.chatroom_id
+    LEFT JOIN 
+      ChatLog CL ON CR.id = CL.chatroom_id
+      AND CL.createdAt = (
+          SELECT MAX(CL2.createdAt)
+          FROM ChatLog CL2 
+          WHERE CL2.chatroom_id = CR.id
+      )
+    LEFT JOIN 
+      ChatLog CL3 ON CR.id = CL3.chatroom_id
+      AND CL3.created_at > UC.last_checked
     WHERE 
       UC.user_id = ?
-    AND 
-      C.createdAt = (
-        SELECT MAX(C2.createdAt)
-        FROM Chat C2
-        WHERE C2.chatroom_id = CR.id
-      )
+    GROUP BY 
+      CR.id, CR.numbering_id, CL.content, CL.createdAt;
   `;
   const values = [decodedUserAccount.id];
   let resValue: Array<IChatroomPreview>;

@@ -8,9 +8,9 @@ router.use(express.json());
 router.get('/all', CRC.chatroomGetAllHandler);
 // Read the chatroom
 router.get('/:chatroomId', CRC.chatroomGetOneHandler);
-// Update the chatroom's last message check
-router.put('/check/:chatroomId', CRC.chatroomCheckmessageHandler);
 // Create new chatroom
 router.post('/create', CRC.chatroomCreateOneHandler);
+// Create new chat of user
+router.post('/chat/:chatroomId', CRC.chatroomCreateOneHandler);
 
 export const chatroomRouter = router;

@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import { connection as conn } from '../../mariadb';
 import { queryErrorChecker, verifyAccessToken } from '../common';
 
-interface IChatLog {
+export interface IChatLog {
   id: number;
   senderRole: string;
   // senderRole: 'CUSTOMER' | 'MANAGER';
@@ -24,15 +24,15 @@ export const chatroomGetOne = (req: Request, res: Response) => {
   const sql = `
     SELECT
       id,
-      senderRole,
+      sender_role as senderRole,
       content,
-      createAt
+      created_at as createAt
     FROM
       ChatLog
     WHERE
       user_id = ? AND chatroom_id = ?
   `;
-  const values = [decodedUserAccount.id, chatroomId];
+  const values = [decodedUserAccount.id, parseInt(chatroomId)];
   let resValue: IChatLog[];
 
   try {

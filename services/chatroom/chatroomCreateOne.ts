@@ -12,7 +12,6 @@ export const chatroomCreateOne = async (req: Request, res: Response) => {
   // 로그인 상태 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
-  // DB 연결
   const { numberingId } = req.body as IChatroom;
 
   try {
@@ -22,7 +21,7 @@ export const chatroomCreateOne = async (req: Request, res: Response) => {
         User_Chatroom
         (user_id, chatroom_id)
       VALUES
-        (?, (SELECT id FROM ChatRoom WHERE numbering_id = ?))
+        (?, (SELECT id FROM ChatRoom WHERE numbering_id = ? LIMIT 1))
     `;
     const values = [decodedUserAccount.id, numberingId];
     conn.query<ResultSetHeader>(sql, values, (err, results) => {

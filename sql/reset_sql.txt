@@ -222,9 +222,9 @@ INSERT INTO ChatRoom (numbering_id) VALUES
 CREATE TABLE User_ChatRoom (
     user_id int,
     chatroom_id int,
+    last_checked DATETIME,
     PRIMARY KEY (user_id, chatroom_id),
     FOREIGN KEY (user_id) REFERENCES User(id),
-    FOREIGN KEY (chatroom_id) REFERENCES ChatRoom(id)
 );
 
 -- 채팅 로그 테이블 
@@ -232,22 +232,10 @@ CREATE TABLE ChatLog (
     id INT PRIMARY KEY AUTO_INCREMENT,
     sender_role VARCHAR(50) NOT NULL,
     content TEXT NOT NULL,       
-    created_at DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- 자동 생성 시간
     user_id INT NOT NULL,
     chatroom_id INT NOT NULL,
     
     FOREIGN KEY (user_id) REFERENCES User(id)
     FOREIGN KEY (chatroom_id) REFERENCES Chatroom(id)
 );
-
--- 미확인 메시지 테이블
-CREATE TABLE User_ChatLog_Read (
-    user_id INT,
-    chatroom_id INT,
-    last_read_message_id INT, -- 마지막으로 읽은 메시지 ID
-    PRIMARY KEY (user_id, chatroom_id),
-    FOREIGN KEY (user_id) REFERENCES User(id),
-    FOREIGN KEY (chatroom_id) REFERENCES Chatroom(id),
-    FOREIGN KEY (last_read_message_id) REFERENCES ChatLog(id)
-);
-
