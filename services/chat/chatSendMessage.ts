@@ -4,16 +4,16 @@ import { StatusCodes } from 'http-status-codes';
 
 // import local module
 import { connection as conn } from '../../mariadb';
-import { createRes, queryErrorChecker, verifyAccessToken } from '../common';
+import { createRes, verifyAccessToken } from '../common';
 import { ResultSetHeader } from 'mysql2';
 
-export const chatroomSendMessage = (req: Request, res: Response) => {
+export const chatSendMessage = (req: Request, res: Response) => {
   // 로그인 상태 확인
   const decodedUserAccount = verifyAccessToken(req, res);
   if (decodedUserAccount === null) return;
   // chatroomId 가져오기
   const { chatroomId } = req.params;
-  const { senderRole, content } = req.body;
+  const { content } = req.body;
   const sql = `
     INsert into
         ChatLog
@@ -21,12 +21,11 @@ export const chatroomSendMessage = (req: Request, res: Response) => {
     values
         (?, ?, ?, ?)
   `;
-  const values = [
-    senderRole,
-    content,
-    decodedUserAccount.id,
-    parseInt(chatroomId),
-  ];
+  let values: Array<number | string>;
+  if (decodedUserAccount.userRole)
+    values = ['MANAGER', content, decodedUserAccount.id, parseInt(chatroomId)];
+  else
+    values = ['CUSTOMER', content, decodedUserAccount.id, parseInt(chatroomId)];
 
   try {
     conn.query<ResultSetHeader>(sql, values, (err, results) => {

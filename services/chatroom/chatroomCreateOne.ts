@@ -18,7 +18,7 @@ export const chatroomCreateOne = async (req: Request, res: Response) => {
     // User-Chatroom 관계 생성
     const sql = `
       INSERT INTO
-        User_Chatroom
+        User_ChatRoom
         (user_id, chatroom_id)
       VALUES
         (?, (SELECT id FROM ChatRoom WHERE numbering_id = ? LIMIT 1))

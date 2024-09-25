@@ -224,7 +224,7 @@ CREATE TABLE User_ChatRoom (
     chatroom_id int,
     last_checked DATETIME,
     PRIMARY KEY (user_id, chatroom_id),
-    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
 -- 채팅 로그 테이블 
@@ -236,6 +236,6 @@ CREATE TABLE ChatLog (
     user_id INT NOT NULL,
     chatroom_id INT NOT NULL,
     
-    FOREIGN KEY (user_id) REFERENCES User(id)
-    FOREIGN KEY (chatroom_id) REFERENCES Chatroom(id)
+    FOREIGN KEY (user_id) REFERENCES User(id),
+    FOREIGN KEY (chatroom_id) REFERENCES ChatRoom(id)
 );

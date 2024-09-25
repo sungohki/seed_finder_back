@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import * as favoriteService from '../services/favorite';
+import * as fs from '../services/favorite';
 
 export const FavoriteAddHandler = (req: Request, res: Response) => {
-  return favoriteService.favoriteAdd(req, res);
+  return fs.favoriteAdd(req, res);
 };
 
 export const FavoriteDeleteHandler = (req: Request, res: Response) => {
-  return favoriteService.favoriteDelete(req, res);
+  return fs.favoriteDelete(req, res);
 };
 
 export const FavoritePersonalListHandler = (req: Request, res: Response) => {
-  return favoriteService.favoritePersonalList(req, res);
+  return fs.favoritePersonalList(req, res);
 };

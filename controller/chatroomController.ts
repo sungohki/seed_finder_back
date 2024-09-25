@@ -1,18 +1,14 @@
 import { Request, Response } from 'express';
-import * as cs from '../services/chatroom';
+import * as crs from '../services/chatroom';
 
 export const chatroomGetAllHandler = (req: Request, res: Response) => {
-  return cs.chatroomGetAll(req, res);
+  return crs.chatroomGetAll(req, res);
 };
 
 export const chatroomGetOneHandler = (req: Request, res: Response) => {
-  return cs.chatroomGetOne(req, res);
+  return crs.chatroomGetOne(req, res);
 };
 
 export const chatroomCreateOneHandler = (req: Request, res: Response) => {
-  return cs.chatroomCreateOne(req, res);
-};
-
-export const chatroomSendMessage = (req: Request, res: Response) => {
-  return cs.chatroomSendMessage(req, res);
+  return crs.chatroomCreateOne(req, res);
 };

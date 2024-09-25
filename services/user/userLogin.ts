@@ -57,6 +57,7 @@ export const userLogin = (req: Request, res: Response) => {
       const accessTokenInfo: ILoginUser = {
         id: loginUser.id,
         userEmail: loginUser.user_email,
+        userRole: loginUser.user_management,
       };
       const accessTokenOption: jwt.SignOptions = {
         expiresIn: '30m',

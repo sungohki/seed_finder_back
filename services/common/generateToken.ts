@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 export interface ILoginUser {
   id: number;
   userEmail: string;
+  userRole: number;
 }
 
 export const generateToken = (
