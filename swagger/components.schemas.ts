@@ -2,6 +2,42 @@
  * @swagger
  * components:
  *   schemas:
+ *     ChatLog:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         senderRole:
+ *           type: string
+ *           example: "CUSTOMER"
+ *         content:
+ *           type: string
+ *           example: "Nice to meet you"
+ *         createdAt:
+ *           type: string
+ *           example: "2024-01-01 12:00:00"
+ *         chatroomId:
+ *           type: integer
+ *           example: 2
+ *     ChatroomPreview:
+ *       type: object
+ *       properties:
+ *         chatroomId:
+ *           type: integer
+ *           example: 1
+ *         numberingId:
+ *           type: string
+ *           example: "1-1"
+ *         lastMessage:
+ *           type: string
+ *           example: "Hello, World"
+ *         lastMessageCreateAt:
+ *           type: string
+ *           example: "2024-01-01 12:00:00"
+ *         unreadMessageCount:
+ *           type: integer
+ *           example: 0
  *     BusinessPreview:
  *       type: object
  *       properties:
