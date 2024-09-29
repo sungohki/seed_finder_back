@@ -1,13 +1,13 @@
 /**
  *  @swagger
  *  tags:
- *    name: Business
+ *    name: Chatroom
  *    description: API to manage Business Data.
  */
 
 /**
  *  @swagger
- *  /chatroom/all:
+ * /chatroom/all:
  *   get:
  *     summary: Read all of chatroom data of user
  *     tags:
@@ -25,7 +25,8 @@
  *                   $ref: '#/components/schemas/ChatroomPreview'
  *       500:
  *         description: Internal Server Error.
- *  /chatroom/{chatroomId}:
+ *
+ * /chatroom/{chatroomId}:
  *   get:
  *     summary: Read one of chatroom data of user
  *     tags:
@@ -50,7 +51,8 @@
  *                   $ref: '#/components/schemas/ChatLog'
  *       500:
  *         description: Internal Server Error.
- *  /chatroom/create:
+ *
+ * /chatroom/create:
  *   get:
  *     summary: Create new chatroom data of user
  *     tags:
