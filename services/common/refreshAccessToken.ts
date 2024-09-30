@@ -21,22 +21,21 @@ export const refreshAccessToken = (req: Request, res: Response) => {
   jwt.verify(refreshToken, refreshPrivateKey, (err: unknown, user: any) => {
     // 리프레시 토큰 검증 실패 (만료, 오류, 오기입 등)
     if (err) {
+      console.log(err);
+      console.log('Info: 리프레시 토큰 검증 실패. 재 로그인 필요');
       if (err instanceof jwt.TokenExpiredError) {
-        res.status(StatusCodes.UNAUTHORIZED).json({
+        return res.status(StatusCodes.UNAUTHORIZED).json({
           message: `리프레시 토큰 만료 (${err.name})`,
         });
-        // refreshAccessToken(req, res); // 토큰 리프레시
       } else if (err instanceof jwt.JsonWebTokenError) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
           message: `잘못된 토큰 (${err.name})`,
         });
       } else {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
           message: `잘못된 요청 (${(err as Error).name})`,
         });
       }
-      console.log('Info: 리프레시 토큰 검증 실패. 재 로그인 필요');
-      // return res.status(StatusCodes.FORBIDDEN).endSS();
     }
 
     // 유저 정보로 새로운 액세스 토큰 발급

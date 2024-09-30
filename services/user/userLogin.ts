@@ -72,7 +72,7 @@ export const userLogin = (req: Request, res: Response) => {
 
       // jwt 리프레시 토큰 발행
       const refreshTokenOption: jwt.SignOptions = {
-        expiresIn: '7d', // 리프레시 토큰은 더 긴 유효기간을 가짐
+        expiresIn: '1d', // 리프레시 토큰은 더 긴 유효기간을 가짐
         issuer: 'sungohki',
       };
       const instanceRefreshToken = generateToken(
