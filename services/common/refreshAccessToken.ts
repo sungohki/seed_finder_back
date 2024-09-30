@@ -55,7 +55,7 @@ export const refreshAccessToken = (req: Request, res: Response) => {
       accessTokenOption
     );
 
-    console.log('Info: 새 액세스 토큰 발행');
+    console.log('TokenExpiredError: 새 액세스 토큰 발행');
 
     // 쿠키에 새로운 액세스 토큰 첨부
     res.cookie('accessToken', newAccessToken, {

@@ -85,9 +85,11 @@ export const userLogin = (req: Request, res: Response) => {
       res.cookie('accessToken', instanceAccessToken, {
         httpOnly: true,
       });
+      console.log(instanceAccessToken);
       res.cookie('refreshToken', instanceRefreshToken, {
         httpOnly: true,
       });
+      console.log(instanceRefreshToken);
 
       let memberRole;
       if (loginUser.user_management === 1) memberRole = 'MANAGER';
