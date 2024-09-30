@@ -25,8 +25,15 @@
  *           type: string
  *         description: Enter the token by pressing the lock at the top right. (Input field below is a dummy.)
  *     requestBody:
- *       description: No body content is required.
- *       content: {}
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 example: "test chatting"
  *     responses:
  *       200:
  *         description: Success to get detail of the business data
