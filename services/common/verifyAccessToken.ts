@@ -42,10 +42,11 @@ export const verifyAccessToken = (
 
 function errorResController(err: unknown, req: Request, res: Response): null {
   if (err instanceof TokenExpiredError) {
-    res.status(StatusCodes.UNAUTHORIZED).json({
-      message: `${err.name}: 로그인 토큰 만료. 토큰 재발급 확인`,
-    });
-    // refreshAccessToken(req, res); // 토큰 리프레시
+    // res.status(StatusCodes.UNAUTHORIZED).json({
+    //   message: `${err.name}: 로그인 토큰 만료. 토큰 재발급 확인`,
+    // });
+    console.log(`${err.name}: 로그인 토큰 만료. 토큰 재발급 확인`);
+    refreshAccessToken(req, res); // 토큰 리프레시
   } else if (err instanceof JsonWebTokenError) {
     res.status(StatusCodes.BAD_REQUEST).json({
       message: `${err.name}: 잘못된 토큰`,
