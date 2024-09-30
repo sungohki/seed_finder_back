@@ -2,7 +2,7 @@
  *  @swagger
  *  tags:
  *    name: Chatroom
- *    description: API to manage Business Data.
+ *    description: API to manage Chatroom Data.
  */
 
 /**
@@ -53,17 +53,10 @@
  *         description: Internal Server Error.
  *
  * /chatroom/create:
- *   get:
+ *   post:
  *     summary: Create new chatroom data of user
  *     tags:
  *       - Chatroom
- *     parameters:
- *       - name: chatroomId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the chatroom to read
  *     requestBody:
  *       required: true
  *       content:
@@ -81,11 +74,11 @@
  *           application/json:
  *             schema:
  *               type: object
- *                 properties:
- *                   affectedRows:
- *                     type: int
- *                     example: 1
- *                     description: Number of db's affected row
+ *               properties:
+ *                 affectedRows:
+ *                   type: int
+ *                   example: 1
+ *                   description: Number of db's affected row
  *       500:
  *         description: Internal Server Error.
  */
