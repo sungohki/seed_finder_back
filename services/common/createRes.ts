@@ -1,26 +1,38 @@
+// Import node module
 import { StatusCodes } from 'http-status-codes';
 import { Response } from 'express';
 import { QueryError, ResultSetHeader } from 'mysql2';
 
-export function createRes(
-  res: Response,
-  err: QueryError | null,
-  results: ResultSetHeader
-) {
+export const queryErrorChecker = (err: QueryError | null, res: Response) => {
   if (err) {
     console.log(err);
     return res.status(StatusCodes.BAD_REQUEST).json({
-      ...err,
-    });
-  }
+      error: err,
+    }); // 400
+  } else return null;
+};
+
+export const createRes = (
+  res: Response,
+  err: QueryError | null,
+  results: ResultSetHeader
+) => {
+  if (queryErrorChecker(err, res)) return;
+
   if (results.affectedRows) {
-    console.log(results);
+    console.log({
+      insertId: results.insertId,
+      affectedRows: results.affectedRows,
+    });
     return res.status(StatusCodes.CREATED).json({
       affectedRows: results.affectedRows,
-    });
+    }); // 201
   } else {
-    return res.status(StatusCodes.NO_CONTENT).json({
+    console.log({
       affectedRows: results.affectedRows,
     });
+    return res.status(StatusCodes.NO_CONTENT).json({
+      affectedRows: results.affectedRows,
+    }); // 204
   }
-}
+};

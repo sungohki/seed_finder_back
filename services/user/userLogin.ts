@@ -1,4 +1,4 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import crypto from 'crypto';
@@ -6,11 +6,11 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// import local module
+// Import local module
 import { connection as conn } from '../../mariadb';
-import { IUserAccount } from './userJoin';
+import { IUserAccount } from '.';
 import { RowDataPacket } from 'mysql2';
-import { generateToken, ILoginUser } from '../common';
+import { accessTokenGenerate, ILoginUser, queryErrorChecker } from '../common';
 
 interface UserQueryResult extends IUserAccount, RowDataPacket {}
 
@@ -20,16 +20,13 @@ export const userLogin = (req: Request, res: Response) => {
   const values = [userEmail];
 
   conn.query(sql, values, (err, results: UserQueryResult[]) => {
-    if (err) {
-      console.log(err);
-      return res.status(StatusCodes.BAD_REQUEST).end();
-    }
+    if (queryErrorChecker(err, res)) return;
     const loginUser = results[0];
+
     if (!loginUser) {
       console.log(
         `Info: 로그인 실패 (Wrong userId) ` + userEmail + ', ' + loginUser
       );
-      // return res.status(StatusCodes.NOT_FOUND).end(); // status code 404
       return res.status(StatusCodes.NOT_FOUND).json({
         message:
           `Info: 로그인 실패 (Wrong userId)` + userEmail + ', ' + loginUser,
@@ -63,7 +60,7 @@ export const userLogin = (req: Request, res: Response) => {
         expiresIn: '30m',
         issuer: 'sungohki',
       };
-      const instanceAccessToken = generateToken(
+      const instanceAccessToken = accessTokenGenerate(
         accessTokenInfo,
         accessPrivateKey,
         accessTokenOption
@@ -72,10 +69,10 @@ export const userLogin = (req: Request, res: Response) => {
 
       // jwt 리프레시 토큰 발행
       const refreshTokenOption: jwt.SignOptions = {
-        expiresIn: '1d', // 리프레시 토큰은 더 긴 유효기간을 가짐
+        expiresIn: '1d',
         issuer: 'sungohki',
       };
-      const instanceRefreshToken = generateToken(
+      const instanceRefreshToken = accessTokenGenerate(
         accessTokenInfo,
         refreshPrivateKey,
         refreshTokenOption
@@ -91,7 +88,7 @@ export const userLogin = (req: Request, res: Response) => {
       });
       console.log(instanceRefreshToken);
 
-      let memberRole;
+      let memberRole: String;
       if (loginUser.user_management === 1) memberRole = 'MANAGER';
       else memberRole = 'CUSTOMER';
 
@@ -100,12 +97,12 @@ export const userLogin = (req: Request, res: Response) => {
         accessToken: instanceAccessToken,
         refreshToken: instanceRefreshToken,
         memberRole: memberRole,
-      });
+      }); // 200
     } else {
       console.log('Info: 로그인 실패 (Wrong userPw)');
-      return res.status(StatusCodes.UNAUTHORIZED).end();
+      return res.status(StatusCodes.UNAUTHORIZED).end(); // 401
     }
   });
 
-  return res.status(StatusCodes.OK);
+  return res.status(StatusCodes.OK); // 200
 };

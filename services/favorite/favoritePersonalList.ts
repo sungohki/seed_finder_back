@@ -1,16 +1,16 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-// import local module
+// Import local module
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
-import { verifyAccessToken } from '../common';
+import { accessTokenVerify } from '../common';
 import { IBusinessPreview } from '../business';
 
 export const favoritePersonalList = async (req: Request, res: Response) => {
   // TODO) 로그인 토큰 확인
-  const decodedUserAccount = verifyAccessToken(req, res);
+  const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   const conn = await mariadb.createConnection(connInfo);
 
@@ -55,10 +55,11 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
     [results] = await conn.query(sql, [values]);
     return res
       .status(StatusCodes.OK)
-      .json(Object.values(results) as Array<IBusinessPreview>);
+      .json(Object.values(results) as Array<IBusinessPreview>); // 200
   } catch (e) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: e,
-    });
+    console.log(e);
+    return res.status(StatusCodes.BAD_REQUEST).json(e); // 400
+  } finally {
+    await conn.end();
   }
 };

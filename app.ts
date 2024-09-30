@@ -1,13 +1,14 @@
+// Import node module
 import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
+
+// Import routes
+import * as routes from './routes';
 
 const app = express();
 app.use(cookieParser());
 
-// import routes
-import * as routes from './routes';
-
-// routing uri
+// Routing URI
 app.get('/', (req: Request, res: Response) => {
   console.log('Main Page Access');
   return res.json({

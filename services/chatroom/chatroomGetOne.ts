@@ -1,25 +1,22 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-// import local module
+// Import local module
 import { connection as conn } from '../../mariadb';
-import { queryErrorChecker, verifyAccessToken } from '../common';
+import { queryErrorChecker, accessTokenVerify } from '../common';
 
 export interface IChatLog {
   id: number;
-  senderRole: string;
-  // senderRole: 'CUSTOMER' | 'MANAGER';
+  senderRole: string; // 'CUSTOMER' | 'MANAGER';
   content: string | null;
   createdAt: string;
   chatroomId: number;
 }
 
 export const chatroomGetOne = (req: Request, res: Response) => {
-  // 로그인 상태 확인
-  const decodedUserAccount = verifyAccessToken(req, res);
+  const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  // chatroomId 가져오기
   const { chatroomId } = req.params;
   const sql = `
     SELECT
@@ -33,17 +30,12 @@ export const chatroomGetOne = (req: Request, res: Response) => {
       user_id = ? AND chatroom_id = ?
   `;
   const values = [decodedUserAccount.id, parseInt(chatroomId)];
-  let resValue: IChatLog[];
 
-  try {
-    conn.query(sql, values, (err, results) => {
-      queryErrorChecker(err, res);
-      resValue = Object.values(results) as Array<IChatLog>;
-      return res.status(StatusCodes.OK).json(resValue);
-    });
-  } catch (e) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      error: e,
-    });
-  }
+  conn.query(sql, values, (err, results) => {
+    if (queryErrorChecker(err, res)) return;
+
+    return res
+      .status(StatusCodes.OK)
+      .json(Object.values(results) as Array<IChatLog>);
+  });
 };

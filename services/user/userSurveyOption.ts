@@ -1,8 +1,8 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-// import local module
+// Import local module
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
 
@@ -23,13 +23,13 @@ export enum ESurveyOption {
 
 export const userSurveyOption = async (req: Request, res: Response) => {
   const conn = await mariadb.createConnection(connInfo);
-  let resValue = {} as ISurveyOption;
-  let sql: string, results: mariadb.QueryResult;
+  const resValue = {} as ISurveyOption;
+  let sql: string;
 
   try {
     // 1. 지원 사업 분류
     sql = `SELECT * FROM Business_Classification`;
-    [results] = await conn.query(sql);
+    let [results] = await conn.query(sql);
     resValue.business_classification =
       results as ISurveyOption['business_classification'];
 
@@ -60,10 +60,10 @@ export const userSurveyOption = async (req: Request, res: Response) => {
       ...resValue,
     });
   } catch (e) {
-    console.log(e);
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      message: e,
-    });
+    console.error(e);
+    return res.status(StatusCodes.BAD_REQUEST).json(e);
+  } finally {
+    await conn.end();
   }
 };
 

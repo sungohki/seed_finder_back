@@ -1,17 +1,18 @@
-import dotenv from 'dotenv';
+// Import node module
 import app from './app';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import dotenv from 'dotenv';
+dotenv.config(); // Load environment variables
+
+// Import local module
 import { swaggerOptions } from './swagger/swagger';
 
-// Load environment variables
-dotenv.config();
-
-// Retrieve the port number
+// Setting PORT number
 const port = process.env.PORT || 3000;
 const host = process.env.DOMAIN || 'localhost';
 
-// swagger setup
+// Swagger setup
 const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

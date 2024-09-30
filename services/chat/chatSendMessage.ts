@@ -1,15 +1,15 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-// import local module
+// Import local module
 import { connection as conn } from '../../mariadb';
-import { createRes, verifyAccessToken } from '../common';
+import { createRes, accessTokenVerify } from '../common';
 import { ResultSetHeader } from 'mysql2';
 
 export const chatSendMessage = (req: Request, res: Response) => {
   // 로그인 상태 확인
-  const decodedUserAccount = verifyAccessToken(req, res);
+  const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   // chatroomId 가져오기
   const { chatroomId } = req.params;

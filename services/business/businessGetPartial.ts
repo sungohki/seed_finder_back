@@ -1,34 +1,34 @@
-// import node module
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-// import local module
+// Import local module
 import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
-import { getUserInfo, verifyAccessToken } from '../common';
-import { businessToCalender, IBusinessPreview } from './businessGetAll';
+import { accessTokenVerify } from '../common';
+import { businessToCalender, IBusinessPreview } from '.';
+import { userGetInfo } from '../user';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
   // 로그인 상태 확인
-  const decodedUserAccount = verifyAccessToken(req, res);
+  const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
 
   // 1. 사용자 설문 정보 호출
-  const userInfo = await getUserInfo(decodedUserAccount);
+  const userInfo = await userGetInfo(decodedUserAccount);
 
   // 2. DB 연결
   const conn = await mariadb.createConnection(connInfo);
 
-  let sql: string;
-  let values: any[] = [];
-
-  sql = `
+  let sql = `
     SELECT DISTINCT A.id, A.integrated_project_name, BC.name AS business_classification_name, A.start_date, A.end_date
       FROM Announcement A
     JOIN
       Business_Classification BC
       ON A.business_classification_id = BC.id
   `;
+  let values: any[] = [];
+
   // 신청대상 여부 판별
   if (userInfo.businessApply.length) {
     sql += ` JOIN Announcement_Application_Target AAT ON A.id = AAT.announcement_id`;
@@ -89,11 +89,9 @@ export const businessGetPartial = async (req: Request, res: Response) => {
     const calendarData = businessToCalender(businessPreviews);
 
     return res.status(StatusCodes.OK).json(calendarData);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: 'An error occurred while processing your request.',
-    });
+  } catch (e) {
+    console.error(e);
+    return res.status(StatusCodes.BAD_REQUEST).json(e);
   } finally {
     await conn.end();
   }
