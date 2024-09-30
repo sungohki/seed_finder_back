@@ -16,5 +16,6 @@ app.use('/user', routes.userRouter);
 app.use('/business', routes.businessRouter);
 app.use('/favorite', routes.favoriteRouter);
 app.use('/chatroom', routes.chatroomRouter);
+app.use('/chat', routes.chatRouter);
 
 export default app;

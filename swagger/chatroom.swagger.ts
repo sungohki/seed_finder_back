@@ -21,8 +21,8 @@
  *           application/json:
  *             schema:
  *               type: array
- *                 items:
- *                   $ref: '#/components/schemas/ChatroomPreview'
+ *               items:
+ *                 $ref: '#/components/schemas/ChatroomPreview'
  *       500:
  *         description: Internal Server Error.
  *
@@ -37,7 +37,7 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the chatroom to read
+ *           description: ID of the chatroom to read
  *     requestBody:
  *       required: false
  *     responses:
@@ -47,8 +47,8 @@
  *           application/json:
  *             schema:
  *               type: array
- *                 items:
- *                   $ref: '#/components/schemas/ChatLog'
+ *               items:
+ *                 $ref: '#/components/schemas/ChatLog'
  *       500:
  *         description: Internal Server Error.
  *

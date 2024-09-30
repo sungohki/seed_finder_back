@@ -11,7 +11,7 @@
  *   post:
  *     summary: Create one chatting
  *     tags:
- *       - Business
+ *       - Chat
  *     parameters:
  *       - name: chatroomId
  *         in: path
