@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 
 const app = express();
+app.use(cookieParser());
 
 // import routes
 import * as routes from './routes';
