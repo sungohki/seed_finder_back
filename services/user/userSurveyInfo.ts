@@ -17,10 +17,8 @@ interface ISurveyInfo {
 
 // 회원 정보 설문
 export const userSurveyInfo = async (req: Request, res: Response) => {
-  // 로그인 상태 확인
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-
   const conn = await mariadb.createConnection(connInfo);
   const {
     businessCategory,

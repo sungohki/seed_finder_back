@@ -8,7 +8,6 @@ import { createRes, accessTokenVerify } from '../common';
 import { ResultSetHeader } from 'mysql2';
 
 export const chatSendMessage = (req: Request, res: Response) => {
-  // 로그인 상태 확인
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   // chatroomId 가져오기

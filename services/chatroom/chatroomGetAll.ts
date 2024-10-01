@@ -12,14 +12,13 @@ import {
 import { IChatroomPreview } from '.';
 
 export const chatroomGetAll = (req: Request, res: Response) => {
-  // 로그인 상태 확인
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   const sql = `
     SELECT 
       CR.id AS chatroomId,
       CR.numbering_id AS numberingId,
-      cr.title as title
+      CR.title as title,
       CL.content AS lastMessage,
       CL.created_at AS lastMessageCreatedAt,
       COUNT(CL3.id) AS unreadMessageCount

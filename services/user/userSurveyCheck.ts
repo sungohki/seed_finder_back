@@ -9,7 +9,6 @@ import { connInfo } from '../../mariadb';
 
 //회원 설문 여부 확인
 export const userSurveyCheck = async (req: Request, res: Response) => {
-  // 로그인 상태 확인
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   const conn = await mariadb.createConnection(connInfo);

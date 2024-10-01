@@ -1,25 +1,19 @@
 // Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import mariadb from 'mysql2/promise';
 
 // Import local module
-import mariadb from 'mysql2/promise';
 import { connInfo } from '../../mariadb';
 import { accessTokenVerify } from '../common';
 import { businessToCalender, IBusinessPreview } from '.';
 import { userGetInfo } from '../user';
 
 export const businessGetPartial = async (req: Request, res: Response) => {
-  // 로그인 상태 확인
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-
-  // 1. 사용자 설문 정보 호출
   const userInfo = await userGetInfo(decodedUserAccount);
-
-  // 2. DB 연결
   const conn = await mariadb.createConnection(connInfo);
-
   let sql = `
     SELECT DISTINCT A.id, A.integrated_project_name, BC.name AS business_classification_name, A.start_date, A.end_date
       FROM Announcement A
