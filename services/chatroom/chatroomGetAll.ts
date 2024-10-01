@@ -19,6 +19,7 @@ export const chatroomGetAll = (req: Request, res: Response) => {
     SELECT 
       CR.id AS chatroomId,
       CR.numbering_id AS numberingId,
+      cr.title as title
       CL.content AS lastMessage,
       CL.created_at AS lastMessageCreatedAt,
       COUNT(CL3.id) AS unreadMessageCount

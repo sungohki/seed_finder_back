@@ -5,7 +5,8 @@ export * from './chatroomCreateOne';
 
 export interface IChatroom {
   chatroomId: number;
-  numberingId: number;
+  numberingId: string;
+  title: string;
 }
 
 export interface IChatroomPreview extends IChatroom {
