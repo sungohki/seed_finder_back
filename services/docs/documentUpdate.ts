@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 // Import local module
 import { connection as conn } from '../../mariadb';
-import { createRes, accessTokenVerify, queryErrorChecker } from '../common';
+import { accessTokenVerify, queryErrorChecker } from '../common';
 import { generateMessage } from './documentGenerateMessage';
 
 export const documentUpdate = async (req: Request, res: Response) => {

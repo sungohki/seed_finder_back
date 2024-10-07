@@ -20,6 +20,6 @@ app.use('/business', routes.businessRouter);
 app.use('/favorite', routes.favoriteRouter);
 app.use('/chatroom', routes.chatroomRouter);
 app.use('/chat', routes.chatRouter);
-app.use('/support', routes.supportRouter)
+app.use('/docs', routes.supportRouter);
 
 export default app;

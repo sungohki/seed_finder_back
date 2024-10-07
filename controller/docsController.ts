@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import * as ss from '../services/support';
+import * as ds from '../services/docs';
 
 export const documentCreateHandler = (req: Request, res: Response) => {
-  return ss.documentSendData(req, res);
+  return ds.documentSendData(req, res);
 };
 
 export const documentGetResultHandler = (req: Request, res: Response) => {
-  return ss.documentGetOne(req, res);
+  return ds.documentGetOne(req, res);
 };
 
 export const documentMessageUpdateHandler = (req: Request, res: Response) => {
-  return ss.documentUpdate(req, res);
+  return ds.documentUpdate(req, res);
 };
