@@ -15,12 +15,13 @@ export const supportSendData = async (req: Request, res: Response) => {
 
   try {
     //TODO: 엑세스 토큰 로직 필요()
-    const { message } = req.body();
+    const { message } = req.body;
     //TODO: message길이 오류 처리 필요
     res.status(StatusCodes.OK).end();
 
     //chat gpt api
     const data: Array<String | undefined> = await generateMessageAll(message);
+    console.log('메시지 생성 완료');
     //database 저장
     await documentCreate(decodedUserAccount.id, message, data);
 
@@ -33,7 +34,7 @@ export const supportSendData = async (req: Request, res: Response) => {
 
 async function generateMessageAll(message: string) {
   const data: Array<String | undefined> = [];
-  for (let i = 0; i < 32; i++) {
+  for (let i = 1; i < 3; i++) {
     const ret = await generateMessage(i, message);
     data.push(ret);
   }
