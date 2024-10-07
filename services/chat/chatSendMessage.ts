@@ -10,11 +10,10 @@ import { ResultSetHeader } from 'mysql2';
 export const chatSendMessage = (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  // chatroomId 가져오기
   const { chatroomId } = req.params;
   const { content } = req.body;
   const sql = `
-    INsert into
+    INSERT INTO
         ChatLog
         (sender_role, content, user_id, chatroom_id)
     values
