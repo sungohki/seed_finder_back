@@ -7,5 +7,5 @@ export const documentCreateHandler = (req: Request, res: Response) => {
 
 
 export const documentGetResultHandler = (req: Request, res: Response) => {
-    return;
+    return ss.getDocContent(req,res);
 };

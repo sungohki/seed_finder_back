@@ -1,7 +1,7 @@
 export * from './createDocument'
 export * from './generateMessage'
 export * from './supportSendData'
-
+export * from './getDocContents'
 export interface IGuide {
     id : number;
     guideTitle: string;
