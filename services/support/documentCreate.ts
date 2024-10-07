@@ -38,7 +38,7 @@ export const documentCreate = async (
       const msg = data[index]; // 현재 인덱스의 메시지 데이터
 
       // 각 메시지에 대해 Message 테이블에 삽입
-      await conn.query(sql, [documentId, index, msg]);
+      await conn.query(sql, [documentId, index + 1, msg]);
     }
 
     await conn.commit(); // 트랜잭션 커밋
