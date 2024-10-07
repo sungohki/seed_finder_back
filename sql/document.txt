@@ -1,0 +1,21 @@
+CREATE TABLE Guide (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    guide_title VARCHAR(50),
+    guide_content TEXT
+);
+
+CREATE TABLE Document (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    idea_message VARCHAR(255),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES User(id)
+);
+
+CREATE TABLE Message (
+    document_id INT,
+    guide_id INT,
+    message_content VARCHAR(255),
+    CONSTRAINT fk_document_id FOREIGN KEY (document_id) REFERENCES Document(id),
+    CONSTRAINT fk_guide_id FOREIGN KEY (guide_id) REFERENCES Guide(id)
+);
+
