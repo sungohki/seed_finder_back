@@ -2,6 +2,7 @@ export * from './documentCreate';
 export * from './generateMessage';
 export * from './supportSendData';
 export * from './getDocContents';
+export * from './documentUpdate';
 export interface IGuide {
   id: number;
   guideTitle: string;
