@@ -22,7 +22,8 @@ export const documentCreate = async (
       VALUES
         (?, ?)
     `;
-    const [result] = await conn.query<ResultSetHeader>(sql, [userId, message]);
+    let values: Array<any> = [userId, message];
+    const [result] = await conn.query<ResultSetHeader>(sql, values);
     const documentId = result.insertId;
 
     // 2. Message 테이블에 메시지 추가
@@ -33,14 +34,11 @@ export const documentCreate = async (
         VALUES
           (?, ?, ?)
     `;
-
     for (let index = 0; index < data.length; index++) {
-      const msg = data[index]; // 현재 인덱스의 메시지 데이터
-
+      values = [documentId, index + 1, data[index]];
       // 각 메시지에 대해 Message 테이블에 삽입
-      await conn.query(sql, [documentId, index + 1, msg]);
+      await conn.query(sql, values);
     }
-
     await conn.commit(); // 트랜잭션 커밋
     console.log('info: document 생성 요청 완료');
   } catch (e) {
