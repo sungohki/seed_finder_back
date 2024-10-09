@@ -10,6 +10,7 @@ dotenv.config();
 import { accessTokenVerify } from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
+import { ChatCompletionMessageParam } from 'openai/resources';
 
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
@@ -29,6 +30,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
     await documentInsert(decodedUserAccount.id, message, data);
 
     // TODO: Add FCM function
+    
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
@@ -37,17 +39,31 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
 export const generateMessage = async (num: number, param: string) => {
   try {
+    const messages:Array<ChatCompletionMessageParam>=[]
+
+    const history=await readFile('./data/training_data.jsonl','utf-8');
+    const lines=history.split('\n').filter(line => line.trim() !== '');
+    if (num >= lines.length) {
+      throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
+    }
+    const parsedLine = JSON.parse(lines[num]);
+    const parsedLineContent = parsedLine.content.split(',');
+    parsedLineContent.forEach((content: ChatCompletionMessageParam) => {
+      messages.push(content); 
+    });
+
     const data = await readFile('./data/guidelines.json', 'utf8');
     const guidelines = JSON.parse(data);
     const messageContent = guidelines[num];
     if (!messageContent)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
+    
+    messages.push( { role: 'system', content: messageContent })
+    messages.push({ role: 'user', content: param })
+
 
     const response = await openAi.chat.completions.create({
-      messages: [
-        { role: 'system', content: messageContent },
-        { role: 'user', content: param },
-      ],
+      messages: messages,
       model: process.env.FINE_TUNING_MODEL as string,
     });
     return response.choices[0].message.content as string;
