@@ -13,6 +13,7 @@ CREATE TABLE Guide (
 CREATE TABLE Document (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
+    numbering_id string,
     title VARCHAR(255) not null,
     idea_message VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

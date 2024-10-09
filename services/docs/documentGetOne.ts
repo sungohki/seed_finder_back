@@ -12,16 +12,19 @@ export const documentGetOne = (req: Request, res: Response) => {
   const { documentId } = req.params;
   const sql = `
     SELECT
-      M.guide_id,
-      M.message_content
+      G.guide_title as guideTitle
+      M.message_content as messageContent,
     FROM
       Document D
     JOIN
       Message M
-    ON
-      D.id = M.document_id
+      ON D.id = M.document_id
+    JOIN
+      Guide G
+      ON M.guide_id = G.id
     WHERE
-      D.user_id = ? and D.id = ?
+      D.user_id = ? 
+      AND D.id = ?;
   `;
   const values = [decodedUserAccount.id, parseInt(documentId)];
   conn.query(sql, values, (err, results) => {

@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { readFile } from 'fs/promises';
 import mariadb from 'mysql2/promise';
 import dotenv from 'dotenv';
-import {sendFCM} from '../common/fcm'
+import { sendFCM } from '../common/fcm';
 dotenv.config();
 
 // Import local module
@@ -20,14 +20,14 @@ import { IDocumentRequest, IGuide } from '.';
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const { title, message, numberingId,deviceToken } = req.body as IDocumentRequest;
+  const DR = req.body as IDocumentRequest;
   const conn = await mariadb.createConnection(connInfo);
   const sql = `
     SELECT *
     FROM Guide
     WHERE document_topic_id = (SELECT id FROM Document_Topic WHERE numbering_id = ?);
   `;
-  let values = [numberingId];
+  let values = [DR.numberingId];
 
   try {
     let [results] = await conn.query(sql, values);
@@ -38,18 +38,13 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       temp.push(convertKeysToCamelCase(item));
 
     for (const item of temp) {
-      const ret = await generateMessage(item.id, message);
+      const ret = await generateMessage(item.id, DR.message);
       openAiAnswer.push(ret);
     }
 
-    await documentInsert(
-      decodedUserAccount.id,
-      { title, message, numberingId,deviceToken },
-      temp[0].id,
-      openAiAnswer
-    );
+    await documentInsert(decodedUserAccount.id, DR, temp[0].id, openAiAnswer);
     // TODO: Add FCM function
-    sendFCM(deviceToken)
+    sendFCM(DR.deviceToken);
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
