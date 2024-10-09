@@ -16,7 +16,7 @@ export const documentUpdate = async (req: Request, res: Response) => {
     var { messageNum } = req.params;
     const { message } = req.body();
 
-    //TODO: message길이 오류 처리 필요
+    //TODO: message 길이 오류 처리 필요
     res.status(StatusCodes.OK).end();
 
     //chat gpt api

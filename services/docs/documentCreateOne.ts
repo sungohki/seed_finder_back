@@ -1,34 +1,59 @@
 // Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
+import mariadb, { ResultSetHeader } from 'mysql2/promise';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 // Import local module
-import { accessTokenVerify } from '../common';
+import { connInfo } from '../../config/mariadb';
+import { accessTokenVerify, convertKeysToCamelCase } from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
+
 import { ChatCompletionMessageParam } from 'openai/resources';
+
+import { IGuide } from '.';
+
 
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const { message } = req.body as { message: string };
+  const { title, message, numberingId } = req.body as {
+    title: string;
+    message: string;
+    numberingId: string;
+  };
+  const conn = await mariadb.createConnection(connInfo);
+  const sql = `
+    SELECT *
+    FROM Guide
+    WHERE document_topic_id = (SELECT id FROM Document_Topic WHERE numbering_id = ?);
+  `;
+  let values = [numberingId];
 
   try {
+    let [results] = await conn.query(sql, values);
     res.status(StatusCodes.OK).end();
-    const data: Array<String | undefined> = [];
+    const openAiAnswer: Array<String | undefined> = [];
+    const temp: Array<IGuide> = [];
+    for (const item of results as Array<IGuide>)
+      temp.push(convertKeysToCamelCase(item));
 
-    for (let index = 1; index < 33; index++) {
-      // for (let index = 1; index < 3; index++) {
-      const ret = await generateMessage(index, message);
-      data.push(ret);
+    for (const item of temp) {
+      const ret = await generateMessage(item.id, message);
+      openAiAnswer.push(ret);
     }
 
-    await documentInsert(decodedUserAccount.id, message, data);
-
+    await documentInsert(
+      decodedUserAccount.id,
+      message,
+      title,
+      temp[0].id,
+      openAiAnswer
+    );
     // TODO: Add FCM function
     
   } catch (e) {
