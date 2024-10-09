@@ -22,6 +22,12 @@ export interface IDocumentDetail extends IDocument {
   ideaMessage: string;
 }
 
+export interface IDocumentRequest {
+  title: string;
+  message: string;
+  numberingId: string;
+}
+
 export interface IMessage {
   id: number;
   documentId: number;

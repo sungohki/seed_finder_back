@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { readFile } from 'fs/promises';
-import mariadb, { ResultSetHeader } from 'mysql2/promise';
+import mariadb from 'mysql2/promise';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,16 +15,12 @@ import { openAi } from '../../config/openaiClient';
 
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-import { IGuide } from '.';
+import { IDocumentRequest, IGuide } from '.';
 
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const { title, message, numberingId } = req.body as {
-    title: string;
-    message: string;
-    numberingId: string;
-  };
+  const { title, message, numberingId } = req.body as IDocumentRequest;
   const conn = await mariadb.createConnection(connInfo);
   const sql = `
     SELECT *
@@ -48,8 +44,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
     await documentInsert(
       decodedUserAccount.id,
-      message,
-      title,
+      { title, message, numberingId },
       temp[0].id,
       openAiAnswer
     );

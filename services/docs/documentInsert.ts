@@ -3,11 +3,11 @@ import mariadb, { ResultSetHeader } from 'mysql2/promise';
 
 // Import local module
 import { connInfo } from '../../config/mariadb';
+import { IDocumentRequest } from '.';
 
 export const documentInsert = async (
   userId: number,
-  ideaMessage: string,
-  title: string,
+  documentReq: IDocumentRequest,
   guideIndex: number,
   data: Array<String | undefined>
 ) => {
@@ -20,11 +20,16 @@ export const documentInsert = async (
     let sql = `
       INSERT INTO
         Document
-          (user_id, title, idea_message)
+          (user_id, title, idea_message, numbering_id)
       VALUES
-        (?, ?, ?)
+        (?, ?, ?, ?)
     `;
-    let values: Array<any> = [userId, title, ideaMessage];
+    let values: Array<any> = [
+      userId,
+      documentReq.title,
+      documentReq.message,
+      documentReq.numberingId,
+    ];
     const [result] = await conn.query<ResultSetHeader>(sql, values);
     const documentId = result.insertId;
 
@@ -37,7 +42,7 @@ export const documentInsert = async (
           (?, ?, ?)
     `;
     console.log(guideIndex);
-    for (let index = 0; index <  data.length; index++) {
+    for (let index = 0; index < data.length; index++) {
       console.log(data[index]);
       values = [documentId, index + guideIndex, data[index]];
       // 각 메시지에 대해 Message 테이블에 삽입

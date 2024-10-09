@@ -8,7 +8,7 @@ router.use(express.json());
 router.get('/', sc.documentGetAllHandler);
 
 // Create a document and insert idea
-router.post('/', sc.documentCreateHandler);
+router.post('/create', sc.documentCreateHandler);
 
 // Read the document of user
 router.get('/:documentId', sc.documentGetOneHandler);
