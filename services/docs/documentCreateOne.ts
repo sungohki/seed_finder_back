@@ -22,26 +22,16 @@ export const documentCreateOne = async (req: Request, res: Response) => {
   };
   const conn = await mariadb.createConnection(connInfo);
   const sql = `
-    SELECT COUNT(*)
+    SELECT *
     FROM Guide
-    WHERE numbering_id = 
-    (SELECT numbering_id FROM Document_Topic WHERE numbering_id = ?);
+    WHERE document_topic_id = (SELECT id FROM Document_Topic WHERE numbering_id = ?);
   `;
   let values = [numberingId];
 
   try {
     let [results] = await conn.query(sql, values);
     console.log(results);
-    res.status(StatusCodes.OK).end();
-    const data: Array<String | undefined> = [];
-
-    for (let index = 1; index < 33; index++) {
-      const ret = await generateMessage(index, message);
-      data.push(ret);
-    }
-
-    await documentInsert(decodedUserAccount.id, message, data);
-
+    return res.status(StatusCodes.OK).end();
     // TODO: Add FCM function
   } catch (e) {
     console.error(e);
