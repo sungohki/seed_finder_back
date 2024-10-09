@@ -6,7 +6,9 @@ import { connInfo } from '../../config/mariadb';
 
 export const documentInsert = async (
   userId: number,
-  message: string,
+  ideaMessage: string,
+  title: string,
+  guideIndex: number,
   data: Array<String | undefined>
 ) => {
   const conn = await mariadb.createConnection(connInfo);
@@ -18,11 +20,11 @@ export const documentInsert = async (
     let sql = `
       INSERT INTO
         Document
-          (user_id, idea_message)
+          (user_id, title, idea_message)
       VALUES
-        (?, ?)
+        (?, ?, ?)
     `;
-    let values: Array<any> = [userId, message];
+    let values: Array<any> = [userId, title, ideaMessage];
     const [result] = await conn.query<ResultSetHeader>(sql, values);
     const documentId = result.insertId;
 
@@ -34,8 +36,8 @@ export const documentInsert = async (
         VALUES
           (?, ?, ?)
     `;
-    for (let index = 0; index < data.length; index++) {
-      values = [documentId, index + 1, data[index]];
+    for (let index = guideIndex; index < data.length; index++) {
+      values = [documentId, index, data[index]];
       // 각 메시지에 대해 Message 테이블에 삽입
       await conn.query(sql, values);
     }

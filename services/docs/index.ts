@@ -6,6 +6,7 @@ export * from './documentUpdate';
 
 export interface IGuide {
   id: number;
+  documentTopicId: string;
   guideTitle: string;
   guideContent: string;
 }
@@ -23,6 +24,7 @@ export interface IDocumentDetail extends IDocument {
 
 export interface IMessage {
   id: number;
+  documentId: number;
   guideId: number;
   messageContent: string;
 }

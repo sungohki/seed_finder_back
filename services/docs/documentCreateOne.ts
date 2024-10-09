@@ -9,14 +9,16 @@ dotenv.config();
 
 // Import local module
 import { connInfo } from '../../config/mariadb';
-import { accessTokenVerify } from '../common';
+import { accessTokenVerify, convertKeysToCamelCase } from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
+import { IGuide } from '.';
 
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const { message, numberingId } = req.body as {
+  const { title, message, numberingId } = req.body as {
+    title: string;
     message: string;
     numberingId: string;
   };
@@ -30,8 +32,24 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
   try {
     let [results] = await conn.query(sql, values);
-    console.log(results);
-    return res.status(StatusCodes.OK).end();
+    res.status(StatusCodes.OK).end();
+    const openAiAnswer: Array<String | undefined> = [];
+    const temp: Array<IGuide> = [];
+    for (const item of results as Array<IGuide>)
+      temp.push(convertKeysToCamelCase(item));
+
+    for (const item of temp) {
+      const ret = await generateMessage(item.id, message);
+      openAiAnswer.push(ret);
+    }
+
+    await documentInsert(
+      decodedUserAccount.id,
+      message,
+      title,
+      temp[0].id,
+      openAiAnswer
+    );
     // TODO: Add FCM function
   } catch (e) {
     console.error(e);

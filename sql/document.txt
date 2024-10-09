@@ -1,9 +1,13 @@
+DROP TABLE Message;
+DROP TABLE Guide;
+DROP TABLE Document;
+
 CREATE TABLE Guide (
     id INT PRIMARY KEY AUTO_INCREMENT,
     document_topic_id int,
     guide_title VARCHAR(50),
     guide_content TEXT,
-    CONSTRAINT fk_guide_document_topic_id FOREIGN KEY (document_topic_id) REFERENCES Document_Topic(id),
+    CONSTRAINT fk_guide_document_topic_id FOREIGN KEY (document_topic_id) REFERENCES Document_Topic(id)
 );
 
 CREATE TABLE Document (
