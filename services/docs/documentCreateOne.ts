@@ -82,7 +82,7 @@ export const generateMessage = async (num: number, param: string) => {
     if (!messageContent)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
     
-    messages.push( { role: 'system', content: messageContent })
+    messages.push( { role: 'system', content: messageContent})
     messages.push({ role: 'user', content: param })
 
 
