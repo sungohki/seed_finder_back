@@ -2,7 +2,7 @@
 import * as admin from 'firebase-admin';
 
 // Initialize the Firebase Admin SDK
-const serviceAccount = require('.../data/seedfinder-23b19-firebase-adminsdk-19tl8-da1abb6560.json');
+const serviceAccount = require('../../data/firebase-adminsdk.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -14,6 +14,9 @@ export const sendFCM = async (token: string) => {
     notification: {
       title: "title",
       body: "body",
+    },
+    data: {
+      documentId: "1",
     },
     token: token, // FCM device token
   };

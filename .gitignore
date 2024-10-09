@@ -1,5 +1,5 @@
 *.pem
-seedfinder-23b19-firebase-adminsdk-19tl8-da1abb6560.json
+data/firebase-adminsdk.json
 
 # Logs
 logs

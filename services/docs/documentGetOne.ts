@@ -12,8 +12,8 @@ export const documentGetOne = (req: Request, res: Response) => {
   const { documentId } = req.params;
   const sql = `
     SELECT
-      G.guide_title as guideTitle
-      M.message_content as messageContent,
+      G.guide_title as guideTitle,
+      M.message_content as messageContent
     FROM
       Document D
     JOIN

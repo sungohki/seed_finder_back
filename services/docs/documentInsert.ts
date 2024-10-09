@@ -41,11 +41,8 @@ export const documentInsert = async (
         VALUES
           (?, ?, ?)
     `;
-    console.log(guideIndex);
     for (let index = 0; index < data.length; index++) {
-      console.log(data[index]);
       values = [documentId, index + guideIndex, data[index]];
-      // 각 메시지에 대해 Message 테이블에 삽입
       await conn.query(sql, values);
     }
     await conn.commit(); // 트랜잭션 커밋

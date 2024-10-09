@@ -41,10 +41,17 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       const ret = await generateMessage(item.id, DR.message);
       openAiAnswer.push(ret);
     }
-
     await documentInsert(decodedUserAccount.id, DR, temp[0].id, openAiAnswer);
-    // TODO: Add FCM function
-    sendFCM(DR.deviceToken);
+
+    // test device token
+    const testToken = `
+      ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS
+    `;
+    sendFCM(testToken);
+
+    // console.log(DR.deviceToken);
+    // if (DR.deviceToken)
+    //  sendFCM(DR.deviceToken);
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
