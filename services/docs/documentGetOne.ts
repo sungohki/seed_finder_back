@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 // Import local module
-import { connection as conn } from '../../mariadb';
+import { connection as conn } from '../../config/mariadb';
 import { accessTokenVerify, queryErrorChecker } from '../common';
 
 export const documentGetOne = (req: Request, res: Response) => {

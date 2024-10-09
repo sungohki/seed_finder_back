@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Import local module
-import { connection as conn } from '../../mariadb';
+import { connection as conn } from '../../config/mariadb';
 import { IUserAccount } from '.';
 import { RowDataPacket } from 'mysql2';
 import { accessTokenGenerate, ILoginUser, queryErrorChecker } from '../common';

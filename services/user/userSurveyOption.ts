@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 // Import local module
 import mariadb from 'mysql2/promise';
-import { connInfo } from '../../mariadb';
+import { connInfo } from '../../config/mariadb';
 
 interface ISurveyOption {
   business_classification: Array<{ id: number; name: string }>;

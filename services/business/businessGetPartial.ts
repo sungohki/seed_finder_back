@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import mariadb from 'mysql2/promise';
 
 // Import local module
-import { connInfo } from '../../mariadb';
+import { connInfo } from '../../config/mariadb';
 import { accessTokenVerify } from '../common';
 import { businessToCalender, IBusinessPreview } from '.';
 import { userGetInfo } from '../user';

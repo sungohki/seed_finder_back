@@ -1,6 +1,6 @@
 // Import local module
 import mariadb from 'mysql2/promise';
-import { connInfo } from '../../mariadb';
+import { connInfo } from '../../config/mariadb';
 import { DecodedToken, accessTokenVerify } from '../common';
 
 interface IUserInfo {

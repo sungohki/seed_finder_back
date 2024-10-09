@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 
 // Import local module
-import { connection as conn } from '../../mariadb';
+import { connection as conn } from '../../config/mariadb';
 import { createRes, accessTokenVerify } from '../common';
 import { IChatroom } from '.';
 import { ResultSetHeader } from 'mysql2';

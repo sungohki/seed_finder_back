@@ -2,9 +2,9 @@
 import mariadb, { ResultSetHeader } from 'mysql2/promise';
 
 // Import local module
-import { connInfo } from '../../mariadb';
+import { connInfo } from '../../config/mariadb';
 
-export const documentCreate = async (
+export const documentInsert = async (
   userId: number,
   message: string,
   data: Array<String | undefined>

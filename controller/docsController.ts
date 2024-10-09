@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as ds from '../services/docs';
 
 export const documentCreateHandler = (req: Request, res: Response) => {
-  return ds.documentSendData(req, res);
+  return ds.documentCreateOne(req, res);
 };
 
 export const documentGetResultHandler = (req: Request, res: Response) => {

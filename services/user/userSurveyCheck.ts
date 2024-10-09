@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 // Import local module
 import { accessTokenVerify } from '../common';
 import mariadb from 'mysql2/promise';
-import { connInfo } from '../../mariadb';
+import { connInfo } from '../../config/mariadb';
 
 //회원 설문 여부 확인
 export const userSurveyCheck = async (req: Request, res: Response) => {

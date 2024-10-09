@@ -1,6 +1,5 @@
 // Import required modules
 import * as admin from 'firebase-admin';
-import express, { Request, Response } from 'express';
 
 // Initialize the Firebase Admin SDK
 const serviceAccount = require('.../data/seedfinder-23b19-firebase-adminsdk-19tl8-da1abb6560.json');
@@ -9,9 +8,9 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-export const sendFCM=async (sendMessage)=>{
-    // Define the message payload
-    const {title,body,token}=sendMessage
+export const sendFCM = async (sendMessage) => {
+  // Define the message payload
+  const { title, body, token } = sendMessage;
   const message: admin.messaging.Message = {
     notification: {
       title: title,
@@ -27,9 +26,4 @@ export const sendFCM=async (sendMessage)=>{
   } catch (error) {
     console.error('Error sending message:', error);
   }
-}
-
-
-  
-
-
+};

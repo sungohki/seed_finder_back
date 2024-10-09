@@ -6,7 +6,7 @@ dotenv.config();
 
 // Import local module
 import { createRes } from '../common';
-import { connection as conn } from '../../mariadb';
+import { connection as conn } from '../../config/mariadb';
 import { ResultSetHeader } from 'mysql2';
 import { StatusCodes } from 'http-status-codes';
 import { IUserAccount } from '.';
