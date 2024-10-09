@@ -8,13 +8,12 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-export const sendFCM = async (sendMessage) => {
+export const sendFCM = async (token: string) => {
   // Define the message payload
-  const { title, body, token } = sendMessage;
   const message: admin.messaging.Message = {
     notification: {
-      title: title,
-      body: body,
+      title: "title",
+      body: "body",
     },
     token: token, // FCM device token
   };
