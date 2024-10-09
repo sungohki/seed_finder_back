@@ -4,13 +4,16 @@ import * as sc from '../controller/docsController';
 const router = express.Router();
 router.use(express.json());
 
+// Read all documents of user
+router.get('/', sc.documentGetAllHandler);
+
 // Create a document and insert idea
 router.post('/', sc.documentCreateHandler);
 
-// Read a document
-router.get('/:documentId', sc.documentGetResultHandler);
+// Read the document of user
+router.get('/:documentId', sc.documentGetOneHandler);
 
-// Update a document
+// Update the document
 router.put('/:documentId', sc.documentMessageUpdateHandler);
 
 export const supportRouter = router;

@@ -35,7 +35,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
   }
 };
 
-const generateMessage = async (num: number, param: string) => {
+export const generateMessage = async (num: number, param: string) => {
   try {
     const data = await readFile('./data/guidelines.json', 'utf8');
     const guidelines = JSON.parse(data);

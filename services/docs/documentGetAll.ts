@@ -6,12 +6,12 @@ import { StatusCodes } from 'http-status-codes';
 import { connection as conn } from '../../config/mariadb';
 import { accessTokenVerify, queryErrorChecker } from '../common';
 
-export const documenntGetAll = (req: Request, res: Response) => {
+export const documentGetAll = (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
   const sql = `
     SELECT
-        *
+      *
     FROM
       Document
     WHERE

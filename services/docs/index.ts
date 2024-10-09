@@ -1,5 +1,4 @@
 export * from './documentInsert';
-export * from './documentGenerateMessage';
 export * from './documentCreateOne';
 export * from './documentGetOne';
 export * from './documentGetAll';
@@ -14,6 +13,11 @@ export interface IGuide {
 export interface IDocument {
   id: number;
   userId: number;
+  title: string;
+  createdAt: string;
+}
+
+export interface IDocumentDetail extends IDocument {
   ideaMessage: string;
 }
 
