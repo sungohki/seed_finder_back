@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { readFile } from 'fs/promises';
 import mariadb from 'mysql2/promise';
 import dotenv from 'dotenv';
-
+import {sendFCM} from '../common/fcm'
 dotenv.config();
 
 // Import local module
@@ -20,7 +20,7 @@ import { IDocumentRequest, IGuide } from '.';
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const { title, message, numberingId } = req.body as IDocumentRequest;
+  const { title, message, numberingId,deviceToken } = req.body as IDocumentRequest;
   const conn = await mariadb.createConnection(connInfo);
   const sql = `
     SELECT *
@@ -44,11 +44,12 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
     await documentInsert(
       decodedUserAccount.id,
-      { title, message, numberingId },
+      { title, message, numberingId,deviceToken },
       temp[0].id,
       openAiAnswer
     );
     // TODO: Add FCM function
+    sendFCM(deviceToken)
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);

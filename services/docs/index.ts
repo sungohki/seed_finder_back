@@ -26,6 +26,7 @@ export interface IDocumentRequest {
   title: string;
   message: string;
   numberingId: string;
+  deviceToken: string;
 }
 
 export interface IMessage {
