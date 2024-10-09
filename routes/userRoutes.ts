@@ -17,9 +17,10 @@ router.post('/login', userLoginHandler);
 router.post('/join', userJoinHandler);
 // Create user info
 router.post('/info', userSurveyInfoHandler);
+// Create user's device token
+// router.post('/device-token');
 // Read servey options
 router.get('/option', userSurveyOptionHandler);
-
 // Read servey check
 router.get('/check', userSurveyCheckHandler);
 

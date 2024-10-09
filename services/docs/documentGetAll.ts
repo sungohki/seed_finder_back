@@ -11,7 +11,7 @@ export const documentGetAll = (req: Request, res: Response) => {
   if (decodedUserAccount === null) return;
   const sql = `
     SELECT
-      *
+      id, numbering_id, title, created_at
     FROM
       Document
     WHERE

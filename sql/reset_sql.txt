@@ -199,14 +199,14 @@ CREATE TABLE User_Favorite_Business (
 );
 
 -- 채팅방 테이블
-CREATE TABLE ChatRoom (
+CREATE TABLE Document_Topic (
     id INT PRIMARY KEY AUTO_INCREMENT,
     numbering_id VARCHAR(20) NOT NULL,
     title VARCHAR(200) NOT NULL DEFAULT 'Untitled'
 );
 
 -- 새로운 데이터 삽입
-INSERT INTO ChatRoom (numbering_id, title) VALUES
+INSERT INTO Document_Topic (numbering_id, title) VALUES
 ('1-1', '창업아이템 배경 및 필요성'),
 ('1-2', '창업아이템 목표시장(고객) 현황 분석'),
 ('2-1', '창업아이템 현황(준비 정도)'),

@@ -1,13 +1,17 @@
 CREATE TABLE Guide (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    document_topic_id int,
     guide_title VARCHAR(50),
-    guide_content TEXT
+    guide_content TEXT,
+    CONSTRAINT fk_guide_document_topic_id FOREIGN KEY (document_topic_id) REFERENCES Document_Topic(id),
 );
 
 CREATE TABLE Document (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
+    title VARCHAR(255) not null,
     idea_message VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
@@ -19,3 +23,25 @@ CREATE TABLE Message (
     CONSTRAINT fk_guide_id FOREIGN KEY (guide_id) REFERENCES Guide(id)
 );
 
+-- 문서 주제 테이블
+CREATE TABLE Document_Topic (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    numbering_id VARCHAR(20) NOT NULL,
+    title VARCHAR(200) NOT NULL DEFAULT 'Untitled'
+);
+
+-- 새로운 데이터 삽입
+INSERT INTO Document_Topic (numbering_id, title) VALUES
+('1-1', '창업아이템 배경 및 필요성'),
+('1-2', '창업아이템 목표시장(고객) 현황 분석'),
+('2-1', '창업아이템 현황(준비 정도)'),
+('2-2', '창업아이템 실현 및 구체화 방안'),
+('3-1', '창업아이템 비즈니스 모델'),
+('3-2', '창업아이템 사업화 추진 전략'),
+('3-3-1', '사업 전체 로드맵'),
+('3-3-2', '협약기간 내 목표 및 달성 방안'),
+('3-3-3', '정부지원사업비 집행계획'),
+('3-3-4', '자금 필요성 및 조달계획'),
+('4-1-1', '대표자(팀) 현황'),
+('4-1-2', '외부 협력 현황 및 활용 방안'),
+('4-2', '중장기 사회적 가치 도입계획');
