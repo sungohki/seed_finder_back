@@ -17,7 +17,6 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 
 import { IGuide } from '.';
 
-
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
@@ -55,7 +54,6 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       openAiAnswer
     );
     // TODO: Add FCM function
-    
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
@@ -64,27 +62,31 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
 export const generateMessage = async (num: number, param: string) => {
   try {
-    const messages:Array<ChatCompletionMessageParam>=[]
+    const messages: Array<ChatCompletionMessageParam> = [];
 
-    const history=await readFile('./data/training_data.jsonl','utf-8');
-    const lines=history.split('\n').filter(line => line.trim() !== '');
+    const history = await readFile('./data/training_data.jsonl', 'utf-8');
+    const lines = history.split('\n').filter((line) => line.trim() !== '');
     if (num >= lines.length) {
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
     }
     const parsedLine = JSON.parse(lines[num]);
-    const parsedLineContent = parsedLine.messages.forEach((a:ChatCompletionMessageParam)=>{
-      messages.push(a); 
-    });
+    const parsedLineContent = parsedLine.messages.forEach(
+      (a: ChatCompletionMessageParam) => {
+        messages.push(a);
+      }
+    );
 
     const data = await readFile('./data/guidelines.json', 'utf8');
     const guidelines = JSON.parse(data);
     const messageContent = guidelines[num];
     if (!messageContent)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
-    
-    messages.push( { role: 'system', content: messageContent})
-    messages.push({ role: 'user', content: param })
 
+    messages.push({
+      role: 'system',
+      content: messageContent + `200 자 이내로 작성해줘.`,
+    });
+    messages.push({ role: 'user', content: param + `200 자 이내로 작성해줘.` });
 
     const response = await openAi.chat.completions.create({
       messages: messages,
