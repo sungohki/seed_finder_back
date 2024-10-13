@@ -5,6 +5,6 @@ const router = express.Router();
 router.use(express.json());
 
 // Test sending fcm message function
-router.post('send-fcm', TC.testSendFCMHander);
+router.post('/send-fcm', TC.testSendFCMHander);
 
 export const testRouter = router;
