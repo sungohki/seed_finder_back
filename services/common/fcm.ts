@@ -2,21 +2,21 @@
 import * as admin from 'firebase-admin';
 
 // Initialize the Firebase Admin SDK
-const serviceAccount = require('../../data/firebase-adminsdk.json');
+import * as serviceAccount from '../../data/firebase-adminsdk.json';
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
 export const sendFCM = async (token: string) => {
   // Define the message payload
   const message: admin.messaging.Message = {
     notification: {
-      title: "title",
-      body: "body",
+      title: 'title',
+      body: 'body',
     },
     data: {
-      documentId: "1",
+      documentId: '1',
     },
     token: token, // FCM device token
   };
@@ -25,7 +25,9 @@ export const sendFCM = async (token: string) => {
     // Send the message
     const response = await admin.messaging().send(message);
     console.log('Successfully sent message:', response);
+    return true;
   } catch (error) {
     console.error('Error sending message:', error);
+    return false;
   }
 };

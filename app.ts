@@ -22,4 +22,7 @@ app.use('/chatroom', routes.chatroomRouter);
 app.use('/chat', routes.chatRouter);
 app.use('/docs', routes.supportRouter);
 
+// Route for test functions
+app.use('/test', routes.testRouter);
+
 export default app;
