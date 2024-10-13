@@ -4,7 +4,6 @@ import { StatusCodes } from 'http-status-codes';
 import { readFile } from 'fs/promises';
 import mariadb from 'mysql2/promise';
 import dotenv from 'dotenv';
-import { sendFCM } from '../common/fcm';
 dotenv.config();
 
 // Import local module
@@ -12,6 +11,7 @@ import { connInfo } from '../../config/mariadb';
 import { accessTokenVerify, convertKeysToCamelCase } from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
+import { sendFCM } from '../common/fcm';
 
 import { ChatCompletionMessageParam } from 'openai/resources';
 
@@ -43,11 +43,11 @@ export const documentCreateOne = async (req: Request, res: Response) => {
     }
     await documentInsert(decodedUserAccount.id, DR, temp[0].id, openAiAnswer);
 
-    // test device token
-    const testToken = `
-      ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS
-    `;
-    sendFCM(testToken);
+    // // test device token
+    // const testToken = `
+    //   ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS
+    // `;
+    // sendFCM(testToken);
 
     // console.log(DR.deviceToken);
     // if (DR.deviceToken)

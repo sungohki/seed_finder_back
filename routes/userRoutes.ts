@@ -1,30 +1,18 @@
 import express from 'express';
-import {
-  userLoginHandler,
-  userJoinHandler,
-  userSurveyInfoHandler,
-  userSurveyOptionHandler,
-  userSurveyCheckHandler,
-} from '../controller/userController';
-import { userTestToken } from '../services/user';
+import * as UC from '../controller/userController';
 
 const router = express.Router();
 router.use(express.json());
 
 // Create user login token
-router.post('/login', userLoginHandler);
+router.post('/login', UC.userLoginHandler);
 // Create user account
-router.post('/join', userJoinHandler);
+router.post('/join', UC.userJoinHandler);
 // Create user info
-router.post('/info', userSurveyInfoHandler);
-// Create user's device token
-// router.post('/device-token');
+router.post('/info', UC.userSurveyInfoHandler);
 // Read servey options
-router.get('/option', userSurveyOptionHandler);
+router.get('/option', UC.userSurveyOptionHandler);
 // Read servey check
-router.get('/check', userSurveyCheckHandler);
-
-// test
-router.get('/test', userTestToken);
+router.get('/check', UC.userSurveyCheckHandler);
 
 export const userRouter = router;

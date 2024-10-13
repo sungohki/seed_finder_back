@@ -13,9 +13,6 @@ export const userSurveyInfoHandler = (req: Request, res: Response) => {
 export const userSurveyOptionHandler = (req: Request, res: Response) => {
   return us.userSurveyOption(req, res);
 };
-export const userTestTokenHandler = (req: Request, res: Response) => {
-  return us.userTestToken(req, res);
-};
 
 export const userSurveyCheckHandler = (req: Request, res: Response) => {
   return us.userSurveyCheck(req, res);

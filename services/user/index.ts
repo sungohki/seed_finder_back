@@ -3,7 +3,6 @@ export * from './userLogin';
 export * from './userGetInfo';
 export * from './userSurveyInfo';
 export * from './userSurveyOption';
-export * from './userTestToken';
 export * from './userSurveyCheck';
 
 export interface IUserAccount {
