@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
-import * as ds from '../services/docs';
+import * as DS from '../services/docs';
 
 export const documentGetAllHandler = (req: Request, res: Response) => {
-  return ds.documentGetAll(req, res);
+  return DS.documentGetAll(req, res);
 };
 
 export const documentCreateHandler = (req: Request, res: Response) => {
-  return ds.documentCreateOne(req, res);
+  return DS.documentCreateOne(req, res);
 };
 
 export const documentGetOneHandler = (req: Request, res: Response) => {
-  return ds.documentGetOne(req, res);
+  return DS.documentGetOne(req, res);
 };
 
 export const documentMessageUpdateHandler = (req: Request, res: Response) => {
-  return ds.documentUpdate(req, res);
+  return DS.documentUpdate(req, res);
 };

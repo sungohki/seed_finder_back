@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import * as bs from '../services/business';
+import * as BS from '../services/business';
 
 export const businessGetAllHandler = (req: Request, res: Response) => {
-  return bs.businessGetAll(req, res);
+  return BS.businessGetAll(req, res);
 };
 
 export const businessGetPartialHandler = (req: Request, res: Response) => {
-  return bs.businessGetPartial(req, res);
+  return BS.businessGetPartial(req, res);
 };
 
 export const businessGetDetailHandler = (req: Request, res: Response) => {
-  return bs.businessGetDetail(req, res);
+  return BS.businessGetDetail(req, res);
 };
