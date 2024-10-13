@@ -4,7 +4,7 @@ export * from './documentGetOne';
 export * from './documentGetAll';
 export * from './documentUpdate';
 
-export interface IGuide {
+export interface IDocumentGuide {
   id: number;
   documentTopicId: string;
   guideTitle: string;
@@ -27,11 +27,4 @@ export interface IDocumentRequest {
   message: string;
   numberingId: string;
   deviceToken: string;
-}
-
-export interface IMessage {
-  id: number;
-  documentId: number;
-  guideId: number;
-  messageContent: string;
 }

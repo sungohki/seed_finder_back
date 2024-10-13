@@ -3,45 +3,46 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { readFile } from 'fs/promises';
 import mariadb from 'mysql2/promise';
-import dotenv from 'dotenv';
-dotenv.config();
+import { ChatCompletionMessageParam } from 'openai/resources';
 
 // Import local module
 import { connInfo } from '../../config/mariadb';
-import { accessTokenVerify, convertKeysToCamelCase } from '../common';
+import { sendFCM, accessTokenVerify, convertKeysToCamelCase } from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
-import { sendFCM } from '../common/fcm';
-
-import { ChatCompletionMessageParam } from 'openai/resources';
-
-import { IDocumentRequest, IGuide } from '.';
+import { IDocumentRequest, IDocumentGuide } from '.';
 
 export const documentCreateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
-  const DR = req.body as IDocumentRequest;
+  const doucmentRequest = req.body as IDocumentRequest;
   const conn = await mariadb.createConnection(connInfo);
   const sql = `
     SELECT *
     FROM Guide
-    WHERE document_topic_id = (SELECT id FROM Document_Topic WHERE numbering_id = ?);
+    WHERE document_topic_id = 
+    (SELECT id FROM Document_Topic WHERE numbering_id = ?);
   `;
-  let values = [DR.numberingId];
+  let values = [doucmentRequest.numberingId];
 
   try {
     let [results] = await conn.query(sql, values);
     res.status(StatusCodes.OK).end();
     const openAiAnswer: Array<String | undefined> = [];
-    const temp: Array<IGuide> = [];
-    for (const item of results as Array<IGuide>)
+    const temp: Array<IDocumentGuide> = [];
+    for (const item of results as Array<IDocumentGuide>)
       temp.push(convertKeysToCamelCase(item));
 
     for (const item of temp) {
-      const ret = await generateMessage(item.id, DR.message);
+      const ret = await generateMessage(item.id, doucmentRequest.message);
       openAiAnswer.push(ret);
     }
-    await documentInsert(decodedUserAccount.id, DR, temp[0].id, openAiAnswer);
+    await documentInsert(
+      decodedUserAccount.id,
+      doucmentRequest,
+      temp[0].id,
+      openAiAnswer
+    );
 
     // // test device token
     // const testToken = `
@@ -49,9 +50,16 @@ export const documentCreateOne = async (req: Request, res: Response) => {
     // `;
     // sendFCM(testToken);
 
-    // console.log(DR.deviceToken);
-    // if (DR.deviceToken)
-    //  sendFCM(DR.deviceToken);
+    console.log(doucmentRequest.deviceToken);
+    if (doucmentRequest.deviceToken)
+      sendFCM({
+        title: doucmentRequest.title,
+        body: doucmentRequest.message,
+        data: {
+          documentId: doucmentRequest.numberingId,
+        },
+        deviceToken: doucmentRequest.deviceToken,
+      });
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
