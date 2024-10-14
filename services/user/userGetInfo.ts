@@ -27,7 +27,7 @@ export const userGetInfo = async (
   `;
   let values = [userAccount.id];
   let [results] = await conn.query(sql, values);
-  console.log(results);
+  // console.log(results);
   let temp: Array<number> = [];
   for (let item of results as Array<{ business_classification_id: number }>) {
     temp.push(item.business_classification_id);
@@ -44,7 +44,7 @@ export const userGetInfo = async (
       user_id = ?
   `;
   [results] = await conn.query(sql, values);
-  console.log(results);
+  // console.log(results);
   temp = [];
   for (let item of results as Array<{ application_target_id: number }>) {
     temp.push(item.application_target_id);
@@ -61,7 +61,7 @@ export const userGetInfo = async (
       user_id = ?
   `;
   [results] = await conn.query(sql, values);
-  console.log(results);
+  // console.log(results);
   temp = [];
   for (let item of results as Array<{ support_region_id: number }>) {
     temp.push(item.support_region_id);
@@ -78,7 +78,7 @@ export const userGetInfo = async (
       id = ?
   `;
   [results] = await conn.query(sql, values);
-  console.log(results);
+  // console.log(results);
   const remainInfo = results as Array<{
     user_age: number;
     pre_business_status: number;
@@ -87,7 +87,7 @@ export const userGetInfo = async (
   userInfo.businessTargetAge = remainInfo[0].user_age;
   if (remainInfo[0].pre_business_status) userInfo.businessExperience = 0;
   else userInfo.businessExperience = remainInfo[0].business_duration;
-  console.log(userInfo);
+  // console.log(userInfo);
 
   return userInfo;
 };

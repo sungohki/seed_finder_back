@@ -30,7 +30,7 @@ export const userLogin = (req: Request, res: Response) => {
       return res.status(StatusCodes.NOT_FOUND).json({
         message:
           `Info: 로그인 실패 (Wrong userId)` + userEmail + ', ' + loginUser,
-      }); // status code 404
+      });
     }
 
     // req에 담긴 pw와 대조
@@ -57,7 +57,7 @@ export const userLogin = (req: Request, res: Response) => {
         userRole: loginUser.user_management,
       };
       const accessTokenOption: jwt.SignOptions = {
-        expiresIn: '30m',
+        expiresIn: '1d',
         issuer: 'sungohki',
       };
       const instanceAccessToken = accessTokenGenerate(
