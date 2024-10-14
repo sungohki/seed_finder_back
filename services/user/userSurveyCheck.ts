@@ -22,7 +22,6 @@ export const userSurveyCheck = async (req: Request, res: Response) => {
   const values = [decodedUserAccount.id];
   try {
     let [results] = await conn.query(sql, values);
-    console.log(results);
 
     if (Object.values(results).length === 0)
       return res.status(StatusCodes.OK).json({

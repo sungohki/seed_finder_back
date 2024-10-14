@@ -14,15 +14,15 @@ export const documentDeleteOne = async (req: Request, res: Response) => {
   const { documentId } = req.params;
 
   try {
-    // 1. 메시지 내용 삭제
+    // 1. 문서 내 메시지 삭제
     let sql = `
       DELETE FROM Message
       WHERE document_id = ?
     `;
     let values = [documentId];
     let [results] = await conn.query(sql, values);
-    console.log(results);
 
+    // 2. 문서 삭제
     sql = `
       DELETE FROM Document 
       WHERE id = ?

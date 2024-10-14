@@ -25,6 +25,9 @@ export const favoriteAdd = (req: Request, res: Response) => {
   ];
 
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
+    console.log(
+      `info: [ ${businessId} ] added on Favorite (user_id : ${decodedUserAccount.id})`
+    );
     return createRes(res, err, results);
   });
 };

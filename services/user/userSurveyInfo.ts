@@ -34,7 +34,6 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     sql = `DELETE FROM User_Business_Classification WHERE user_id = ?`;
     values = [decodedUserAccount.id];
     [results] = await conn.query(sql, values);
-    console.log(results);
 
     for (let item of businessCategory) {
       sql = `
@@ -54,7 +53,6 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     sql = `DELETE FROM User_Application_Target WHERE user_id = ?`;
     values = [decodedUserAccount.id];
     [results] = await conn.query(sql, values);
-    console.log(results);
 
     for (let item of businessApply) {
       sql = `
@@ -75,7 +73,6 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     sql = `DELETE FROM User_Support_Region WHERE user_id = ?`;
     values = [decodedUserAccount.id];
     [results] = await conn.query(sql, values);
-    console.log(results);
 
     for (let item of businessRegion) {
       sql = `
@@ -112,7 +109,6 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
       ];
     [results] = await conn.query(sql, values);
     console.log(`4. 업력 & 예비창업자 여부 & 연령 정보 저장 완료`);
-    console.log(results);
 
     return res.status(StatusCodes.OK).json({
       request: '설문 정보 저장',
