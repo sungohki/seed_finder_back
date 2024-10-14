@@ -24,12 +24,16 @@ export const documentCreateOne = async (req: Request, res: Response) => {
   const conn = await mariadb.createConnection(connInfo);
 
   try {
+    console.log('info: 문서 요청 전처리 시작');
+    // 1. numbering_id 전처리
     let sql = `
       SELECT id FROM Document_Topic WHERE numbering_id = ?
     `;
     let values: Array<string> = [documentRequest.numberingId];
-    // 1. numbering_id 전처리
     let [results] = await conn.query(sql, values);
+    const documentTopicId = (results as Array<{ id: number }>)[0].id;
+    if (!documentTopicId)
+      throw new Error(`info: ${values[0]})에 맞는 numbering_id가 없습니다.`);
 
     // 2. 해당되는 guide 읽어오기
     sql = `
@@ -37,22 +41,24 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       FROM Guide
       WHERE document_topic_id = ?
     `;
-    values = [];
+    values = [(results as Array<{ id: number }>)[0].id + ''];
     [results] = await conn.query(sql, values);
     const openAiAnswer: Array<String | undefined> = [];
-    const temp: Array<IDocumentGuide> = [];
+    const documentGuides: Array<IDocumentGuide> = [];
     for (const item of results as Array<IDocumentGuide>)
-      temp.push(convertKeysToCamelCase(item));
+      documentGuides.push(convertKeysToCamelCase(item));
+    console.log('info: 문서 요청 전처리 완료. 답변 생성 시작');
+    res.status(StatusCodes.OK).end(); // 요청 전처리 완료 알림
 
-    res.status(StatusCodes.OK).end();
-    for (const item of temp) {
-      const ret = await generateMessage(item.id, documentRequest.message);
+    // 3. open ai 답변 생성
+    for (const guide of documentGuides) {
+      const ret = await generateMessage(guide.id, documentRequest.message);
       openAiAnswer.push(ret);
     }
     await documentInsert(
       decodedUserAccount.id,
       documentRequest,
-      temp[0].id,
+      documentGuides[0].id,
       openAiAnswer
     );
 
@@ -74,6 +80,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       deviceToken: testToken,
     };
     // deviceToken: doucmentRequest.deviceToken,
+    console.log('info: 답변 생성 완료');
     return sendFCM(messageRequest);
   } catch (e) {
     console.error(e);
