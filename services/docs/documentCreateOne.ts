@@ -76,12 +76,22 @@ export const generateMessage = async (num: number, param: string) => {
     if (num >= lines.length) {
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
     }
-    const parsedLine = JSON.parse(lines[num]);
-    const parsedLineContent = parsedLine.messages.forEach(
-      (a: ChatCompletionMessageParam) => {
-        messages.push(a);
+    lines.forEach((line)=>{
+      const parsedLine = JSON.parse(line);
+      if(parsedLine.message[0].content.includes(`${num}번 항목`)){
+        parsedLine.messages.forEach(
+          (a: ChatCompletionMessageParam) => {
+            messages.push(a);
+          }
+        );
       }
-    );
+    })
+    // const parsedLine = JSON.parse(lines[num]);
+    // const parsedLineContent = parsedLine.messages.forEach(
+    //   (a: ChatCompletionMessageParam) => {
+    //     messages.push(a);
+    //   }
+    // );
 
     const data = await readFile('./data/guidelines.json', 'utf8');
     const guidelines = JSON.parse(data);
