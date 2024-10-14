@@ -86,7 +86,7 @@ export const generateMessage = async (num: number, param: string) => {
     }
     lines.forEach((line)=>{
       const parsedLine = JSON.parse(line);
-      if(parsedLine.message[0].content.includes(`${num}번 항목`)){
+      if(parsedLine.messages[0].content.includes(`${num}번 항목`)){
         parsedLine.messages.forEach(
           (a: ChatCompletionMessageParam) => {
             messages.push(a);
@@ -117,7 +117,7 @@ export const generateMessage = async (num: number, param: string) => {
       messages: messages,
       model: process.env.FINE_TUNING_MODEL as string,
     });
-    return response.choices[0].message.content as string;
+    return response.choices[0].message.content?.replace("**","") as string;
   } catch (e) {
     console.error(e);
   }
