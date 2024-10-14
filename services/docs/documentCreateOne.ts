@@ -7,7 +7,12 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 
 // Import local module
 import { connInfo } from '../../config/mariadb';
-import { sendFCM, accessTokenVerify, convertKeysToCamelCase } from '../common';
+import {
+  sendFCM,
+  accessTokenVerify,
+  convertKeysToCamelCase,
+  IMessageRequest,
+} from '../common';
 import { documentInsert } from './documentInsert';
 import { openAi } from '../../config/openaiClient';
 import { IDocumentRequest, IDocumentGuide } from '.';
@@ -51,19 +56,22 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
 
     console.log(doucmentRequest);
-    if (doucmentRequest.deviceToken)
-      sendFCM({
-        title: doucmentRequest.title,
-        body: doucmentRequest.message,
-        data: {
-          documentId: doucmentRequest.numberingId,
-        },
-        deviceToken: testToken,
-      });
+    // if (doucmentRequest.deviceToken) {}
+    const messageRequest: IMessageRequest = {
+      title: doucmentRequest.title,
+      body: doucmentRequest.message,
+      data: {
+        documentId: doucmentRequest.numberingId,
+      },
+      deviceToken: testToken,
+    };
     // deviceToken: doucmentRequest.deviceToken,
+    sendFCM(messageRequest);
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
+  } finally {
+    await conn.end();
   }
 };
 

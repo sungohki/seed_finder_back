@@ -33,7 +33,7 @@ export const favoritePersonalList = async (req: Request, res: Response) => {
       announcement_id: number;
     }>)
       values.push(item.announcement_id);
-    console.log(values);
+    console.log(`info: ${values} (user_id : ${decodedUserAccount.id})`);
     if (!values.length) return res.status(StatusCodes.OK).json([]);
 
     // 2. id 목록에 해당하는 사업 데이터들 가져오기

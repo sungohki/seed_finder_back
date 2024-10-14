@@ -20,6 +20,9 @@ export const favoriteDelete = (req: Request, res: Response) => {
   const values: Array<number> = [decodedUserAccount.id, parseInt(businessId)];
 
   conn.query<ResultSetHeader>(sql, values, (err, results) => {
-    createRes(res, err, results);
+    console.log(
+      `info: [ ${businessId} ] deleted on Favorite (user_id : ${decodedUserAccount.id})`
+    );
+    return createRes(res, err, results);
   });
 };

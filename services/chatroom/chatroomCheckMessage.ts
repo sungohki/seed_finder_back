@@ -23,7 +23,6 @@ export const chatroomCheckMessage = (
 
   conn.query(sql, values, (err, results) => {
     if (queryErrorChecker(err, res)) return false;
-    console.log(results);
   });
   return true;
 };
