@@ -44,13 +44,13 @@ export const documentCreateOne = async (req: Request, res: Response) => {
       openAiAnswer
     );
 
-    // // test device token
-    // const testToken = `
-    //   ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS
-    // `;
-    // sendFCM(testToken);
+    // test device token
+    // const testToken =
+    //   'ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS';
+    const testToken =
+      'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
 
-    console.log(doucmentRequest.deviceToken);
+    console.log(doucmentRequest);
     if (doucmentRequest.deviceToken)
       sendFCM({
         title: doucmentRequest.title,
@@ -58,8 +58,9 @@ export const documentCreateOne = async (req: Request, res: Response) => {
         data: {
           documentId: doucmentRequest.numberingId,
         },
-        deviceToken: doucmentRequest.deviceToken,
+        deviceToken: testToken,
       });
+    // deviceToken: doucmentRequest.deviceToken,
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);

@@ -7,7 +7,7 @@ import { connection as conn } from '../../config/mariadb';
 import { accessTokenVerify, queryErrorChecker } from '../common';
 import { generateMessage } from '.';
 
-export const documentUpdate = async (req: Request, res: Response) => {
+export const documentUpdateOne = async (req: Request, res: Response) => {
   const decodedUserAccount = accessTokenVerify(req, res);
   if (decodedUserAccount === null) return;
 

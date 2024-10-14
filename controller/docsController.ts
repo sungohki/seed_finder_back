@@ -13,6 +13,16 @@ export const documentGetOneHandler = (req: Request, res: Response) => {
   return DS.documentGetOne(req, res);
 };
 
-export const documentMessageUpdateHandler = (req: Request, res: Response) => {
-  return DS.documentUpdate(req, res);
+export const documentMessageDeleteOneHandler = (
+  req: Request,
+  res: Response
+) => {
+  return DS.documentDeleteOne(req, res);
 };
+
+// export const documentMessageUpdateOneHandler = (
+//   req: Request,
+//   res: Response
+// ) => {
+//   return DS.documentUpdateOne(req, res);
+// };

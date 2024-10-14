@@ -2,7 +2,8 @@ export * from './documentInsert';
 export * from './documentCreateOne';
 export * from './documentGetOne';
 export * from './documentGetAll';
-export * from './documentUpdate';
+export * from './documentDeleteOne';
+export * from './documentUpdateOne';
 
 export interface IDocumentGuide {
   id: number;

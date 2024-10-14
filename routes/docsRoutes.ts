@@ -13,7 +13,10 @@ router.post('/create', DC.documentCreateHandler);
 // Read the document of user
 router.get('/:documentId', DC.documentGetOneHandler);
 
-// Update the document
-router.put('/:documentId', DC.documentMessageUpdateHandler);
+// Delete the document
+router.delete('/:documentId', DC.documentMessageDeleteOneHandler);
+
+// // Update the document message
+// router.put('/:documentId', DC.documentMessageUpdateOneHandler);
 
 export const supportRouter = router;
