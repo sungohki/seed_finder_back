@@ -2,12 +2,12 @@
  *  @swagger
  *  tags:
  *    name: Document
- *    description: API to manage Chatroom Data.
+ *    description: API to manage Document Data.
  */
 
 /**
- *  @swagger
- * /docs:
+ * @swagger
+ * /docs/all:
  *   get:
  *     summary: Read all of document data
  *     tags:
@@ -32,7 +32,7 @@
  *       500:
  *         description: Internal Server Error.
  *
- * /document/{documentId}:
+ * /docs/{documentId}:
  *   get:
  *     summary: Read one of document data of user
  *     tags:
@@ -63,7 +63,7 @@
  *       500:
  *         description: Internal Server Error.
  *
- * /document/create:
+ * /docs/create:
  *   post:
  *     summary: Create new document data
  *     tags:
@@ -99,7 +99,7 @@
  *       500:
  *         description: Internal Server Error.
  *
- * /document/{documentId}:
+ * /docs/delete/{documentId}:
  *   delete:
  *     summary: Delete one of document data of user
  *     tags:
