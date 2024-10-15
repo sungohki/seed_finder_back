@@ -2,42 +2,38 @@
  * @swagger
  * components:
  *   schemas:
- *     ChatLog:
+ *     DocumentMessage:
+ *       type: object
+ *       properties:
+ *         guideTitle:
+ *           type: string
+ *           example: "1-1. ex title"
+ *         messageContent:
+ *           type: string
+ *           example: "This is the answer of your business topic"
+ *
+ *     DocumentPreview:
  *       type: object
  *       properties:
  *         id:
  *           type: integer
  *           example: 1
- *         senderRole:
- *           type: string
- *           example: "CUSTOMER"
- *         content:
- *           type: string
- *           example: "Nice to meet you"
- *         createdAt:
- *           type: string
- *           example: "2024-01-01 12:00:00"
- *         chatroomId:
- *           type: integer
- *           example: 2
- *     ChatroomPreview:
- *       type: object
- *       properties:
- *         chatroomId:
- *           type: integer
- *           example: 1
- *         numberingId:
+ *         user_id:
  *           type: string
  *           example: "1-1"
- *         lastMessage:
+ *         title:
  *           type: string
- *           example: "Hello, World"
- *         lastMessageCreateAt:
+ *           example: "ticket reserve"
+ *         idea_message:
+ *           type: string
+ *           example: "I'd want to start business for ticket reservation system"
+ *         create_at:
  *           type: string
  *           example: "2024-01-01 12:00:00"
- *         unreadMessageCount:
- *           type: integer
- *           example: 0
+ *         numbering_id:
+ *           type: string
+ *           example: "1-1"
+ *
  *     BusinessPreview:
  *       type: object
  *       properties:
