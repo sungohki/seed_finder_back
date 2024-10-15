@@ -13,7 +13,7 @@
  *           example: "I'd want to start business for ticket reservation system"
  *         numberingId:
  *           type: string
- *           example: "1-1. ex title"
+ *           example: "1-1"
  *         deviceToken:
  *           type: string
  *           example: ""
@@ -23,7 +23,7 @@
  *       properties:
  *         guideTitle:
  *           type: string
- *           example: "1-1. ex title"
+ *           example: "code0. 0번 항목 [ ... ]"
  *         messageContent:
  *           type: string
  *           example: "This is the answer of your business topic"
