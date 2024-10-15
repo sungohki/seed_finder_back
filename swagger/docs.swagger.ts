@@ -79,11 +79,7 @@
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               numberingId:
- *                 type: string
- *                 example: "1-1"
+ *             $ref: '#/components/schemas/DocumentRequest'
  *     responses:
  *       200:
  *         description: Success to get the chatroom data

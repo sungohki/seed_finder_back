@@ -2,6 +2,22 @@
  * @swagger
  * components:
  *   schemas:
+ *     DocumentRequest:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           example: "Ticket Reservation"
+ *         message:
+ *           type: string
+ *           example: "I'd want to start business for ticket reservation system"
+ *         numberingId:
+ *           type: string
+ *           example: "1-1. ex title"
+ *         deviceToken:
+ *           type: string
+ *           example: ""
+ *
  *     DocumentMessage:
  *       type: object
  *       properties:
@@ -23,7 +39,7 @@
  *           example: "1-1"
  *         title:
  *           type: string
- *           example: "ticket reserve"
+ *           example: "Ticket Reservation"
  *         idea_message:
  *           type: string
  *           example: "I'd want to start business for ticket reservation system"
