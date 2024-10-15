@@ -14,7 +14,7 @@ router.post('/create', DC.documentCreateHandler);
 router.get('/:documentId', DC.documentGetOneHandler);
 
 // Delete the document
-router.delete('delete/:documentId', DC.documentMessageDeleteOneHandler);
+router.delete('/delete/:documentId', DC.documentMessageDeleteOneHandler);
 
 // // Update the document message
 // router.put('/:documentId', DC.documentMessageUpdateOneHandler);
