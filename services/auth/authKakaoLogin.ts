@@ -12,11 +12,6 @@ import { IAuthUser, accessTokenGenerate } from '../common';
 import { connInfo } from '../../config/mariadb';
 import { IKakaoUser } from '.';
 
-const header = {
-  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-  Authorization: 'Bearer ',
-};
-
 export const authKakaoLogin = async (req: Request, res: Response) => {
   const { kakaoAccessToken } = req.body;
   const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
@@ -99,7 +94,10 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
 };
 
 const getUserInfo = async (accessToken: string) => {
-  header.Authorization += accessToken;
+  const header = {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    Authorization: `Bearer ${accessToken}`,
+  };
   console.log(header);
   const requestUrl = 'https://kapi.kakao.com/v2/user/me';
   const userInfo = await axios.get(requestUrl, {
