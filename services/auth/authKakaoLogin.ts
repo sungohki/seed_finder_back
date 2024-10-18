@@ -37,7 +37,6 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     let values: Array<number | string> = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
     const loginUser = (results as Array<{ id: number }>)[0];
-    console.log(results);
     console.log(loginUser);
 
     // 2-1. 없는 존재인 경우 회원 생성
@@ -56,7 +55,6 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       ];
       [results] = await conn.query(sql, values);
       loginUser.id = (results as ResultSetHeader).insertId;
-      console.log(results);
     }
 
     // 3-1. jwt 액세스 토큰 발행
@@ -74,7 +72,6 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       accessPrivateKey,
       accessTokenOption
     );
-    console.log('Info: 토큰 발행');
 
     // 3-2. jwt 리프레시 토큰 발행
     const refreshTokenOption: jwt.SignOptions = {
@@ -94,7 +91,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     });
   } catch (e) {
     console.error(e);
-    res.status(StatusCodes.UNAUTHORIZED).json(e);
+    return res.status(StatusCodes.UNAUTHORIZED).json(e);
   }
 };
 
