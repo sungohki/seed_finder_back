@@ -1,15 +1,15 @@
 // Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import * as axios from 'axios';
-import jwt from 'jsonwebtoken';
 import mariadb, { ResultSetHeader } from 'mysql2/promise';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
 // Import local module
-import { IAuthUser, accessTokenGenerate } from '../common';
 import { connInfo } from '../../config/mariadb';
+import { IAuthUser, tokenGenerate } from '../common';
 import { IKakaoUser } from '.';
 
 export const authKakaoLogin = async (req: Request, res: Response) => {
@@ -23,20 +23,22 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
   const conn = await mariadb.createConnection(connInfo);
 
   try {
-    console.log(kakaoAccessToken);
-    // 1. 카카오 계정 불러오기
-    const kakaoUserInfo = await getUserInfo(kakaoAccessToken);
-    // console.log(kakaoUserInfo);
+    const apiRequestUrl = 'https://kapi.kakao.com/v2/user/me';
+    const apiRequestHeader = {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+      Authorization: `Bearer ${kakaoAccessToken}`,
+    };
+    const apiResponse = await axios.get(apiRequestUrl, {
+      headers: apiRequestHeader,
+    });
+    const kakaoUserInfo = apiResponse.data as IKakaoUser;
 
-    // 2. 해당 유저가 존재하는 지 확인
     let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
     let values: Array<number | string> = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
-    const loginUser = (results as Array<{ id: number }>)[0];
-    // console.log(loginUser);
+    let loginUser = (results as Array<{ id: number }>)[0];
 
-    // 2-1. 없는 존재인 경우 회원 생성
-    if (!loginUser || !loginUser.id) {
+    if (!loginUser) {
       sql = `
         INSERT INTO 
         User 
@@ -50,11 +52,11 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
         kakaoUserInfo.kakao_account.phone_number,
       ];
       [results] = await conn.query(sql, values);
-      loginUser.id = (results as ResultSetHeader).insertId;
+      loginUser = { id: (results as ResultSetHeader).insertId };
+      console.log(`info: new user create (uid: ${loginUser.id})`);
     }
 
-    // 3-1. jwt 액세스 토큰 발행
-    const accessTokenInfo: IAuthUser = {
+    const tokenInfo: IAuthUser = {
       id: loginUser.id,
       uuid: kakaoUserInfo.id,
       userName: kakaoUserInfo.kakao_account.name,
@@ -63,25 +65,22 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       expiresIn: '1h',
       issuer: 'sungohki',
     };
-    const instanceAccessToken = accessTokenGenerate(
-      accessTokenInfo,
+    const instanceAccessToken = tokenGenerate(
+      tokenInfo,
       accessPrivateKey,
       accessTokenOption
     );
-    console.log(instanceAccessToken);
-
-    // 3-2. jwt 리프레시 토큰 발행
     const refreshTokenOption: jwt.SignOptions = {
       expiresIn: '1d',
       issuer: 'sungohki',
     };
-    const instanceRefreshToken = accessTokenGenerate(
-      accessTokenInfo,
+    const instanceRefreshToken = tokenGenerate(
+      tokenInfo,
       refreshPrivateKey,
       refreshTokenOption
     );
+    console.log(instanceAccessToken);
     console.log(instanceRefreshToken);
-
     return res.status(StatusCodes.OK).json({
       uuid: kakaoUserInfo.id + '',
       accessToken: instanceAccessToken,
@@ -93,17 +92,4 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
   } finally {
     await conn.end();
   }
-};
-
-const getUserInfo = async (accessToken: string) => {
-  const header = {
-    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-    Authorization: `Bearer ${accessToken}`,
-  };
-  const requestUrl = 'https://kapi.kakao.com/v2/user/me';
-  const userInfo = await axios.get(requestUrl, {
-    headers: header,
-  });
-  const result = userInfo.data as IKakaoUser;
-  return result;
 };

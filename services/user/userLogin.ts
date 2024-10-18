@@ -10,7 +10,7 @@ dotenv.config();
 import { connection as conn } from '../../config/mariadb';
 import { IUserAccount } from '.';
 import { RowDataPacket } from 'mysql2';
-import { accessTokenGenerate, ILoginUser, queryErrorChecker } from '../common';
+import { tokenGenerate, ILoginUser, queryErrorChecker } from '../common';
 
 interface UserQueryResult extends IUserAccount, RowDataPacket {
   id: number;
@@ -61,7 +61,7 @@ export const userLogin = (req: Request, res: Response) => {
         expiresIn: '1d',
         issuer: 'sungohki',
       };
-      const instanceAccessToken = accessTokenGenerate(
+      const instanceAccessToken = tokenGenerate(
         accessTokenInfo,
         accessPrivateKey,
         accessTokenOption
@@ -73,7 +73,7 @@ export const userLogin = (req: Request, res: Response) => {
         expiresIn: '1d',
         issuer: 'sungohki',
       };
-      const instanceRefreshToken = accessTokenGenerate(
+      const instanceRefreshToken = tokenGenerate(
         accessTokenInfo,
         refreshPrivateKey,
         refreshTokenOption

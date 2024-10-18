@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // local module
-import { accessTokenGenerate, ILoginUser } from './accessTokenGenerate';
+import { tokenGenerate, ILoginUser } from './tokenGenerate';
 
 export const accessTokenRefresh = (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
@@ -47,7 +47,7 @@ export const accessTokenRefresh = (req: Request, res: Response) => {
       expiresIn: '24h',
       issuer: 'sungohki',
     };
-    const newAccessToken = accessTokenGenerate(
+    const newAccessToken = tokenGenerate(
       accessTokenInfo,
       accessPrivateKey,
       accessTokenOption

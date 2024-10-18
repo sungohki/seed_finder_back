@@ -12,7 +12,7 @@ export interface IAuthUser {
   uuid: string;
   userName: string;
 }
-export const accessTokenGenerate = (
+export const tokenGenerate = (
   user: ILoginUser | IAuthUser,
   tokenKey: jwt.Secret,
   options?: jwt.SignOptions

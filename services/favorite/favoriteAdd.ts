@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 // Import local module
 import { connection as conn } from '../../config/mariadb';
-import { accessTokenVerify } from '../common/accessTokenVerify';
+import { accessTokenVerify } from '../common/tokenVerify';
 import { createRes } from '../common';
 import { ResultSetHeader } from 'mysql2';
 

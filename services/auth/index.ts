@@ -10,3 +10,12 @@ export interface IKakaoUser {
     phone_number: string;
   };
 }
+
+export interface IGoogleUser {
+  sub: string;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  email: string;
+}
