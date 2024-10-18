@@ -34,7 +34,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
 
     // 2. 해당 유저가 존재하는 지 확인
     let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
-    let values = [kakaoUserInfo.id];
+    let values: Array<number | string> = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
     const loginUser = (results as Array<{ id: number }>)[0];
     console.log(results);
@@ -45,16 +45,18 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       sql = `
         INSERT INTO 
         User 
-          (user_uuid, user_name, user_sexuality, user_contact) 
+          (user_uuid, user_name, user_sexuality_id, user_contact) 
         VALUES 
           (?, ?, ?, ?)`;
       values = [
         kakaoUserInfo.id,
         kakaoUserInfo.kakao_account.name,
-        kakaoUserInfo.kakao_account.gender,
+        kakaoUserInfo.kakao_account.gender == 'male' ? 1 : 2,
         kakaoUserInfo.kakao_account.phone_number,
       ];
       [results] = await conn.query(sql, values);
+      console.log();
+      console.log(results);
     }
 
     // 3-1. jwt 액세스 토큰 발행
