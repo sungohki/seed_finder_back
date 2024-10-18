@@ -3,7 +3,11 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as axios from 'axios';
 import jwt from 'jsonwebtoken';
-import mariadb, { QueryResult, RowDataPacket } from 'mysql2/promise';
+import mariadb, {
+  QueryResult,
+  ResultSetHeader,
+  RowDataPacket,
+} from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -41,7 +45,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     console.log(loginUser);
 
     // 2-1. 없는 존재인 경우 회원 생성
-    if (!loginUser) {
+    if (!loginUser.id) {
       sql = `
         INSERT INTO 
         User 
@@ -55,7 +59,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
         kakaoUserInfo.kakao_account.phone_number,
       ];
       [results] = await conn.query(sql, values);
-      console.log();
+      loginUser.id = (results as ResultSetHeader).insertId;
       console.log(results);
     }
 
