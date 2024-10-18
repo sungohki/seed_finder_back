@@ -36,7 +36,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     // console.log(loginUser);
 
     // 2-1. 없는 존재인 경우 회원 생성
-    if (!loginUser.id) {
+    if (!loginUser || !loginUser.id) {
       sql = `
         INSERT INTO 
         User 
@@ -90,6 +90,8 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e);
     return res.status(StatusCodes.UNAUTHORIZED).json(e);
+  } finally {
+    await conn.end();
   }
 };
 

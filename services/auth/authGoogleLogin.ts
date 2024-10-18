@@ -53,7 +53,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
     let [results] = await conn.query(sql, values);
     const loginUser = (results as Array<{ id: number }>)[0];
 
-    if (!loginUser.id) {
+    if (!loginUser || !loginUser.id) {
       sql = `
             INSERT INTO 
             User 
@@ -95,11 +95,11 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
       accessToken: instanceAccessToken,
       refreshToken: instanceRefreshToken,
     });
-  } catch (error) {
+  } catch (e) {
     // 5. 에러 처리
-    console.error('Error fetching user info:', error);
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: 'Invalid access token' });
+    console.error('Error fetching user info:', e);
+    return res.status(StatusCodes.UNAUTHORIZED).json(e);
+  } finally {
+    await conn.end();
   }
 };
