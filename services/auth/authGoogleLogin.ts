@@ -46,7 +46,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
         console.log(userData)
 
         // 2. 해당 유저가 존재하는 지 확인
-        let sql = `SELECT * FROM User WHERE uuid = ? LIMIT 1`;
+        let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
         let values = [userData.sub];
         let [results] = await conn.query(sql, values);
         const loginUser = (results as Array<{ id: number }>)[0];
