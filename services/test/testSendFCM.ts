@@ -7,6 +7,7 @@ dotenv.config();
 // Import local module
 import { IMessageRequest, sendFCM } from '../common/sendFCM';
 import { IDocumentRequest } from '../docs';
+import { accessTokenVerify } from '../common';
 
 // const testToken =
 //   'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
@@ -22,6 +23,7 @@ import { IDocumentRequest } from '../docs';
 
 export const testSendFCM = async (req: Request, res: Response) => {
   const reqBody = req.body as IDocumentRequest;
+  console.log(accessTokenVerify(req, res));
   const temp: IMessageRequest = {
     title: reqBody.title,
     body: reqBody.message,

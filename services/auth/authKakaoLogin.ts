@@ -26,14 +26,14 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     console.log(kakaoAccessToken);
     // 1. 카카오 계정 불러오기
     const kakaoUserInfo = await getUserInfo(kakaoAccessToken);
-    console.log(kakaoUserInfo);
+    // console.log(kakaoUserInfo);
 
     // 2. 해당 유저가 존재하는 지 확인
     let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
     let values: Array<number | string> = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
     const loginUser = (results as Array<{ id: number }>)[0];
-    console.log(loginUser);
+    // console.log(loginUser);
 
     // 2-1. 없는 존재인 경우 회원 생성
     if (!loginUser.id) {
@@ -98,12 +98,10 @@ const getUserInfo = async (accessToken: string) => {
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     Authorization: `Bearer ${accessToken}`,
   };
-  console.log(header);
   const requestUrl = 'https://kapi.kakao.com/v2/user/me';
   const userInfo = await axios.get(requestUrl, {
     headers: header,
   });
-  console.log(userInfo);
   const result = userInfo.data as IKakaoUser;
   return result;
 };

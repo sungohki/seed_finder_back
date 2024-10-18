@@ -36,6 +36,7 @@ export const accessTokenVerify = (
       receivedToken,
       process.env.ACCESS_PRIVATE_KEY as string
     ) as DecodedToken;
+    console.log(decodedToken);
     return decodedToken; // 2-1. 복호화된 사용자 정보 객체 반환
   } catch (e) {
     return errorResController(e, req, res); // 2-2. 에러 메시지와 함께 null 반환
