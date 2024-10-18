@@ -4,9 +4,9 @@ import { StatusCodes } from 'http-status-codes';
 import axios from 'axios'; // Axios for making HTTP requests
 
 export const authGoogleLogin = async (req: Request, res: Response) => {
-    const { accessToken } = req.body; // 클라이언트에서 받은 액세스 토큰
+    const {  googleAccessToken } = req.body; // 클라이언트에서 받은 액세스 토큰
 
-    if (!accessToken) {
+    if (!googleAccessToken) {
         return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Access token is required' });
     }
 
@@ -14,14 +14,14 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
         // 1. Google API를 사용해 액세스 토큰 검증 및 사용자 정보 가져오기
         const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
             headers: {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${googleAccessToken}`
             }
         });
 
         // 2. 사용자 정보 추출
         const userData = response.data; // 여기서 사용자 정보를 가져옵니다.
         console.log(userData)
-        
+
         // 3. 필요한 경우 사용자 정보를 데이터베이스에 저장하거나 처리
         // 예시: const user = await User.findOne({ googleId: userData.sub });
 
