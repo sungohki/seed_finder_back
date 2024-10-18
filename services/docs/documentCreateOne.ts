@@ -75,7 +75,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
 
     const messageRequest: IMessageRequest = {
       title: documentRequest.title,
-      body: documentRequest.message,
+      body: '답변 생성이 완료되었습니다.',
       data: {
         documentId: documentRequest.numberingId,
       },
