@@ -1,7 +1,7 @@
 // Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import mariadb, { QueryResult, RowDataPacket } from 'mysql2/promise';
+import mariadb, { QueryResult, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { connInfo } from '../../config/mariadb';
 import { IAuthUser, accessTokenGenerate } from '../common';
 import jwt from 'jsonwebtoken';
@@ -52,7 +52,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
         const loginUser = (results as Array<{ id: number }>)[0];
 
         // 2-1. 없는 존재인 경우 회원 생성
-        if (!loginUser) {
+        if (!loginUser.id) {
         sql = `
             INSERT INTO 
             User 
@@ -65,6 +65,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
             userData.email
         ];
         [results] = await conn.query(sql, values);
+        loginUser.id = (results as ResultSetHeader).insertId;
         }
 
         // 3-1. jwt 액세스 토큰 발행
