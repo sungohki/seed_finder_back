@@ -43,7 +43,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       sql = `
         INSERT INTO 
         User 
-          (uuid, user_name, user_sexuality, user_contact) 
+          (user_uuid, user_name, user_sexuality, user_contact) 
         VALUES 
           (?, ?, ?, ?)`;
       values = [

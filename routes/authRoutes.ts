@@ -5,7 +5,7 @@ const router = express.Router();
 router.use(express.json());
 
 // Create
-router.post('/kakao');
+router.post('/kakao', AC.authKaKaoLoginHandler);
 //
 router.post('/google');
 //
