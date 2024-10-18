@@ -28,6 +28,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
   const conn = await mariadb.createConnection(connInfo);
 
   try {
+    console.log(kakaoAccessToken);
     // 1. 카카오 계정 불러오기
     const kakaoUserInfo = await getUserInfo(kakaoAccessToken);
     console.log(kakaoUserInfo);
@@ -72,6 +73,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       accessPrivateKey,
       accessTokenOption
     );
+    console.log(instanceAccessToken);
 
     // 3-2. jwt 리프레시 토큰 발행
     const refreshTokenOption: jwt.SignOptions = {
@@ -83,6 +85,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       refreshPrivateKey,
       refreshTokenOption
     );
+    console.log(instanceRefreshToken);
 
     return res.status(StatusCodes.OK).json({
       uuid: kakaoUserInfo.id + '',
@@ -97,10 +100,12 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
 
 const getUserInfo = async (accessToken: string) => {
   header.Authorization += accessToken;
+  console.log(header);
   const requestUrl = 'https://kapi.kakao.com/v2/user/me';
   const userInfo = await axios.get(requestUrl, {
     headers: header,
   });
+  console.log(userInfo);
   const result = userInfo.data as IKakaoUser;
   return result;
 };
