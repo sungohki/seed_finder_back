@@ -21,6 +21,7 @@ app.use('/favorite', routes.favoriteRouter);
 app.use('/chatroom', routes.chatroomRouter);
 app.use('/chat', routes.chatRouter);
 app.use('/docs', routes.supportRouter);
+app.use('/auth', routes.authRouter);
 
 // Route for test functions
 app.use('/test', routes.testRouter);

@@ -12,7 +12,9 @@ import { IUserAccount } from '.';
 import { RowDataPacket } from 'mysql2';
 import { accessTokenGenerate, ILoginUser, queryErrorChecker } from '../common';
 
-interface UserQueryResult extends IUserAccount, RowDataPacket {}
+interface UserQueryResult extends IUserAccount, RowDataPacket {
+  id: number;
+}
 
 export const userLogin = (req: Request, res: Response) => {
   const { userEmail, userPw } = req.body as IUserAccount;
