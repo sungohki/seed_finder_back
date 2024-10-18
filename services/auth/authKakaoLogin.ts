@@ -33,10 +33,12 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     console.log(kakaoUserInfo);
 
     // 2. 해당 유저가 존재하는 지 확인
-    let sql = `SELECT * FROM User WHERE uuid = ? LIMIT 1`;
+    let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
     let values = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
     const loginUser = (results as Array<{ id: number }>)[0];
+    console.log(results);
+    console.log(loginUser);
 
     // 2-1. 없는 존재인 경우 회원 생성
     if (!loginUser) {
