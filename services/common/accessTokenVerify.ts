@@ -11,9 +11,9 @@ dotenv.config();
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import { accessTokenRefresh } from './accessTokenRefresh';
-import { ILoginUser } from './accessTokenGenerate';
+import { IAuthUser, ILoginUser } from './accessTokenGenerate';
 
-export interface DecodedToken extends JwtPayload, ILoginUser {
+export interface DecodedToken extends JwtPayload, ILoginUser, IAuthUser {
   // 토큰에 포함될 추가적인 정보가 있을 시 정의할 것
 }
 
@@ -37,8 +37,8 @@ export const accessTokenVerify = (
       process.env.ACCESS_PRIVATE_KEY as string
     ) as DecodedToken;
     return decodedToken; // 2-1. 복호화된 사용자 정보 객체 반환
-  } catch (err) {
-    return errorResController(err, req, res); // 2-2. 에러 메시지와 함께 null 반환
+  } catch (e) {
+    return errorResController(e, req, res); // 2-2. 에러 메시지와 함께 null 반환
   }
 };
 

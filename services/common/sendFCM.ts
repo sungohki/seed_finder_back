@@ -37,8 +37,8 @@ export const sendFCM = async (req: IMessageRequest) => {
     const response = await admin.messaging().send(message);
     console.log('Successfully sent message:', response);
     return true;
-  } catch (error) {
-    console.error('Error sending message:', error);
+  } catch (e) {
+    console.error('Error sending message:', e);
     return false;
   }
 };

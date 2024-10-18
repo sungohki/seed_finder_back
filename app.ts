@@ -18,8 +18,6 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/user', routes.userRouter);
 app.use('/business', routes.businessRouter);
 app.use('/favorite', routes.favoriteRouter);
-app.use('/chatroom', routes.chatroomRouter);
-app.use('/chat', routes.chatRouter);
 app.use('/docs', routes.supportRouter);
 app.use('/auth', routes.authRouter);
 

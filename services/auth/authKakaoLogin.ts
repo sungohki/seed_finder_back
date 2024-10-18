@@ -3,18 +3,14 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as axios from 'axios';
 import jwt from 'jsonwebtoken';
-import mariadb, {
-  QueryResult,
-  ResultSetHeader,
-  RowDataPacket,
-} from 'mysql2/promise';
+import mariadb, { ResultSetHeader } from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
 // Import local module
 import { IAuthUser, accessTokenGenerate } from '../common';
-import { IKakaoUser } from '.';
 import { connInfo } from '../../config/mariadb';
+import { IKakaoUser } from '.';
 
 const header = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -92,13 +88,13 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     );
 
     return res.status(StatusCodes.OK).json({
-      uuid: kakaoUserInfo.id,
+      uuid: kakaoUserInfo.id + '',
       accessToken: instanceAccessToken,
       refreshToken: instanceRefreshToken,
     });
   } catch (e) {
     console.error(e);
-    res.status(StatusCodes.BAD_REQUEST).json(e);
+    res.status(StatusCodes.UNAUTHORIZED).json(e);
   }
 };
 
