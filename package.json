@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/express": "^4.17.21",
     "aws-sdk": "^2.1651.0",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http-status-codes": "^2.3.0",
