@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as axios from 'axios';
 import jwt from 'jsonwebtoken';
-import mariadb from 'mysql2/promise';
+import mariadb, { QueryResult, RowDataPacket } from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -36,7 +36,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
     let sql = `SELECT * FROM User WHERE uuid = ? LIMIT 1`;
     let values = [kakaoUserInfo.id];
     let [results] = await conn.query(sql, values);
-    const loginUser = results[0] as { id: number };
+    const loginUser = (results as Array<{ id: number }>)[0];
 
     // 2-1. 없는 존재인 경우 회원 생성
     if (!loginUser) {

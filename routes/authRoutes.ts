@@ -10,3 +10,5 @@ router.post('/kakao', AC.authKaKaoLoginHandler);
 router.post('/google');
 //
 router.post('/refresh');
+
+export const authRouter = router;
