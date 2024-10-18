@@ -1,28 +1,27 @@
+// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// local module
+// Import local module
 import { tokenGenerate, ILoginUser } from './tokenGenerate';
 
-export const accessTokenRefresh = (req: Request, res: Response) => {
-  const refreshToken = req.cookies.refreshToken;
+export const tokenRefresh = (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
   const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
   const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
 
   if (!refreshToken || !refreshPrivateKey || !accessPrivateKey) {
-    console.log('Info: Private Key 부재. 토큰 재발급 불가');
+    console.log('info: Private Key 부재. 토큰 재발급 불가');
     return res.status(StatusCodes.UNAUTHORIZED).end();
   }
 
-  // 리프레시 토큰 검증
   jwt.verify(refreshToken, refreshPrivateKey, (err: unknown, user: any) => {
-    // 리프레시 토큰 검증 실패 (만료, 오류, 오기입 등)
     if (err) {
       console.log(err);
-      console.log('Info: 리프레시 토큰 검증 실패. 재 로그인 필요');
+      console.log('info: 리프레시 토큰 검증 실패. (재 로그인 필요)');
       if (err instanceof jwt.TokenExpiredError) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
           message: `리프레시 토큰 만료 (${err.name})`,
@@ -39,26 +38,20 @@ export const accessTokenRefresh = (req: Request, res: Response) => {
     }
 
     // 유저 정보로 새로운 액세스 토큰 발급
-    const accessTokenInfo: ILoginUser = {
+    const tokenInfo: ILoginUser = {
       id: user.id,
       userEmail: user.userEmail,
     };
-    const accessTokenOption: jwt.SignOptions = {
-      expiresIn: '24h',
+    const tokenOption: jwt.SignOptions = {
+      expiresIn: '1h',
       issuer: 'sungohki',
     };
     const newAccessToken = tokenGenerate(
-      accessTokenInfo,
+      tokenInfo,
       accessPrivateKey,
-      accessTokenOption
+      tokenOption
     );
-
-    console.log('TokenExpiredError: 새 액세스 토큰 발행');
-
-    // 쿠키에 새로운 액세스 토큰 첨부
-    res.cookie('accessToken', newAccessToken, {
-      httpOnly: true,
-    });
+    console.log('info: 새 액세스 토큰 발행');
 
     return res.status(StatusCodes.OK).json({
       accessToken: newAccessToken,

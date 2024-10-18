@@ -2,4 +2,9 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-export const authRefreshToken = (req: Request, res: Response) => {};
+// Import local module
+import { tokenRefresh } from '../common';
+
+export const authRefreshToken = (req: Request, res: Response) => {
+  return tokenRefresh(req, res);
+};
