@@ -65,21 +65,22 @@ export const documentCreateOne = async (req: Request, res: Response) => {
     // test device token
     // const testToken =
     //   'ek4vgM6bSAmhM5rItu39Mf:APA91bEGIAqTKwdrXoi8hWu9BW0fzkNXq3JvAHeESfGdvecufuSobw0QZG1-CulylrTxnIH0LDMXWBXsBWjPkNijY1X1g29apf0nDvwHeAP_XRgjGl7qClxYlW7jOolGkNv6AaMF0pzS';
-    const testToken =
-      'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
+    // const testToken =
+    //   'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
 
     console.log(documentRequest);
-    // if (documentRequest.deviceToken) {
-    // }
+    if (!documentRequest.deviceToken)
+      documentRequest.deviceToken =
+        'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
+
     const messageRequest: IMessageRequest = {
       title: documentRequest.title,
       body: documentRequest.message,
       data: {
         documentId: documentRequest.numberingId,
       },
-      deviceToken: testToken,
+      deviceToken: documentRequest.deviceToken,
     };
-    // deviceToken: doucmentRequest.deviceToken,
     console.log('info: 답변 생성 완료');
     return sendFCM(messageRequest);
   } catch (e) {
