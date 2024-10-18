@@ -7,7 +7,7 @@ router.use(express.json());
 // Create
 router.post('/kakao', AC.authKaKaoLoginHandler);
 //
-router.post('/google');
+router.post('/google',AC.authGoogleLoginHandler);
 //
 router.post('/refresh');
 
