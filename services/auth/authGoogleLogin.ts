@@ -1,13 +1,12 @@
-// Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import mariadb, { QueryResult, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { connInfo } from '../../config/mariadb';
 import { IAuthUser, accessTokenGenerate } from '../common';
+import axios from 'axios'; 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-import axios from 'axios'; // Axios for making HTTP requests
 
 interface IGoogleUser {
     sub: string,
@@ -18,9 +17,7 @@ interface IGoogleUser {
     email: string
   }
 export const authGoogleLogin = async (req: Request, res: Response) => {
-    
-
-    const {  googleAccessToken } = req.body; // 클라이언트에서 받은 액세스 토큰
+    const {  googleAccessToken } = req.body; 
     const accessPrivateKey = process.env.ACCESS_PRIVATE_KEY;
     const refreshPrivateKey = process.env.REFRESH_PRIVATE_KEY;
     if (!accessPrivateKey || !refreshPrivateKey) {
@@ -34,24 +31,18 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
     }
 
     try {
-        // 1. Google API를 사용해 액세스 토큰 검증 및 사용자 정보 가져오기
         const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
             headers: {
                 Authorization: `Bearer ${googleAccessToken}`
             }
         });
+        const userData: IGoogleUser = response.data as IGoogleUser; 
 
-        // 2. 사용자 정보 추출
-        const userData: IGoogleUser = response.data as IGoogleUser; // 여기서 사용자 정보를 가져옵니다.
-        console.log(userData)
-
-        // 2. 해당 유저가 존재하는 지 확인
         let sql = `SELECT * FROM User WHERE user_uuid = ? LIMIT 1`;
         let values = [userData.sub];
         let [results] = await conn.query(sql, values);
         const loginUser = (results as Array<{ id: number }>)[0];
 
-        // 2-1. 없는 존재인 경우 회원 생성
         if (!loginUser.id) {
         sql = `
             INSERT INTO 
@@ -67,8 +58,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
         [results] = await conn.query(sql, values);
         loginUser.id = (results as ResultSetHeader).insertId;
         }
-
-        // 3-1. jwt 액세스 토큰 발행
+    
         const accessTokenInfo: IAuthUser = {
         id: loginUser.id,
         uuid: userData.sub,
@@ -83,9 +73,7 @@ export const authGoogleLogin = async (req: Request, res: Response) => {
         accessPrivateKey,
         accessTokenOption
         );
-        console.log('Info: 토큰 발행');
 
-        // 3-2. jwt 리프레시 토큰 발행
         const refreshTokenOption: jwt.SignOptions = {
         expiresIn: '1d',
         issuer: 'sungohki',
