@@ -4,11 +4,11 @@ import * as AC from '../controller/authController';
 const router = express.Router();
 router.use(express.json());
 
-// Create
+// Create user's new data or token with kakao account
 router.post('/kakao', AC.authKaKaoLoginHandler);
-//
-router.post('/google',AC.authGoogleLoginHandler);
-//
-router.post('/refresh');
+// Create user's new data or token with google account
+router.post('/google', AC.authGoogleLoginHandler);
+// Create user's accessToken with refreshToken
+router.post('/refresh', AC.authRefreshTokenHandler);
 
 export const authRouter = router;
