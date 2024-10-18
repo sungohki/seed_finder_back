@@ -1,14 +1,19 @@
 // Import node module
 import jwt from 'jsonwebtoken';
 
+// Import local mocule
+
 export interface ILoginUser {
   id: number;
   userEmail: string;
-  userRole: number;
 }
-
+export interface IAuthUser {
+  id: number;
+  uuid: string;
+  userName: string;
+}
 export const accessTokenGenerate = (
-  user: ILoginUser,
+  user: ILoginUser | IAuthUser,
   tokenKey: jwt.Secret,
   options?: jwt.SignOptions
 ) => {

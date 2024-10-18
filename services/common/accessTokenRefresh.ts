@@ -42,10 +42,9 @@ export const accessTokenRefresh = (req: Request, res: Response) => {
     const accessTokenInfo: ILoginUser = {
       id: user.id,
       userEmail: user.userEmail,
-      userRole: user.userRole,
     };
     const accessTokenOption: jwt.SignOptions = {
-      expiresIn: '30m',
+      expiresIn: '24h',
       issuer: 'sungohki',
     };
     const newAccessToken = accessTokenGenerate(

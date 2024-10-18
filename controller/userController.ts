@@ -7,9 +7,6 @@ export const userLoginHandler = (req: Request, res: Response) => {
 export const userJoinHandler = (req: Request, res: Response) => {
   return US.userJoin(req, res);
 };
-export const userAuthHandler = (req: Request, res: Response) => {
-  return US.userAuth(req, res);
-};
 export const userSurveyInfoHandler = (req: Request, res: Response) => {
   return US.userSurveyInfo(req, res);
 };

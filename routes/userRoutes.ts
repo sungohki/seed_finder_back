@@ -8,8 +8,6 @@ router.use(express.json());
 router.post('/login', UC.userLoginHandler);
 // Create user account
 router.post('/join', UC.userJoinHandler);
-// Create user account or user login token
-router.post('/auth', UC.userAuthHandler);
 // Create user info
 router.post('/info', UC.userSurveyInfoHandler);
 // Read servey options
