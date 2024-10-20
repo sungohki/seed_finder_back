@@ -116,7 +116,20 @@ export const generateMessage = async (num: number, param: string) => {
       role: 'system',
       content: messageContent + `200 자 이내로 작성해줘.`,
     });
-    messages.push({ role: 'user', content: param + `200 자 이내로 작성해줘.` });
+    messages.push({ role: 'user', content: 
+      `
+      내 아이템은
+      `
+      +param+
+      `이거야. 내가 생각하는 아이템 관련 ${num}번 항목 내용은
+      `
+      +param +
+      `
+      이거야. 내 생각을 참고해서 ${num}번 항목을 작성하는데 없는 근거는 작성하면 안돼. 
+      제목과 본문은 사실 기반으로 참신한 글쓰기 방식으로 글을 작성하고 주장을 잘 설명할 수 있는 실제 데이터나 근거가 있는 통계나 보고서를 인용해도 좋지만 없으면 작성하지마. 
+      비즈니스 전문가 답게 "~니다."체로 작성해줘. 본문은 250자 이내로 작성해줘. 이미지 가이드라인과 제목과 본문에 인용된 데이터 출처도 작성해줘. 중요한 부분 bold체 해줘.
+      `
+      +`200 자 이내로 작성해줘.` });
 
     const response = await openAi.chat.completions.create({
       messages: messages,
