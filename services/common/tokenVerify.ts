@@ -10,7 +10,6 @@ dotenv.config();
 // Import local mdoule
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-import { tokenRefresh } from './tokenRefresh';
 import { IAuthUser, ILoginUser } from './tokenGenerate';
 
 export interface DecodedToken extends JwtPayload, ILoginUser, IAuthUser {
@@ -47,7 +46,6 @@ function errorResController(err: unknown, req: Request, res: Response): null {
     res.status(StatusCodes.UNAUTHORIZED).json({
       message: `${err.name}: 엑세스 토큰 시간 만료`,
     });
-    // tokenRefresh(req, res); // 토큰 리프레시
   } else if (err instanceof JsonWebTokenError) {
     res.status(StatusCodes.BAD_REQUEST).json({
       message: `${err.name}: 잘못된 토큰`,

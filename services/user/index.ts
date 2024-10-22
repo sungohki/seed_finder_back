@@ -1,9 +1,9 @@
 export * from './userJoin';
 export * from './userLogin';
 export * from './userGetInfo';
-export * from './userSurveyInfo';
+export * from './userUpdateInfo';
 export * from './userSurveyOption';
-export * from './userSurveyCheck';
+export * from './userCheckInfo';
 
 export interface IUserAccount {
   userName: string;

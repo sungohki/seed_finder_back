@@ -52,7 +52,7 @@ export const tokenRefresh = (req: Request, res: Response) => {
       tokenOption
     );
     console.log('info: 새 액세스 토큰 발행');
-
+    console.log(newAccessToken);
     return res.status(StatusCodes.OK).json({
       accessToken: newAccessToken,
     });

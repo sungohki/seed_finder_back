@@ -30,10 +30,10 @@ export const userSurveyCheck = async (req: Request, res: Response) => {
 
     return res.status(StatusCodes.OK).json({
       surveyStatus: true,
-    }); // 200
+    });
   } catch (e) {
     console.error(e);
-    res.status(StatusCodes.BAD_REQUEST).json(e); // 400
+    res.status(StatusCodes.BAD_REQUEST).json(e);
   } finally {
     await conn.end();
   }
