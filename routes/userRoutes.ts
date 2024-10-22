@@ -8,6 +8,8 @@ router.use(express.json());
 router.post('/login', UC.userLoginHandler);
 // Create user account
 router.post('/join', UC.userJoinHandler);
+// Delete user account
+router.delete('/delete', UC.userDeleteHandler);
 // Create user info
 router.post('/info', UC.userSurveyInfoHandler);
 // Read servey options

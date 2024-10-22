@@ -4,6 +4,7 @@ export * from './userGetInfo';
 export * from './userUpdateInfo';
 export * from './userSurveyOption';
 export * from './userCheckInfo';
+export * from './userDelete';
 
 export interface IUserAccount {
   userName: string;
