@@ -17,6 +17,14 @@ export const userDelete = async (req: Request, res: Response) => {
     // 1. 사업계획서 정보 삭제
     sql = `
         DELETE FROM Message
+        WHERE document_id in (
+          SELECT id FROM Document WHERE user_id = ?
+        )
+    `;
+    values = [decodedUserAccount.id];
+    [results] = await conn.query(sql, values);
+    sql = `
+        DELETE FROM Document
         WHERE user_id= ?
     `;
     values = [decodedUserAccount.id];
@@ -42,7 +50,7 @@ export const userDelete = async (req: Request, res: Response) => {
     [results] = await conn.query(sql, values);
 
     // 4. 사용자 삭제
-    sql = `DELETE FROM User WHERE user_id = ?`;
+    sql = `DELETE FROM User WHERE id = ?`;
     [results] = await conn.query(sql, values);
 
     return res.status(StatusCodes.OK).json();
