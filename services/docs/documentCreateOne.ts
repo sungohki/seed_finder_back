@@ -23,6 +23,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
   const documentRequest = req.body as IDocumentRequest;
   const conn = await mariadb.createConnection(connInfo);
 
+  console.log('핸들러 테스트');
   try {
     console.log('info: 문서 요청 전처리 시작');
     // 1. numbering_id 전처리
