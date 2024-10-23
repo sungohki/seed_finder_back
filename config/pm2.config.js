@@ -1,10 +1,11 @@
 module.exports = {
   apps: [
     {
-      name: 'app',
-      script: './dist/src/index.js', // 실행할 TypeScript 파일
-      interpreter: 'ts-node', // ts-node로 TypeScript 실행
-      watch: true, // 파일이 변경되면 자동으로 다시 시작
+      name: 'seedfinder',
+      script: './dist/src/index.js',
+      interpreter: 'ts-node',
+      instances: 0,
+      watch: true,
       exec_mode: 'cluster',
       env: {
         NODE_ENV: 'development',

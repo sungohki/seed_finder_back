@@ -7,6 +7,7 @@
     "test": "jest",
     "start": "ts-node ./src/index.ts",
     "build": "tsc -p .",
+    "production": "tsc -p . && pm2 start ./config/pm2.config.js",
     "dev": "ts-node-dev ./src/index.ts",
     "nodemon": "nodemon"
   },
