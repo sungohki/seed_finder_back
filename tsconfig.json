@@ -9,6 +9,6 @@
     "outDir": "./dist",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "app.ts"],
+  "include": ["src/**/*", "app.ts", "src/mariadb.ts", "config/mariadb.ts"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }

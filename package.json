@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "ts-node ./index.ts",
+    "start": "ts-node ./src/index.ts",
     "build": "tsc",
-    "dev": "ts-node-dev ./index.ts",
+    "dev": "ts-node-dev ./src/index.ts",
     "nodemon": "nodemon"
   },
   "keywords": [],
