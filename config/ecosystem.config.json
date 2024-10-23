@@ -1,0 +1,15 @@
+{
+  "name": "my-project",
+  "script": "./src/index.ts",
+  "cwd": ".",
+  "watch": true,
+  "ignore_watch": [
+    "node_modules"
+  ],
+  "interpreter": "ts-node",
+  "exec_mode": "cluster",
+  "instances": "max",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
