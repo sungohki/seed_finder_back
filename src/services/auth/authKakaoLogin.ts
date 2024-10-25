@@ -50,7 +50,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
         kakaoUserInfo.kakao_account.name,
         kakaoUserInfo.kakao_account.gender == 'male' ? 1 : 2,
         kakaoUserInfo.kakao_account.phone_number,
-        kakaoUserInfo.kakao_account.account_email,
+        kakaoUserInfo.kakao_account.email,
       ];
       [results] = await conn.query(sql, values);
       loginUser = { id: (results as ResultSetHeader).insertId };
