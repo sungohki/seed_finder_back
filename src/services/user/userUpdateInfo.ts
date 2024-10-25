@@ -113,10 +113,10 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json({
       request: '설문 정보 저장',
       response: '성공',
-    }); // 200
+    });
   } catch (e) {
     console.error(e);
-    return res.status(StatusCodes.BAD_REQUEST).json(e); // 400
+    return res.status(StatusCodes.BAD_REQUEST).json(e);
   } finally {
     await conn.end();
   }

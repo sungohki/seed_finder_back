@@ -1,5 +1,5 @@
-export * from './userJoin';
-export * from './userLogin';
+// export * from './userJoin';
+// export * from './userLogin';
 export * from './userGetInfo';
 export * from './userUpdateInfo';
 export * from './userSurveyOption';
