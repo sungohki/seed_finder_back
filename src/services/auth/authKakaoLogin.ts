@@ -42,14 +42,15 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       sql = `
         INSERT INTO 
         User 
-          (user_uuid, user_name, user_sexuality_id, user_contact) 
+          (user_uuid, user_name, user_sexuality_id, user_contact, user_email) 
         VALUES 
-          (?, ?, ?, ?)`;
+          (?, ?, ?, ?, ?)`;
       values = [
         kakaoUserInfo.id,
         kakaoUserInfo.kakao_account.name,
         kakaoUserInfo.kakao_account.gender == 'male' ? 1 : 2,
         kakaoUserInfo.kakao_account.phone_number,
+        kakaoUserInfo.kakao_account.account_email,
       ];
       [results] = await conn.query(sql, values);
       loginUser = { id: (results as ResultSetHeader).insertId };

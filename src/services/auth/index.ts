@@ -8,6 +8,7 @@ export interface IKakaoUser {
     name: string;
     gender: string;
     phone_number: string;
+    account_email: string;
   };
 }
 
