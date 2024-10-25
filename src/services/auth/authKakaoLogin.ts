@@ -62,7 +62,7 @@ export const authKakaoLogin = async (req: Request, res: Response) => {
       userName: kakaoUserInfo.kakao_account.name,
     };
     const accessTokenOption: jwt.SignOptions = {
-      expiresIn: '1m',
+      expiresIn: '1h',
       issuer: 'sungohki',
     };
     const instanceAccessToken = tokenGenerate(
