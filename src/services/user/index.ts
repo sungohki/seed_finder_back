@@ -1,7 +1,7 @@
 // export * from './userJoin';
 // export * from './userLogin';
 export * from './userGetInfo';
-export * from './userUpdateInfo';
+export * from './userSurveyInfo';
 export * from './userSurveyOption';
 export * from './userCheckInfo';
 export * from './userDelete';
