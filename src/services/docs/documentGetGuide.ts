@@ -20,11 +20,11 @@ export const documentGetGuide = (req: Request, res: Response) => {
 
   conn.query(sql, values, (err, results) => {
     if (queryErrorChecker(err, res)) return;
-    const guideContent = convertKeysToCamelCase(
+    const guideLines = convertKeysToCamelCase(
       Object.values(results)[0]
     ) as IGuideContent;
     return res.status(StatusCodes.OK).json({
-      guideLines: guideContent,
+      guideLines: guideLines.guideContent,
     });
   });
 };
