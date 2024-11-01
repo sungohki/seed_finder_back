@@ -20,6 +20,4 @@ export const userGetProfile = (req: Request, res: Response) => {
     if (queryErrorChecker(err, res)) return;
     return res.status(StatusCodes.OK).json(convertKeysToCamelCase(results));
   });
-
-  return res.status(StatusCodes.OK).json();
 };
