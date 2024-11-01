@@ -33,6 +33,6 @@ export const userGetProfile = (req: Request, res: Response) => {
     const userProfile = Object.values(results)[0] as IUserProfile;
     return res
       .status(StatusCodes.OK)
-      .json(convertKeysToCamelCase(userGetProfile));
+      .json(convertKeysToCamelCase(userProfile));
   });
 };
