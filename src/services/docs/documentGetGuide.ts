@@ -2,10 +2,14 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connection as conn } from '../../mariadb';
-import { queryErrorChecker } from '../common';
+import { convertKeysToCamelCase, queryErrorChecker } from '../common';
 
 // Import local module
 // import { accessTokenVerify } from '../common';
+
+interface IGuideContent {
+  guideContent: string;
+}
 
 export const documentGetGuide = (req: Request, res: Response) => {
   const { numberingId } = req.body;
@@ -16,9 +20,9 @@ export const documentGetGuide = (req: Request, res: Response) => {
 
   conn.query(sql, values, (err, results) => {
     if (queryErrorChecker(err, res)) return;
-    const guideContent = (Object.values(results)[0] as string).split(
-      '가이드라인:'
-    )[1];
+    const guideContent = convertKeysToCamelCase(
+      Object.values(results)[0]
+    ) as IGuideContent;
     return res.status(StatusCodes.OK).json({
       guideLines: guideContent,
     });
