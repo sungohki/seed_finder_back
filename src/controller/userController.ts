@@ -7,6 +7,9 @@ import * as US from '../services/user';
 // export const userJoinHandler = (req: Request, res: Response) => {
 //   return US.userJoin(req, res);
 // };
+export const userGetProfileHandler = (req: Request, res: Response) => {
+  return US.userGetProfile(req, res);
+};
 export const userDeleteHandler = (req: Request, res: Response) => {
   return US.userDelete(req, res);
 };

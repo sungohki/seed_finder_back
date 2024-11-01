@@ -1,5 +1,6 @@
 // export * from './userJoin';
 // export * from './userLogin';
+export * from './userGetProfile';
 export * from './userGetInfo';
 export * from './userSurveyInfo';
 export * from './userSurveyOption';
