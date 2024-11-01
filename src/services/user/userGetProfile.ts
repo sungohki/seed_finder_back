@@ -31,6 +31,8 @@ export const userGetProfile = (req: Request, res: Response) => {
   conn.query(sql, values, (err, results) => {
     if (queryErrorChecker(err, res)) return;
     const userProfile = Object.values(results)[0] as IUserProfile;
-    return res.status(StatusCodes.OK).json(userProfile);
+    return res
+      .status(StatusCodes.OK)
+      .json(convertKeysToCamelCase(userGetProfile));
   });
 };
