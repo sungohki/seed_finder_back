@@ -1,20 +1,26 @@
 // Import node module
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { connection as conn } from '../../mariadb';
+import { queryErrorChecker } from '../common';
 
 // Import local module
 // import { accessTokenVerify } from '../common';
 
-const documentGuideLine = `※ 창업아이템(제품·서비스)개발 · 구체화개병과 이를 뒷받침할 근거, 동기 등을 제시
-
-① 외부적 배경 및 동기 (예 : 사회 · 경제 · 기술적 관점, 국내 · 외 시장의 문제점 기획 등)
-
-② 내부적 배경 및 동기 (예 : 대표자 경험, 가치관, 비전 등의 관점)
-
-※ 배경에서 발견한 문제점과 해결방안, 필요성, 제품 · 서비스를 개발 · 구체화하려는 목적 기재`;
-
 export const documentGetGuide = (req: Request, res: Response) => {
-  return res.status(StatusCodes.OK).json({
-    guideLine: documentGuideLine,
+  const { numberingId } = req.body;
+  const sql = `
+    SELECT guide_content FROM Guide WHERE document_topic_id = 
+      (SELECT id FROM Document_Topic WHERE numbering_id = ?) LIMIT 1`;
+  const values = [numberingId];
+
+  conn.query(sql, values, (err, results) => {
+    if (queryErrorChecker(err, res)) return;
+    const guideContent = (Object.values(results)[0] as string).split(
+      '가이드라인:'
+    )[1];
+    return res.status(StatusCodes.OK).json({
+      guideLines: guideContent,
+    });
   });
 };
