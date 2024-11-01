@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import * as DS from '../services/docs';
 
+export const documentGetGuideHandler = (req: Request, res: Response) => {
+  return DS.documentGetGuide(req, res);
+};
+
 export const documentGetAllHandler = (req: Request, res: Response) => {
   return DS.documentGetAll(req, res);
 };

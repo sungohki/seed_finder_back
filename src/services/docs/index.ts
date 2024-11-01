@@ -2,6 +2,7 @@ export * from './documentInsert';
 export * from './documentCreateOne';
 export * from './documentGetOne';
 export * from './documentGetAll';
+export * from './documentGetGuide';
 export * from './documentDeleteOne';
 export * from './documentUpdateOne';
 

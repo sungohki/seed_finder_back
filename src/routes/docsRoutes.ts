@@ -4,6 +4,9 @@ import * as DC from '../controller/docsController';
 const router = express.Router();
 router.use(express.json());
 
+// Read document guides
+router.get('/guides', DC.documentGetGuideHandler);
+
 // Read all documents of user
 router.get('/all', DC.documentGetAllHandler);
 
