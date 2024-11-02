@@ -97,12 +97,15 @@ export const generateMessage = async (num: number, param: string) => {
     const lines = history.split('\n').filter((line) => line.trim() !== '');
     if (num >= lines.length)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
-    lines.forEach((line) => {
+    lines.forEach((line,index) => {
       const parsedLine: ITraining = JSON.parse(line);
-      parsedLine.messages.forEach((messageParam) => {
-        messages.push(messageParam);
-        console.log(messages);
-      });
+      if((index+1)===num){
+        parsedLine.messages.forEach((messageParam) => {
+          messages.push(messageParam);
+          console.log(messages);
+        });
+      }
+      
     });
 
     const data = await readFile('./data/guidelines.json', 'utf8');
