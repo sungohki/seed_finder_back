@@ -101,6 +101,7 @@ export const generateMessage = async (num: number, param: string) => {
       const parsedLine: ITraining = JSON.parse(line);
       parsedLine.messages.forEach((messageParam) => {
         messages.push(messageParam);
+        console.log(messages);
       });
     });
 
