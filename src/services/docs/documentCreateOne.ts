@@ -95,7 +95,7 @@ export const generateMessage = async (num: number, param: string) => {
     const messages: Array<ChatCompletionMessageParam> = [];
     const history = await readFile('./data/training_data.jsonl', 'utf-8');
     const lines = history.split('\n').filter((line) => line.trim() !== '');
-    if (num >= lines.length)
+    if (num >= lines.length+1)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
     lines.forEach((line,index) => {
       const parsedLine: ITraining = JSON.parse(line);
