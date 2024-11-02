@@ -99,12 +99,9 @@ export const generateMessage = async (num: number, param: string) => {
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
     lines.forEach((line) => {
       const parsedLine: ITraining = JSON.parse(line);
-      const parsedLineContent = parsedLine.messages[0].content as string;
-      if (parsedLineContent?.includes(`${num}번 항목`)) {
-        parsedLine.messages.forEach((messageParam) => {
-          messages.push(messageParam);
-        });
-      }
+      parsedLine.messages.forEach((messageParam) => {
+        messages.push(messageParam);
+      });
     });
 
     const data = await readFile('./data/guidelines.json', 'utf8');
