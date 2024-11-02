@@ -23,6 +23,6 @@ export const documentGetGuide = (req: Request, res: Response) => {
     const guideLines = convertKeysToCamelCase(
       Object.values(results)[0]
     ) as IGuideContent;
-    return res.status(StatusCodes.OK).send(guideLines);
+    return res.status(StatusCodes.OK).send(guideLines.guideContent);
   });
 };
