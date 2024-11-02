@@ -139,7 +139,7 @@ export const generateMessage = async (num: number, param: string) => {
       messages: messages,
       model: process.env.FINE_TUNING_MODEL as string,
     });
-    return response.choices[0].message.content?.replace('**', '') as string;
+    return response.choices[0].message.content?.replace(/\*\*/g, '') as string;
   } catch (e) {
     console.error(e);
   }
