@@ -64,9 +64,7 @@ export const documentCreateOne = async (req: Request, res: Response) => {
     );
 
     console.log(documentRequest);
-    if (!documentRequest.deviceToken)
-      documentRequest.deviceToken =
-        'fIY1yA8nRN6iLi8GDfos5h:APA91bHG2LlehZGIC1TK0yLAzAmwE0CW5EtGAxeJR9WBQaKuoyEQwXu4UUEWsrdjgzXtKFnd19ZCvSC-xd15lN8jOVIaeEEaHjGLzskNlizgnR54ejvTpiBmiRPW3PeNYf6G5foDn3RJ';
+    if (!documentRequest.deviceToken) return;
 
     const messageRequest: IMessageRequest = {
       title: documentRequest.title,
@@ -95,16 +93,15 @@ export const generateMessage = async (num: number, param: string) => {
     const messages: Array<ChatCompletionMessageParam> = [];
     const history = await readFile('./data/training_data.jsonl', 'utf-8');
     const lines = history.split('\n').filter((line) => line.trim() !== '');
-    if (num >= lines.length+1)
+    if (num >= lines.length + 1)
       throw new Error(`info: ${num})에 맞는 항목이 없습니다.`);
-    lines.forEach((line,index) => {
+    lines.forEach((line, index) => {
       const parsedLine: ITraining = JSON.parse(line);
-      if((index+1)===num){
+      if (index + 1 === num) {
         parsedLine.messages.forEach((messageParam) => {
           messages.push(messageParam);
         });
       }
-      
     });
 
     const data = await readFile('./data/guidelines.json', 'utf8');
