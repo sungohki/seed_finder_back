@@ -83,16 +83,17 @@ export const userLogin = (req: Request, res: Response) => {
       res.cookie('accessToken', instanceAccessToken, {
         httpOnly: true,
       });
-      console.log(instanceAccessToken);
+      // console.log(instanceAccessToken);
       res.cookie('refreshToken', instanceRefreshToken, {
         httpOnly: true,
       });
-      console.log(instanceRefreshToken);
+      // console.log(instanceRefreshToken);
 
       let memberRole: String;
       if (loginUser.user_management === 1) memberRole = 'MANAGER';
       else memberRole = 'CUSTOMER';
 
+      console.log(`# info: user [ ${loginUser.userName} ] login success`);
       return res.status(StatusCodes.OK).json({
         ...results[0],
         accessToken: instanceAccessToken,

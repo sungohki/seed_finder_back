@@ -98,13 +98,20 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
       WHERE
         id = ?
     `;
-    if (businessExperience === 0)
-      values = [businessTargetAge, true, null, decodedUserAccount.id];
+    if (businessExperience <= 0)
+      values = [
+        Math.floor(businessTargetAge),
+        true,
+        null,
+        decodedUserAccount.id,
+      ];
     else
       values = [
-        businessTargetAge,
+        Math.floor(businessTargetAge),
         false,
-        businessExperience,
+        Math.floor(businessExperience) < 100
+          ? Math.floor(businessExperience)
+          : 100,
         decodedUserAccount.id,
       ];
     [results] = await conn.query(sql, values);
