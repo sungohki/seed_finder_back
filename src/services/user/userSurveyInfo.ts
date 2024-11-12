@@ -100,22 +100,26 @@ export const userSurveyInfo = async (req: Request, res: Response) => {
     `;
     if (businessExperience <= 0)
       values = [
-        Math.floor(businessTargetAge),
+        Math.floor(businessTargetAge) < 100
+          ? Math.floor(businessTargetAge)
+          : 100,
         true,
         null,
         decodedUserAccount.id,
       ];
     else
       values = [
-        Math.floor(businessTargetAge),
-        false,
-        Math.floor(businessExperience) < 100
-          ? Math.floor(businessExperience)
+        Math.floor(businessTargetAge) < 100
+          ? Math.floor(businessTargetAge)
           : 100,
+        false,
+        Math.floor(businessExperience) < 10
+          ? Math.floor(businessExperience)
+          : 10,
         decodedUserAccount.id,
       ];
     [results] = await conn.query(sql, values);
-    console.log(`4. 업력 & 예비창업자 여부 & 연령 정보 저장 완료`);
+    console.log(`4. 업력 & 연령 정보 저장 완료 (${values})`);
 
     return res.status(StatusCodes.OK).json({
       request: '설문 정보 저장',
